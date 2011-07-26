@@ -1,0 +1,110 @@
+/* ==================================== TEST */
+body.Candy div#Frame div#Head div.Menu ul#Menu {
+	display: none;
+}
+/* ==================================== TEST */
+
+/* ======================================================================================= Modules */
+
+/* :only-child (CSS selector) FF3+ SA3.1+ OP9.5+ CH2+ */
+/*ul.PanelInfo li > a:only-child {
+	float: none;
+}*/
+body.Candy div.Box ul.PanelInfo li > a {
+	float: none;
+}
+.BoxSections ul.PanelInfo li {
+	text-align: left;
+}
+
+.BoxSections li.Depth2 { padding-left: 15px; }
+.BoxSections li.Depth3 { padding-left: 30px; }
+.BoxSections li.Depth4 { padding-left: 40px; }
+.BoxSections li.Depth5 { padding-left: 50px; }
+/*.BoxSections li.Depth6 { padding-left: 24px; }
+.BoxSections li.Depth7 { padding-left: 28px; }
+.BoxSections li.Depth8 { padding-left: 32px; }
+.BoxSections li.Depth9 { padding-left: 36px; }
+.BoxSections li.Depth10 { padding-left: 40px; }
+.BoxSections li.Depth11 { padding-left: 44px; }
+.BoxSections li.Depth12 { padding-left: 48px; }*/
+
+
+/* ======================================================================================= Misc */
+
+.TableRows > div {
+	display:table-cell;
+}
+.TableRows > div + div {
+	padding-left: 6px;
+}
+.Popup .TableRows div {
+	display:block;
+}
+.Popup .TableRows > div + div {
+	padding-left: 0px;
+}
+
+td.Options a {
+	text-transform:lowercase;
+}
+
+td.Options a:not(:last-child):after {
+	content: ",";
+}
+
+td.Options a + a {
+	margin-left: 4px;
+}
+
+ol.Tree ul { 
+	margin-left: 20px; 
+}
+
+ol.Tree > li#Tree_1 > ul {
+	list-style-type: none;
+	margin-left: 0;
+}
+
+ol.Tree ul li > div.Hovered {
+	background:#f5f5f5;
+}
+
+ol.Tree li span.Options {
+	float: right;
+	font-size: 90%;
+}
+ol.Tree ul ul { list-style-type: square; }
+ol.Tree ul ul ul { list-style-type: circle; }
+
+
+/* ====================================================================== Static page */
+body.Candy #Form_Body {
+	height: 300px;
+	
+	width: 100%;
+	font-size:90%;
+	font-family: "Courier New";
+}
+
+body.Candy .EditForm > li {
+	margin-bottom: 5px;
+}
+
+body.Candy input#Form_Title {
+	width:100%;
+}
+
+ul.EditForm li label + input.InputBox {
+	font-size: 95%;
+	padding-top: 1px; 
+	padding-bottom: 1px;
+}
+
+ul.EditForm li label {
+	display: block;
+	float: left;
+	width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+}
