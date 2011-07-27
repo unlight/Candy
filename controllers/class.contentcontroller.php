@@ -52,7 +52,7 @@ class ContentController extends Gdn_Controller {
 			
 			$BreadCrumbsModule = new BreadCrumbsModule($this);
 			$BreadCrumbsModule->SetLinks($this->SectionPath);
-			$this->AddModule($BreadCrumbsModule, 'Content');
+			$this->AddModule($BreadCrumbsModule);
 		}
 		
 		$this->AddModule('PageInfoModule');

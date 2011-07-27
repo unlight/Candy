@@ -14,5 +14,5 @@ $TargetUrl = $this->_Sender->SelfUrl;
 	<?php /*<li><?php echo Anchor(T('Delete'), 'candy/page/delete/'.$Page->PageID, ''); ?></li> */?>
 	<li><strong><?php echo Anchor(T('Published'), 'candy/page/visible/'.$Page->PageID.'?Target='.$TargetUrl, 'BoolButton'); ?><?php
 		echo T($Page->Visible == 1? 'Yes' : 'No');
-	?></strong>
+	?></strong></li>
 </ul>

@@ -9,6 +9,22 @@ class CandyHooks implements Gdn_IPlugin {
 		$Menu->AddLink('Add-ons', 'Sections', 'candy/section/tree', 'Garden.AdminUser.Only');
 	}
 	
+	public function Base_Render_Before($Sender) {
+		if ($Sender->Application == 'Candy') {
+			$this->BreadCrumbsAssetRender($Sender);
+		}
+	}
+	
+	protected function BreadCrumbsAssetRender($Sender) {
+		$BreadCrumbsModule =& $Sender->Assets['BreadCrumbs']['BreadCrumbsModule'];
+		if ($BreadCrumbsModule) {
+			$AssetTarget = C('Candy.Modules.BreadCrumbsAssetTarget');
+			if ($AssetTarget) {
+				$Sender->AddModule($BreadCrumbsModule, $AssetTarget);
+			}
+		}
+	}
+	
 	public function Gdn_Dispatcher_BeforeDispatch_Handler($Sender) {
 		if (!C('Candy.Version')) return;
 		$Request = Gdn::Request();

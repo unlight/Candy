@@ -32,25 +32,32 @@ class BreadCrumbsModule extends MenuModule {
 		$CountItems = count($this->Items);
 		if ($CountItems == 0) return $String;
 		
+		$LastCrumbLinked = C('Candy.Modules.BreadCrumbsLastCrumbLinked', False);
+		
 		$Count = 0;
 		foreach ($this->Items as $GroupName => $Links) {
 			foreach ($Links as $Key => $Link) {
 				$Text = $GroupName;
 				//$Text = ArrayValue('Text', $Link);
-				$Url = ArrayValue('Url', $Link);
-				$Url = Url($Url, True);
 				++$Count;
 				$Attributes = ArrayValue('Attributes', $Link, array());
-				$CssClassSuffix = '';
 				if ($Count == 1) $CssClassSuffix = 'First';
+				elseif ($Count == $CountItems) $CssClassSuffix = 'Last';
+				else $CssClassSuffix = '';
+				$Attributes['class'] = trim($CssClassSuffix . 'Crumb ' . ArrayValue('class', $Attributes, ''));
+				
+				$Url = ArrayValue('Url', $Link);
+				if ($Url) $AnchorAttributes['href'] = Url($Url, True);
+				
+				$Anchor = '<a'.Attribute($AnchorAttributes).'>'.$Text.'</a>';
+				
 				if ($Count == $CountItems) {
-					$CssClassSuffix = 'Last';
-					$Attributes['class'] = trim($CssClassSuffix . 'Crumb ' . ArrayValue('class', $Attributes, ''));
+					if ($LastCrumbLinked) $Text = $Anchor;
 					$Item = '<li'.Attribute($Attributes).'>'.$Text.'</li>';
 				} else {
-					$Attributes['class'] = trim($CssClassSuffix . 'Crumb ' . ArrayValue('class', $Attributes, ''));
-					$Item = '<li'.Attribute($Attributes).'><a'.Attribute($AnchorAttributes).' href="'.$Url.'">'.$Text.'</a>';
+					$Item = '<li'.Attribute($Attributes).'>'.$Anchor;
 				}
+				
 				$String .= str_repeat("\t", $Count);
 				$String .= "\n<ul".Attribute($ListAttributes).'>'.$Item;
 			}
