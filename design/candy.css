@@ -4,6 +4,7 @@ body.Candy div#Frame div#Head div.Menu ul#Menu {
 }
 /* ==================================== TEST */
 
+
 /* ======================================================================================= Modules */
 
 /* :only-child (CSS selector) FF3+ SA3.1+ OP9.5+ CH2+ */
@@ -17,20 +18,36 @@ body.Candy div.Box ul.PanelInfo li > a {
 	text-align: left;
 }
 
-.BoxSections li.Depth2 { padding-left: 15px; }
-.BoxSections li.Depth3 { padding-left: 30px; }
-.BoxSections li.Depth4 { padding-left: 40px; }
-.BoxSections li.Depth5 { padding-left: 50px; }
-/*.BoxSections li.Depth6 { padding-left: 24px; }
-.BoxSections li.Depth7 { padding-left: 28px; }
-.BoxSections li.Depth8 { padding-left: 32px; }
-.BoxSections li.Depth9 { padding-left: 36px; }
-.BoxSections li.Depth10 { padding-left: 40px; }
-.BoxSections li.Depth11 { padding-left: 44px; }
-.BoxSections li.Depth12 { padding-left: 48px; }*/
+/*.BoxSections li.Depth1 { padding-left: 0px; }*/
+.BoxSections li.Depth2 { padding-left: 8px; }
+.BoxSections li.Depth3 { padding-left: 16px; }
+.BoxSections li.Depth4 { padding-left: 24px; }
+.BoxSections li.Depth5 { padding-left: 32px; }
+.BoxSections li.Depth6 { padding-left: 40px; }
+.BoxSections li.Depth7 { padding-left: 48px; }
+.BoxSections li.Depth8 { padding-left: 56px; }
+.BoxSections li.Depth9 { padding-left: 64px; }
+
+
+/* ======================================================================================= BreadCrumbs */
+#BreadCrumbs ul { display: inline-block; }
+#BreadCrumbs li { display: inline-block; }
+/* IE<8 hacks */
+* html #BreadCrumbs ul { display: inline !important; }
+* html #BreadCrumbs li { display: inline !important; }
+*+html #BreadCrumbs ul { display: inline !important; }
+*+html #BreadCrumbs li { display: inline !important; }
+
+#BreadCrumbs ul li.Crumb:before,
+#BreadCrumbs ul li.LastCrumb:before {
+/*	font-weight: bold;*/
+	content: "»";
+	margin-right: 5px;
+}
 
 
 /* ======================================================================================= Misc */
+
 
 .TableRows > div {
 	display:table-cell;
@@ -74,8 +91,12 @@ ol.Tree li span.Options {
 	float: right;
 	font-size: 90%;
 }
-ol.Tree ul ul { list-style-type: square; }
-ol.Tree ul ul ul { list-style-type: circle; }
+/*ol.Tree ul ul { list-style-type: decimal; }*/
+ol.Tree ul ul { list-style-type: circle; }
+ol.Tree ul ul ul { list-style-type: square; }
+ol.Tree ul ul ul ul { list-style-type: circle; }
+ol.Tree ul ul ul ul ul { list-style-type: disc; }
+ol.Tree ul ul ul ul ul ul { list-style-type: circle; }
 
 
 /* ====================================================================== Static page */
