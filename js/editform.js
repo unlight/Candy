@@ -18,18 +18,21 @@ jQuery(function() {
 	}
 	var LastTimeStamp = 0;	
 	var SlugHandler = function() {
-		var Text = $('#Form_Title').val();
-		$.post(gdn.url('candy/slug'), {Text:Text}, function(text){
-			$("#Form_SectionURI").val(text);
-		});
+		var Enabled = $('#Form_CreateSection')[0].checked;
+		if (Enabled) {
+			var Text = $('#Form_Title').val();
+			$.post(gdn.url('candy/slug'), {Text:Text}, function(text){
+				$("#Form_SectionURI").val(text);
+			});
+		}
 	}
 	
 	if ($('#Form_Title').val() == '') {
 		$("#Form_Title").blur(SlugHandler);
 		$("#Form_Title").bind('keypress', function(e){
-			var Enabled = $('#Form_CreateSection')[0].checked;
+			
 			var ElapsedTime = e.timeStamp - LastTimeStamp; // in miliseconds
-			if (Enabled && ElapsedTime > 1000) {
+			if (ElapsedTime > 1000) {
 				LastTimeStamp = e.timeStamp;
 				SlugHandler();
 			}

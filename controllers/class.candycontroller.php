@@ -2,6 +2,8 @@
 
 class CandyController extends Gdn_Controller {
 	
+	protected $AdminView;
+	
 	public function Initialize() {
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 			$this->Head = new HeadModule($this);
@@ -9,7 +11,12 @@ class CandyController extends Gdn_Controller {
 			$this->AddJsFile('jquery.livequery.js');
 			$this->AddJsFile('jquery.menu.js');
 			$this->AddJsFile('global.js');
-			$this->AddCssFile('style.css');
+			if ($this->AdminView) {
+				$this->MasterView = 'admin';
+				$this->AddCssFile('admin.css');
+			} else {
+				$this->AddCssFile('style.css');
+			}
 			$this->AddCssFile('candy.css');
 			$this->AddJsFile('candy.js'); // Application global js
 		}

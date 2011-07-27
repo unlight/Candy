@@ -21,6 +21,7 @@ class CandyHooks implements Gdn_IPlugin {
 			$AssetTarget = C('Candy.Modules.BreadCrumbsAssetTarget');
 			if ($AssetTarget) {
 				$Sender->AddModule($BreadCrumbsModule, $AssetTarget);
+				unset($Sender->Assets['BreadCrumbs']);
 			}
 		}
 	}

@@ -11,10 +11,12 @@ class PageModel extends Gdn_Model {
 	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
-		$SectionID = GetValue('SectionID', $PostValues, Null, True);
+		$SectionID = GetValue('SectionID', $PostValues, Null);
 		$bCreateSection = GetValue('CreateSection', $PostValues);
 		if ($bCreateSection) {
 			$this->Validation->ApplyRule('SectionURI', 'UrlString');
+			$this->Validation->ApplyRule('SectionID', 'Required');
+			unset($PostValues['SectionID']);
 		}
 		
 		$RowID = GetValue('PageID', $PostValues);

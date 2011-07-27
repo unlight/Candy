@@ -1,7 +1,7 @@
 /* ==================================== TEST */
-body.Candy div#Frame div#Head div.Menu ul#Menu {
+/*body.Candy div#Frame div#Head div.Menu ul#Menu {
 	display: none;
-}
+}*/
 /* ==================================== TEST */
 
 
@@ -100,6 +100,12 @@ ol.Tree ul ul ul ul ul ul { list-style-type: circle; }
 
 
 /* ====================================================================== Static page */
+
+form ul li label + input[type="checkbox"] {
+    vertical-align: middle;
+	min-height: 19px;
+}
+
 body.Candy #Form_Body {
 	height: 300px;
 	
@@ -118,8 +124,6 @@ body.Candy input#Form_Title {
 
 ul.EditForm li label + input.InputBox {
 	font-size: 95%;
-	padding-top: 1px; 
-	padding-bottom: 1px;
 }
 
 ul.EditForm li label {
@@ -129,3 +133,5 @@ ul.EditForm li label {
 	white-space: nowrap;
 	overflow: hidden;
 }
+
+

@@ -4,13 +4,14 @@ class PageController extends CandyController {
 	
 	public $Uses = array('Form', 'PageModel');
 	public $Editing;
+	protected $AdminView = True;
 	
 	public function Initialize() {
 		parent::Initialize();
 		$this->Permission('Garden.Admin.Only'); // TODO: SET REAL PERMISSIONS
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 			$this->AddSideMenu();
-			$this->AddCssFile('candy.css');
+			//$this->AddCssFile('candy.css');
 		}
 	}
 	

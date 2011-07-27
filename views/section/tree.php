@@ -32,12 +32,12 @@ foreach ($this->Tree as $Node) {
     
     $Options = array();
     $Options[] = Anchor(T('Add'), 'candy/section/add/'.$Node->SectionID, '');
+    $Options[] = Anchor(T('Edit'), 'candy/section/edit/'.$Node->SectionID, '');
     
     if ($Node->Depth == 0) {
         // This is root
         //$Options[] = Anchor('Properties', 'candy/content/properties/'.$Node->ContentID, '');
     } else {
-        $Options[] = Anchor(T('Edit'), 'candy/section/edit/'.$Node->SectionID, '');
         $Options[] = Anchor(T('Swap'), 'candy/section/swap/'.$Node->SectionID, '');
         $Options[] = Anchor(T('Move'), 'candy/section/move/'.$Node->SectionID, '');
         $Options[] = Anchor(T('Delete'), 'candy/section/delete/'.$Node->SectionID, 'PopupConfirm');

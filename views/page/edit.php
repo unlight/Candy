@@ -36,7 +36,6 @@ if (!$this->Editing) {
 		$this->Form->CheckBox('CreateSection'), 
 		'li'
 	);
-
 	echo Wrap(
 		$this->Form->Label('Section URI', 'SectionURI').
 		$this->Form->TextBox('SectionURI'), 
