@@ -14,14 +14,17 @@ class BreadCrumbsModule extends MenuModule {
 		return 'BreadCrumbs';
 	}
 	
-	public function AddLink($Group, $Text, $Url, $Permission = FALSE, $Attributes = '', $AnchorAttributes = '') {
+	public function AddLink($Group, $Text, $Url, $Permission = False, $Attributes = '', $AnchorAttributes = '') {
 		parent::AddLink($Group, $Text, $Url, $Permission, $Attributes, $AnchorAttributes);
 	}
 	
 	public function SetLinks($DataSet) {
+		$RootNodeID = C('Candy.RootSectionID');
 		foreach ($DataSet as $Node) {
 			$Node = (object)$Node;
-			$this->AddLink($Node->Name, $Node->Name, $Node->URI);
+			$Attributes = '';
+			if ($RootNodeID == $Node->SectionID) $Attributes['_HomeLink'] = True;
+			$this->AddLink($Node->Name, $Node->Name, $Node->URI, False, $Attributes);
 		}
 	}
 
@@ -48,12 +51,7 @@ class BreadCrumbsModule extends MenuModule {
 		$this->bCrumbsWrapped = True;
 	}
 	
-	
-	//public function AutoWrapCrumbs($Value = Null) {
-	public function AutoWrapCrumbs() {
-/*		if (is_null($Value)) {
-			// TODO: THINK ABOUT IT
-		}*/
+	public function AutoWrapCrumbs($Value = Null) {
 		$this->bAutoWrapCrumbs = True;
 	}
 	
@@ -80,14 +78,18 @@ class BreadCrumbsModule extends MenuModule {
 			foreach ($Links as $Key => $Link) {
 				$Text = $GroupName;
 				//$Text = ArrayValue('Text', $Link);
-				++$Count;
+				$Count = $Count + 1;
 				$Attributes = ArrayValue('Attributes', $Link, array());
 				if ($Count == 1) $CssClassSuffix = 'First';
 				elseif ($Count == $CountItems) $CssClassSuffix = 'Last';
 				else $CssClassSuffix = '';
 				$Attributes['class'] = trim($CssClassSuffix . 'Crumb ' . ArrayValue('class', $Attributes, ''));
-				
+
 				$Url = ArrayValue('Url', $Link);
+				if ($Url === NULL) {
+					$IsHomeLink = GetValue('_HomeLink', $Attributes, False, True);
+					if ($IsHomeLink) $Url = '/';
+				}
 				if ($Url) $AnchorAttributes['href'] = Url($Url, True);
 				
 				$Anchor = '<a'.Attribute($AnchorAttributes).'>'.$Text.'</a>';

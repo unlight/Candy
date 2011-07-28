@@ -2,8 +2,16 @@
 
 class SectionsModule extends Gdn_Module {
 	
+	public $RootNodeDepth = 0;
+	
 	public function __construct($Sender = '') {
 		parent::__construct($Sender);
+		$RootNodeID = C('Candy.RootSectionID');
+		if ($RootNodeID) {
+			$SectionModel = Gdn::Factory('SectionModel');
+			$RootNode = $SectionModel->GetNode($RootNodeID);
+			$this->RootNodeDepth = $RootNode->Depth;
+		}
 	}
 	
 	public function SetAjarData($SectionPath = False) {
@@ -12,7 +20,7 @@ class SectionsModule extends Gdn_Module {
 		elseif (is_object($SectionPath) && $SectionPath instanceof StdClass) {
 			$SectionPath = $SectionPath->SectionID;
 		}
-		if ($SectionPath) $this->_Data = $SectionModel->Ajar($SectionPath);
+		if ($SectionPath) $this->_Data = $SectionModel->Ajar($SectionPath, '', False);
 	}
 
 

@@ -30,12 +30,13 @@ class SectionModel extends TreeModel {
 		return $Result;
 	}
 	
-	public function Ajar($ID, $Where = False) {
+	public function Ajar($ID, $Where = False, $IncludeRoot = True) {
 		$RootNode = C('Candy.RootSectionID');
 		if (is_numeric($RootNode) && $RootNode != 1) {
 			list($LeftID, $RightID) = $this->_NodeValues($RootNode);
-			$Where['a.TreeLeft >='] = $LeftID;
-			$Where['a.TreeRight <='] = $RightID;
+			$Op = ($IncludeRoot) ? '=' : '';
+			$Where['a.TreeLeft >'.$Op] = $LeftID;
+			$Where['a.TreeRight <'.$Op] = $RightID;
 		}
 		return parent::Ajar($ID, $Where);
 	}

@@ -28,6 +28,11 @@ body.Candy div.Box ul.PanelInfo li > a {
 .BoxSections li.Depth8 { padding-left: 56px; }
 .BoxSections li.Depth9 { padding-left: 64px; }
 
+.BoxSections li > a:before {
+	content: "↳";
+	margin-right: 3px;
+}
+
 
 /* ======================================================================================= BreadCrumbs */
 #BreadCrumbs ul { display: inline-block; }
