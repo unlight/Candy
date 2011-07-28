@@ -30,6 +30,17 @@ class SectionModel extends TreeModel {
 		return $Result;
 	}
 	
+	public function Full($Fields = '', $Where = False, $RootID = False, $IncludeRoot = False) {
+		if (is_numeric($RootID)) {
+			list($LeftID, $RightID, $Depth, $NodeID) = $this->_NodeValues($RootID);
+			$Op = ($IncludeRoot) ? '=' : '';
+			$Where['TreeLeft >'.$Op] = $LeftID;
+			$Where['TreeRight <'.$Op] = $RightID;
+		}
+		$Result = parent::Full($Fields, $Where);
+		return $Result;
+	}
+	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
 		$URI = GetValue('URI', $PostValues, Null);

@@ -2,6 +2,9 @@
 
 class BreadCrumbsModule extends MenuModule {
 	
+	protected $bCrumbsWrapped;
+	protected $bAutoWrapCrumbs;
+	
 	public function __construct($Sender = '') {
 		parent::__construct($Sender);
 		$this->HtmlId = 'BreadCrumbs';
@@ -21,11 +24,49 @@ class BreadCrumbsModule extends MenuModule {
 			$this->AddLink($Node->Name, $Node->Name, $Node->URI);
 		}
 	}
+
+	
+	/**
+	* Adds first crumb and last crumb.
+	* 
+	*/
+	public function WrapCrumbs($First = True, $Last = True) {
+		if (!$First || !$Last) return;
+		$GroupFirstItem = array();
+		$GroupLastItem = array();
+		if ($First != False) {
+			$Home = T('Home');
+			$FirstItem = array(0 => array('Text' => $Home, 'Url' => '/'));
+			$GroupFirstItem = array($Home => $FirstItem);
+		}
+		if ($Last != False) {
+			$Text = $this->_Sender->Data('Title');
+			$Item = array(0 => array('Text' => $Text, 'Url' => '/'));
+			$GroupLastItem = array($Text => $Item);
+		}
+		$this->Items = $GroupFirstItem + $this->Items + $GroupLastItem;
+		$this->bCrumbsWrapped = True;
+	}
+	
+	
+	//public function AutoWrapCrumbs($Value = Null) {
+	public function AutoWrapCrumbs() {
+/*		if (is_null($Value)) {
+			// TODO: THINK ABOUT IT
+		}*/
+		$this->bAutoWrapCrumbs = True;
+	}
+	
+	public function AddCrumb($Text, $Url = '/') {
+		$this->AddLink($Text, $Text, $Url);
+	}
 	
 	public function ToString() {
 		$String = '';
 		$AnchorAttributes = ''; // not used yet
 		$ListAttributes = ''; // not used yet
+		
+		if (!$this->bCrumbsWrapped && $this->bAutoWrapCrumbs) $this->WrapCrumbs();
 		
 		$this->FireEvent('BeforeToString');
 		

@@ -74,6 +74,15 @@ class ContentController extends Gdn_Controller {
 	public function Map() {
 		// TODO: SET ROUTE /map
 		$this->Title(T('Site map'));
+		$SectionModel = Gdn::Factory('SectionModel');
+		$this->Tree = $SectionModel->Full('*', '', C('Candy.RootSectionID'), False);
+		
+		$this->AddHomeTreeNode = False; // TODO: USE IT
+		
+		$BreadCrumbs = new BreadCrumbsModule($this);
+		$BreadCrumbs->AutoWrapCrumbs();
+		$this->AddModule($BreadCrumbs);
+		
 		$this->Render();
 	}
 	
@@ -85,4 +94,8 @@ class ContentController extends Gdn_Controller {
 
 	
 }
+
+
+
+
 

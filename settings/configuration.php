@@ -5,5 +5,4 @@
 $Configuration['Candy']['Installed'] = False;
 $Configuration['Candy']['Modules']['BreadCrumbsAssetTarget'] = False;
 $Configuration['Candy']['Modules']['BreadCrumbsLastCrumbLinked'] = False;
-
-
+$Configuration['Candy']['RootSectionID'] = False;

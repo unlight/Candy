@@ -10,7 +10,6 @@
 //$Options = array('Class' => 'Tree', 'Tree' => $this->FullTree);
 //$this->WriteTree($Options);
 
-
 echo "\n<ol class='Tree'>";
 // http://stackoverflow.com/questions/1310649/getting-a-modified-preorder-tree-traversal-model-nested-set-into-a-ul/#1790201
 $CurrentDepth = 0;

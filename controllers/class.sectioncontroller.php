@@ -3,6 +3,7 @@
 class SectionController extends CandyController {
 	
 	public $Uses = array('Form', 'SectionModel');
+	protected $AdminView = True;
 	
 	public function Initialize() {
 		parent::Initialize();
