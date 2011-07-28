@@ -13,6 +13,20 @@ class CandyHooks implements Gdn_IPlugin {
 		if ($Sender->Application == 'Candy') {
 			$this->BreadCrumbsAssetRender($Sender);
 		}
+		$this->FindChunks($Sender);
+	}
+	
+	protected function FindChunks($Sender) {
+		$Arguments =& $Sender->EventArguments;
+		$View = GetValue(0, $Arguments, $Sender->View);
+		$ControllerName = GetValue(1, $Arguments, $Sender->ControllerName);
+		$ApplicationFolder = GetValue(2, $Arguments, $Sender->ApplicationFolder);
+		$ViewPath = $Sender->FetchViewLocation($View, $ControllerName, $ApplicationFolder, False);
+		if ($ViewPath != False) {
+			//$What = ChunkModel::SearchPhpChunksInFile($ViewPath);
+			//d($What, file_get_contents($ViewPath), 307, token_name(307));
+		}
+		//d($Sender, $Arguments, $ViewPath);
 	}
 	
 	protected function BreadCrumbsAssetRender($Sender) {
@@ -71,27 +85,6 @@ class CandyHooks implements Gdn_IPlugin {
 		$Sender->Render();
 	}
 	
-	
-/*    public function Base_GetAppSettingsMenuItems_Handler($Sender) {
-		$Menu =& $Sender->EventArguments['SideMenu'];
-		//$Menu->AutoLinkGroups = False;
-		$Menu->AddItem('WebCms', T('WebCms'), False, array('class' => 'Addons'));
-		$Menu->AddLink('WebCms', T('Static pages'), 'webcms/staticpage/browse', 'WebCms.Content.Edit');
-		//$Menu->AddLink('WebCms', T('News'), 'webcms/news', 'WebCms.Content.Edit');
-	}*/
-	
-	
-/*	public function Base_Render_Before($Sender) {
-		$Arguments =& $Sender->EventArguments;
-		$View = GetValue(0, $Arguments, $Sender->View);
-		$ControllerName = GetValue(1, $Arguments, $Sender->ControllerName);
-		$ApplicationFolder = GetValue(2, $Arguments, $Sender->ApplicationFolder);
-		$ViewPath = $Sender->FetchViewLocation($View, $ControllerName, $ApplicationFolder, False);
-		if ($ViewPath != False) {
-			//$What = ChunkModel::SearchPhpChunksInFile($ViewPath);
-			//d($What, 307, token_name(307));
-		}
-		//d($Sender, $Arguments, $ViewPath);
-	}*/
+
 	
 }

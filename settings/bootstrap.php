@@ -31,11 +31,15 @@ if (!function_exists('SectionAnchor')) {
 
 
 
-/*if (!function_exists('Chunk')) {
+if (!function_exists('Chunk')) {
 	function Chunk($Identify, $Default = '') {
-		// TODO: FUNCTION EMPTY, FIX ME
+		static $ChunkModel;
+		if (is_null($ChunkModel)) $ChunkModel = new ChunkModel();
+		$Data = $ChunkModel->GetID($Identify);
 	}
 }
+
+/*
 
 if (!function_exists('GetUrlCode')) {
 	function GetUrlCode($UrlCode, $Text) {
@@ -46,3 +50,22 @@ if (!function_exists('GetUrlCode')) {
 		return $Result;
 	}
 }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,16 +13,15 @@ $Validation = new Gdn_Validation(); // To validate permissions (if necessary).
 
 Gdn::Structure()
 	->Table('Chunk')
-	->PrimaryKey('ChunkID', 'smallint')
-	->Column('Name', 'varchar(80)', True, 'unique')
-	->Column('Title', 'varchar(250)', True)
-	->Column('Body', 'text')
+	->PrimaryKey('ChunkID', 'usmallint')
+	->Column('Name', 'varchar(80)')
+	->Column('Body', 'text', True)
 	->Column('Format', 'varchar(20)', True)
 	->Column('InsertUserID', 'int', False)
 	->Column('DateInserted', 'datetime')
 	->Column('UpdateUserID', 'int', True)
 	->Column('DateUpdated', 'datetime', True)
-	->Column('OwnerUserID', 'int', True)
+//	->Column('OwnerUserID', 'int', True)
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	

@@ -126,9 +126,8 @@ form ul li label + input[type="checkbox"] {
 
 body.Candy #Form_Body {
 	height: 300px;
-	
 	width: 100%;
-	font-size:90%;
+	font-size: 95%;
 	font-family: "Courier New";
 }
 
@@ -140,9 +139,9 @@ body.Candy input#Form_Title {
 	width:100%;
 }
 
-ul.EditForm li label + input.InputBox {
+/*ul.EditForm li label + input.InputBox {
 	font-size: 95%;
-}
+}*/
 
 ul.EditForm li label {
 	display: block;

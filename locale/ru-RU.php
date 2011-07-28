@@ -17,3 +17,6 @@ $Definition['Page deleted'] = 'Страница удалена';
 $Definition['Site map'] = 'Карта сайта';
 $Definition['Create section'] = 'Создать раздел';
 $Definition['Saved. You can check it here: %s'] = 'Изменения сохранены, можете посмотреть: %s';
+$Definition['Nothing.'] = 'Ничего.';
+$Definition['There are nothing.'] = 'Ничего нет.';
+$Definition['Add chunk'] = 'Добавить кусочек';
