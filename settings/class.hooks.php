@@ -58,7 +58,7 @@ class CandyHooks implements Gdn_IPlugin {
 		include(PATH_APPLICATIONS . '/candy/settings/structure.php');
 		$ApplicationInfo = array();
 		include(CombinePaths(array(PATH_APPLICATIONS . '/candy/settings/about.php')));
-		$Version = GetValue('Version', GetValue('Candy', $ApplicationInfo, array()), 'Undefined');
+		$Version = GetValue('Version', GetValue('Candy', $ApplicationInfo));
 		SaveToConfig('Candy.Version', $Version);
 	}
 	

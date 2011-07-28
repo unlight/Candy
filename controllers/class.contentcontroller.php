@@ -45,11 +45,11 @@ class ContentController extends Gdn_Controller {
 		if ($Page->SectionID) {
 			$this->Section = BuildNode($Page, 'Section');
 			$this->SectionID = $Page->SectionID;
-			$this->SectionPath = $this->SectionModel->Parents($Page->SectionID);
+			$this->SectionPath = $this->SectionModel->GetPath($Page->SectionID, C('Candy.RootSectionID'), True);
 			$SectionsModule = new SectionsModule($this);
 			$SectionsModule->SetAjarData($this->SectionPath);
 			$this->AddModule($SectionsModule);
-			
+
 			$BreadCrumbsModule = new BreadCrumbsModule($this);
 			$BreadCrumbsModule->SetLinks($this->SectionPath);
 			$this->AddModule($BreadCrumbsModule);
@@ -75,9 +75,10 @@ class ContentController extends Gdn_Controller {
 		// TODO: SET ROUTE /map
 		$this->Title(T('Site map'));
 		$SectionModel = Gdn::Factory('SectionModel');
-		$this->Tree = $SectionModel->Full('*', '', C('Candy.RootSectionID'), False);
+		$IncludeRoot = False;
+		$this->Tree = $SectionModel->Full('*', '', C('Candy.RootSectionID'), $IncludeRoot);
 		
-		$this->AddHomeTreeNode = False; // TODO: USE IT
+		$this->AddHomeTreeNode = !$IncludeRoot;
 		
 		$BreadCrumbs = new BreadCrumbsModule($this);
 		$BreadCrumbs->AutoWrapCrumbs();

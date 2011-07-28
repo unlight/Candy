@@ -5,8 +5,15 @@
 <div id="ContentMap" class="Body">
 <?php
 echo "\n<ol class='Tree'>";
-$CurrentDepth = 0;
+
+$FirstDepth = $this->Tree->FirstRow()->Depth;
+$CurrentDepth = $FirstDepth;
 $Counter = 0;
+
+if ($this->AddHomeTreeNode) {
+	echo "<li>", Anchor(T('Home'), '/'), '</li>';
+}
+
 foreach ($this->Tree as $Node) {
 	
 	if ($Node->Depth > $CurrentDepth) echo "<ul>";
@@ -24,7 +31,7 @@ foreach ($this->Tree as $Node) {
 	echo "\n<li".Attribute($ItemAttribute).'>';
 	echo SectionAnchor($Node);
 }
-echo str_repeat("</li></ul>", $Node->Depth) . '</li>';	
+echo str_repeat("</li></ul>", $Node->Depth - $FirstDepth) . '</li>';	
 echo "</ol>";
 ?>
 </div>

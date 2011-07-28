@@ -3,6 +3,8 @@
 if (!isset($Drop)) $Drop = False;
 if (!isset($Explicit)) $Explicit = True;
 
+$Version = C('Candy.Version');
+
 $Database = Gdn::Database();
 $Px = $Database->DatabasePrefix;
 $SQL = $Database->SQL(); // To run queries.
@@ -65,3 +67,12 @@ Gdn::Structure()
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	
+// Set route
+
+if ($Version === False) {
+	Gdn::Router()->SetRoute('map', 'candy/content/map', 'Internal');
+}
+
+
+
+

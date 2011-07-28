@@ -31,7 +31,7 @@ class BreadCrumbsModule extends MenuModule {
 	* 
 	*/
 	public function WrapCrumbs($First = True, $Last = True) {
-		if (!$First || !$Last) return;
+		if (!($First && $Last)) return;
 		$GroupFirstItem = array();
 		$GroupLastItem = array();
 		if ($First != False) {
