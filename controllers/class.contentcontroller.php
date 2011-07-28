@@ -72,7 +72,6 @@ class ContentController extends Gdn_Controller {
 	}
 	
 	public function Map() {
-		// TODO: SET ROUTE /map
 		$this->Title(T('Site map'));
 		$SectionModel = Gdn::Factory('SectionModel');
 		$IncludeRoot = False;
