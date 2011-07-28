@@ -11,12 +11,10 @@ class PageModel extends Gdn_Model {
 	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
-		$SectionID = GetValue('SectionID', $PostValues, Null);
 		$bCreateSection = GetValue('CreateSection', $PostValues);
 		if ($bCreateSection) {
 			$this->Validation->ApplyRule('SectionURI', 'UrlString');
 			$this->Validation->ApplyRule('SectionID', 'Required');
-			unset($PostValues['SectionID']);
 		}
 		
 		$RowID = GetValue('PageID', $PostValues);
@@ -25,24 +23,26 @@ class PageModel extends Gdn_Model {
 		$this->FireEvent('BeforeSave');
 		$RowID = parent::Save($PostValues);
 		if ($RowID) {
-			if ($bCreateSection) {
-				$SectionModel = Gdn::Factory('SectionModel');
-				$NodeFields = array(
-					'Name' => $PostValues['Title'],
-					'URI' => $PostValues['SectionURI'],
-					'RequestUri' => 'content/page/'.$RowID
-				);
-				// $SectionID is parent node.
-				$NewSectionID = $SectionModel->InsertNode($SectionID, $NodeFields);
-				$this->SQL
-					->Update($this->Name)
-					->Set('SectionID', $NewSectionID)
-					->Where($this->PrimaryKey, $RowID)
-					->Put();
-			}
+			if ($bCreateSection) $this->CreateSection($RowID, $PostValues);
 		}
 
 		return $RowID;
+	}
+	
+	protected function CreateSection($RowID, $PostValues) {
+		$SectionModel = Gdn::Factory('SectionModel');
+		$NodeFields = array(
+			'Name' => $PostValues['Title'],
+			'URI' => GetValue('SectionURI', $PostValues, Null),
+			'RequestUri' => 'content/page/'.$RowID
+		);
+		$ParentSectionID = GetValue('SectionID', $PostValues);
+		$PageSectionID = $SectionModel->InsertNode($ParentSectionID, $NodeFields);
+		$this->SQL
+			->Update($this->Name)
+			->Set('SectionID', $PageSectionID)
+			->Where($this->PrimaryKey, $RowID)
+			->Put();
 	}
 	
 	public function SetProperty($RowID, $Field, $Value) {

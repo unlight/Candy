@@ -76,8 +76,12 @@ class PageController extends CandyController {
 			if ($this->Form->ButtonExists('Delete')) {
 				$this->PageModel->Delete($Content->PageID);
 				$this->InformMessage(T('Page deleted'), array('Sprite' => 'SkullBones', 'CssClass' => 'Dismissable AutoDismiss'));
-			} elseif ($this->Form->Save($Content) != False) {
-				$this->InformMessage(T('Saved'), array('Sprite' => 'Check', 'CssClass' => 'Dismissable AutoDismiss'));
+			} else {
+				$SavedID = $this->Form->Save($Content);
+				if ($SavedID) {
+					$Message = LocalizedMessage('Saved. You can check it here: %s', Anchor($this->Form->GetFormValue('Title'), 'content/page/'.$SavedID));
+					$this->InformMessage($Message, array('Sprite' => 'Check', 'CssClass' => 'Dismissable'));
+				}
 			}
 		}
 		
