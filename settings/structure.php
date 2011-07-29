@@ -76,12 +76,15 @@ $PermissionModel = Gdn::PermissionModel();
 
 $PermissionModel->Define(array(
 	'Candy.Settings.Manage',
-	'Candy.Sections.View',
+	'Candy.Settings.View',
+
 	'Candy.Sections.Edit',
 	'Candy.Sections.Add',
 	'Candy.Sections.Delete',
 	'Candy.Sections.Move',
 	'Candy.Sections.Swap',
+
+	//'Candy.Pages.Bro',
 ));
 
 

@@ -2,7 +2,7 @@
 
 
 $Options = array();
-if (CheckPermission('Candy.Sections.View')) {
+if (CheckPermission('Candy.Settings.View')) {
 	$Options[] = Anchor(T('Sections'), 'candy/section/tree', 'Button SmallButton');
 	//if (C('Debug')) $Options[] = Anchor('Check tree', 'candy/node/check', 'Button SmallButton');
 }

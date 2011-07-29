@@ -20,7 +20,7 @@ class SectionController extends CandyController {
 	}
 	
 	public function Tree() {
-		$this->Permission('Candy.Sections.View');
+		$this->Permission('Candy.Settings.View');
 		$TreeModel = new SectionModel();
 		$this->AddJsFile('tree.js');
 		$this->Tree = $TreeModel->Full('*')->Result(); // array('Depth <=' => 1)
@@ -74,7 +74,7 @@ class SectionController extends CandyController {
 	}
 
 	public function Check() {
-		$this->Permission('Candy.Sections.View');
+		$this->Permission('Candy.Settings.View');
 		$this->CorruptedData = $this->SectionModel->GetCorruptedRows();
 		$this->Title(T('Corrupted nodes'));
 		$this->Render();
