@@ -39,7 +39,7 @@ foreach ($this->Tree as $Node) {
     } else {
         $Options[] = Anchor(T('Swap'), 'candy/section/swap/'.$Node->SectionID, '');
         $Options[] = Anchor(T('Move'), 'candy/section/move/'.$Node->SectionID, '');
-        $Options[] = Anchor(T('Delete'), 'candy/section/delete/'.$Node->SectionID, 'PopupConfirm');
+        $Options[] = Anchor(T('Delete'), 'candy/section/delete/'.$Node->SectionID, 'PopConfirm');
         //$Options[] = Anchor('Properties', 'candy/section/properties/'.$Node->SectionID, '');
     }
     
