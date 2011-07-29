@@ -84,7 +84,9 @@ $PermissionModel->Define(array(
 	'Candy.Sections.Move',
 	'Candy.Sections.Swap',
 
-	//'Candy.Pages.Bro',
+	'Candy.Pages.Add',
+	'Candy.Pages.Edit',
+	'Candy.Pages.Delete',
 ));
 
 

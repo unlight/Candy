@@ -16,6 +16,7 @@ class PageController extends CandyController {
 	}
 	
 	public function Browse($Page = '') {
+		$this->Permission('Candy.Settings.View');
 		list($Offset, $Limit) = OffsetLimit($Page, 30);
 		$this->Pages = $this->PageModel->Get('', $Offset, $Limit);
 		$this->RecordCount = $this->PageModel->GetCount();
@@ -24,11 +25,6 @@ class PageController extends CandyController {
 		$this->Pager->Configure($Offset, $Limit, $this->RecordCount, $this->Url);
 		$this->Title(T('Pages'));
 		$this->Render();
-	}
-	
-	public function AddNew() {
-		$this->View = 'Edit';
-		$this->Edit();
 	}
 	
 	public function Visible($PageID) {
@@ -50,6 +46,11 @@ class PageController extends CandyController {
 		$this->Render();
 	}
 	
+	public function AddNew() {
+		$this->View = 'Edit';
+		$this->Edit();
+	}
+	
 	public function Edit($Reference = '') {
 		
 		//$this->AddJsFile('jquery.autocomplete.pack.js');
@@ -63,14 +64,14 @@ class PageController extends CandyController {
 		$Content = False;
 		if ($Reference != '') {
 			$Content = $this->PageModel->GetID($Reference);
-			if (!CandyModel::IsOwner($Content)) $this->Permission('Candy.Content.Edit');
-			$this->Form->AddHidden('PageID', $Content->PageID);
+			if (!CandyModel::IsOwner($Content, 'Candy.Pages.Edit')) $Content = False;
 			if ($Content) {
+				$this->Form->AddHidden('PageID', $Content->PageID);
 				$this->Form->SetData($Content);
 				$this->Editing = True;
 			}
 		}
-		$this->Permission('Candy.Content.Add');
+		if (!$Content) $this->Permission('Candy.Pages.Add');
 		
 		if ($this->Form->AuthenticatedPostBack()) {
 			if ($this->Form->ButtonExists('Delete')) {
@@ -90,6 +91,7 @@ class PageController extends CandyController {
 	}
 	
 	public function Delete($Reference) {
+		$this->Permission('Candy.Pages.Delete');
 		$this->PageModel->Delete($Reference);
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 			Redirect('/candy/page/browse');

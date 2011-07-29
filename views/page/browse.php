@@ -1,5 +1,7 @@
 <?php if(!defined('APPLICATION')) die(); 
 
+
+$PermissionDelete = CheckPermission('Candy.Pages.Delete');
 ?>
 
 <h1><?php echo $this->Data('Title');?></h1>
@@ -16,8 +18,8 @@
 <tbody>
 <?php foreach ($this->Pages as $Page) {
 	$Options = array();
-	$Options[] = Anchor(T('Edit'), 'candy/page/edit/'.$Page->PageID, '');
-	$Options[] = Anchor(T('Delete'), 'candy/page/delete/'.$Page->PageID, '');
+	if (CandyModel::IsOwner($Page, 'Candy.Pages.Edit')) $Options[] = Anchor(T('Edit'), 'candy/page/edit/'.$Page->PageID, '');
+	if ($PermissionDelete) $Options[] = Anchor(T('Delete'), 'candy/page/delete/'.$Page->PageID, '');
 	?>
 	<tr>
 	<td><?php echo Anchor($Page->Title, 'content/page/'.$Page->PageID);?></td>

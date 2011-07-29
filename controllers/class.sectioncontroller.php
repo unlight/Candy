@@ -42,11 +42,10 @@ class SectionController extends CandyController {
 		$Section = False;
 		if ($Reference) {
 			$Section = $Model->GetID($Reference);
+			if (!CandyModel::IsOwner($Section, 'Candy.Sections.Edit')) $Section = False;
 			if ($Section) {
-				if (CandyModel::IsOwner($Section, 'Candy.Sections.Edit')) {
-					$this->Form->AddHidden('SectionID', $Section->SectionID);
-					$this->Form->SetData($Section);
-				}
+				$this->Form->AddHidden('SectionID', $Section->SectionID);
+				$this->Form->SetData($Section);
 			}
 		}
 		if (!$Section) $this->Permission('Candy.Sections.Add');
