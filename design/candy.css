@@ -152,6 +152,39 @@ ul.EditForm li label {
 }
 
 
+/* =========================================================== Inline Edit - Plugin for jQuery */
+.editable-wrap input[type=text],
+.editable-wrap textarea {
+	padding: 0.2em;
+	width: 99%;
+}
+.editable-hover { background: rgb(255, 255, 238); }
+.editable-save, .editable-cancel {
+	margin-bottom: 5px;	
+}
+/* Increasing CSS specificity by addding #ID to overtake style from style.css */
+#Frame .editable-save, 
+#Frame .editable-cancel { 
+	text-transform: capitalize;
+	margin-left: 10px;
+}
+
+/* 
+input[type=button] { padding: .5em; }
+textarea { height: 150px; font-size: 1em; }
+
+.editable { padding: 10px; background: #eee; cursor: pointer; }
+.editable-hover { background: #ccc; }
+.editable-wrap { margin: 10px 0; }
+.editable-cancel { margin-left: 10px; }
+*/
+
+
+
+
+
+
+
 
 
 

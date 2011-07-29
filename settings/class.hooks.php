@@ -3,32 +3,19 @@
 class CandyHooks implements Gdn_IPlugin {
 	
 	public function Base_GetAppSettingsMenuItems_Handler($Sender) {
-		// TEST, TEMP
 		$Menu =& $Sender->EventArguments['SideMenu'];
+		//$Menu->AddLink('Add-ons', 'Candy CMS', 'candy/section/tree', 'Garden.AdminUser.Only');
 		$Menu->AddLink('Add-ons', 'Pages', 'candy/page/browse', 'Garden.AdminUser.Only');
 		$Menu->AddLink('Add-ons', 'Sections', 'candy/section/tree', 'Garden.AdminUser.Only');
+		$Menu->AddLink('Add-ons', 'Chunks', 'candy/chunk/browse', 'Garden.AdminUser.Only');
 	}
 	
 	public function Base_Render_Before($Sender) {
-		if ($Sender->Application == 'Candy') {
+		if ($Sender->Application == 'Candy' && $Sender->DeliveryType() == DELIVERY_TYPE_ALL) {
 			$this->BreadCrumbsAssetRender($Sender);
 		}
-		$this->FindChunks($Sender);
 	}
-	
-	protected function FindChunks($Sender) {
-		$Arguments =& $Sender->EventArguments;
-		$View = GetValue(0, $Arguments, $Sender->View);
-		$ControllerName = GetValue(1, $Arguments, $Sender->ControllerName);
-		$ApplicationFolder = GetValue(2, $Arguments, $Sender->ApplicationFolder);
-		$ViewPath = $Sender->FetchViewLocation($View, $ControllerName, $ApplicationFolder, False);
-		if ($ViewPath != False) {
-			//$What = ChunkModel::SearchPhpChunksInFile($ViewPath);
-			//d($What, file_get_contents($ViewPath), 307, token_name(307));
-		}
-		//d($Sender, $Arguments, $ViewPath);
-	}
-	
+
 	protected function BreadCrumbsAssetRender($Sender) {
 		$BreadCrumbsModule =& $Sender->Assets['BreadCrumbs']['BreadCrumbsModule'];
 		if ($BreadCrumbsModule) {
@@ -64,10 +51,6 @@ class CandyHooks implements Gdn_IPlugin {
 		}
 	}
 	
-	public function OnDisable() {
-		RemoveFromConfig('Candy.Version');
-	}
-	
 	public function Setup() {
 		include(PATH_APPLICATIONS . '/candy/settings/structure.php');
 		$ApplicationInfo = array();
@@ -76,15 +59,21 @@ class CandyHooks implements Gdn_IPlugin {
 		SaveToConfig('Candy.Version', $Version);
 	}
 	
+	public function OnDisable() {
+		RemoveFromConfig('Candy.Version');
+	}
 	
 	// TEST
-	
-	// TEST, TODO: REMOVE ME
-	public function PluginController_CandyChunkTest_Create($Sender) {
+/*	public function PluginController_CandyChunkTest_Create($Sender) {
+		$Sender->AddJsFile('applications/candy/js/jquery.inline-edit.js');
+		$Sender->AddJsFile('applications/candy/js/candy.js');
+		$Sender->AddCssFile('applications/candy/design/candy.css');
 		$Sender->View = $Sender->FetchViewLocation('chunk', 'test', 'candy');
 		$Sender->Render();
-	}
+	}*/
 	
 
 	
 }
+
+
