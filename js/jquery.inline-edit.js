@@ -1,127 +1,178 @@
-/*
- * Inline Text Editing 1.3
- * April 26, 2010
- * Corey Hart @ http://www.codenothing.com
- */ 
-(function( $, undefined ){
+/**
+ * Inline Edit - Plugin for jQuery
+ * Modified by S (Summer 2011)
+ * 
+ * click and edit inline plugin for jQuery.
+ *
+ * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+ *
+ * Depends:
+ *   jquery.js
+ * 
+ * TODO:
+ * - type of select/radio/check shold have label and value
+ * - make class to be easy to edit
+ * 
+ */
+;(function($) {
 
-	$.fn.inlineEdit = function( options ) {
-		return this.each(function(){
-			// Settings and local cache
-			var self = this, $main = $( self ), original,
-				settings = $.extend({
-					href: 'ajax.php',
-					requestType: 'POST',
-					html: true,
-					load: undefined,
-					display: '.display',
-					form: '.form',
-					text: '.text',
-					save: '.save',
-					cancel: '.cancel',
-					revert: '.revert',
-					loadtxt: 'Loading...',
-					hover: undefined,
-					postVar: 'text',
-					postData: {},
-					postFormat: undefined
-				}, options || {}, $.metadata ? $main.metadata() : {} ),
+var PROP_NAME = 'inlineedit',
+	fn = function(){};
 
-				// Cache All Selectors
-				$display = $main.find( settings.display ),
-				$form = $main.find( settings.form ),
-				$text = $form.find( settings.text ),
-				$save = $form.find( settings.save ),
-				$revert = $form.find( settings.revert ),
-				$cancel = $form.find( settings.cancel );
-
-			// Make sure the plugin only get initialized once
-			if ( $.data( self, 'inline-edit' ) === true ) {
-				return;
-			}
-			$.data( self, 'inline-edit', true );
-
-			// Prevent sending form submission
-			$form.bind( 'submit.inline-edit', function(){
-				$save.trigger( 'click.inline-edit' );
-				return false;
-			});
+$.fn.inlineEdit = function(op) {
+	// defaults
+	op = $.extend({
+		url: 'post.php',
+		method: 'post',
+		save: fn,
+		cancel: fn,
+		complete: fn,
+		success: fn,
+		error: fn,
+		type: 'text', // text, textarea, select, radio, check
+		prefix: 'editable-',
+		buttons: {
+			save: 'save',
+			cancel: 'cancel'
+		},
+		select: [], // when type is select/radio/check [value1, value2, ...]
+		classname: null,
+		classbuttons: '',
+		beforeload: null,
+		afterssave: null
+	}, op);
 	
-			// Display Actions
-			$display.bind( 'click.inline-edit', function(){
-				$display.hide();
-				$form.show();
-
-				if ( settings.html ) {
-					if ( original === undefined ) {
-						original = $display.html();
+	return this.each(function() {
+		var $el = $(this);
+		// add hover class
+		$el.hover(function() {
+			$el.addClass(op.prefix + 'hover');
+		}, function() {
+			$el.removeClass(op.prefix + 'hover');
+		});
+		
+		// add click action
+		$el.click(function() {
+		
+			var $form = $('<form>');
+			var eventarguments = { };
+			
+			eventarguments.element = $el;
+			if ($.isFunction(op.beforeload)) op.beforeload.apply($el, [eventarguments]);
+			
+			var val = eventarguments.val || $el.text();
+			var rel = eventarguments.rel || $el.attr('rel');
+		
+			var attrs = {name: rel};
+			
+			switch(op.type) {
+				// text area
+				case 'textarea':
+					if (op.classname) attrs['class'] = op.classname;
+					$form.append($('<textarea>', attrs).val(val));
+					break;
+				
+				// select button
+				case 'select':
+					var $sel = $('<select>', attrs);
+					for(var i=0, l = op.select.length; i<l; i++) {
+						$sel.append($('<option>', {
+							value: op.select[i]
+						}).text(op.select[i]));
 					}
-
-					$text.val( original ).focus();
-				}
-				else if ( original === undefined ) {
-					original = $text.val();
-				}
-
-				return false;
-			})
-			.bind( 'mouseenter.inline-edit', function(){
-				$display.addClass( settings.hover );
-			})
-			.bind( 'mouseleave.inline-edit', function(){
-				$display.removeClass( settings.hover );
-			});
-
-			// Add revert handler
-			$revert.bind( 'click.inline-edit', function(){
-				$text.val( original || '' ).focus();
-				return false;
-			});
-
-			// Cancel Actions
-			$cancel.bind( 'click.inline-edit', function(){
-				$form.hide();
-				$display.show();
-
-				// Remove hover action if stalled
-				if ( $display.hasClass( settings.hover ) ) {
-					$display.removeClass( settings.hover );
-				}
-
-				return false;
-			});
-
-			// Save Actions
-			$save.bind( 'click.inline-edit', function( event ) {
-				settings.postData[ settings.postVar ] = $text.val();
-				$form.hide();
-				$display.html( settings.loadtxt ).show();
-
-				if ( $display.hasClass( settings.hover ) ) {
-					$display.removeClass( settings.hover );
-				}
-
+					$form.append($sel.val(val));
+					break;
+				
+				// radio button
+				case 'radio':
+					for(var i=0, l = op.select.length; i<l; i++) {
+						$form.append($('<input>', {
+							name: rel,
+							id: rel + i,
+							type: 'radio',
+							value: op.select[i],
+							checked: (val == op.select[i])
+						}));
+						$form.append($('<label for="' + rel + i + '">').text(op.select[i]));
+					}
+					break;
+				
+				// checkbox
+				case 'check':
+					for(var i=0, l = op.select.length; i<l; i++) {
+						$form.append($('<input>', {
+							name: rel + '[]',
+							id: rel + i,
+							type: 'checkbox',
+							value: op.select[i],
+							checked: (val == op.select[i])
+						}));
+						$form.append($('<label for="' + rel + i + '">').text(op.select[i]));
+					}
+					break;
+				
+				// text box
+				case 'text':
+				default:
+					attrs['type'] = 'text';
+					attrs['value'] = val;
+					if (op.classname) attrs['class'] = op.classname;
+					$form.append($('<input>', attrs));
+					break;
+			}
+			
+			$form.children().wrapAll('<div class="' + op.prefix + 'wrap">').end()
+			// add save button
+			.append($('<input>', {
+				type: 'button',
+				value: op.buttons.save,
+				class: $.trim(op.prefix + 'save ' + op.classbuttons)
+			}).click(function() {
+				op.save.call($el);
+				// post data
 				$.ajax({
-					url: settings.href,
-					type: settings.requestType,
-					data: settings.postFormat ? 
-						settings.postFormat.call( $main, event, { settings: settings, postData: settings.postData } ) :
-						settings.postData,
-					success: function( response ){
-						original = undefined;
-
-						if ( settings.load ) {
-							settings.load.call( $display, event, { response: response, settings: settings } );
-							return;
+					url: op.url,
+					type: op.method,
+					dataType: op.dataType,
+					data: $form.serialize(),
+					complete: function() {
+						op.complete.call($el, arguments);
+					},
+					success: function(data, textStatus, xhr) {
+						eventarguments.html = false;
+						op.success.call($el, data, textStatus, xhr, eventarguments);
+						$form.remove();
+						//if ($.isFunction(op.afterssave)) op.afterssave.apply($el, [eventarguments]);
+						if (eventarguments.html === false) {
+							$el.text($form.serializeArray()[0].value).show();
+						} else {
+							$el.html(eventarguments.html).show();
 						}
-
-						$display.html( response );
+					},
+					error: function() {
+						op.error.call($el, arguments);
+						$form.remove();
+						$el.show();
 					}
 				});
-
+			}))
+			// add cancel button
+			.append($('<input>', {
+				type: 'button',
+				value: op.buttons.cancel,
+				class: $.trim(op.prefix + 'cancel ' + op.classbuttons)
+			}).click(function() {
+				op.cancel.call($el);
+				$form.remove();
+				$el.show();
+			}))
+			.submit(function() {
 				return false;
 			});
+			
+			$el.hide().after($form);
 		});
-	};
-
-})( jQuery );
+	});
+};
+})(jQuery);
