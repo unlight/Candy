@@ -37,8 +37,11 @@ class CandyController extends Gdn_Controller {
 	}
 	
 	public function Slug() {
-		$Text = GetIncomingValue('Text');
-		echo CandyModel::Slug($Text);
+		$Session = Gdn::Session();
+		if ($Session->IsValid()) {
+			$Text = GetIncomingValue('Text');
+			echo CandyModel::Slug($Text);
+		}
 	}
 	
 }

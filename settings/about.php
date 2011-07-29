@@ -1,7 +1,7 @@
 <?php if (!defined('APPLICATION')) exit();
 
 $ApplicationInfo['Candy'] = array(
-	'Description' => 'Candy is the simple application that allows you manage site content.',
+	'Description' => 'Candy is the simple web-application that allows you manage site content.',
 	'Version' => '0.11',
 	'Date' => 'Summer 2011',
 	'AllowEnable' => True,

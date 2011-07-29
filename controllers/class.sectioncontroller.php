@@ -7,7 +7,6 @@ class SectionController extends CandyController {
 	
 	public function Initialize() {
 		parent::Initialize();
-		$this->Permission('Garden.Admin.Only'); // TODO: SET PERMISSIONS
 		if ($this->_DeliveryType == DELIVERY_TYPE_ALL) {
 			$this->AddJsFile('jquery.menu.js');
 			$this->AddJsFile('jquery.popup.js');
@@ -21,6 +20,7 @@ class SectionController extends CandyController {
 	}
 	
 	public function Tree() {
+		$this->Permission('Candy.Sections.View');
 		$TreeModel = new SectionModel();
 		$this->AddJsFile('tree.js');
 		$this->Tree = $TreeModel->Full('*')->Result(); // array('Depth <=' => 1)
@@ -35,6 +35,7 @@ class SectionController extends CandyController {
 	}
 	
 	public function Edit($Reference = 0, $ParentID = 1) {
+		$Session = Gdn::Session();
 		$Model = new SectionModel();
 		$this->Form->SetModel($Model);
 		$this->Form->AddHidden('ParentID', $ParentID);
@@ -42,10 +43,14 @@ class SectionController extends CandyController {
 		if ($Reference) {
 			$Section = $Model->GetID($Reference);
 			if ($Section) {
-				$this->Form->AddHidden('SectionID', $Section->SectionID);
-				$this->Form->SetData($Section);
+				if (CandyModel::IsOwner($Section, 'Candy.Sections.Edit')) {
+					$this->Form->AddHidden('SectionID', $Section->SectionID);
+					$this->Form->SetData($Section);
+				}
 			}
 		}
+		if (!$Section) $this->Permission('Candy.Sections.Add');
+		
 		if ($this->Form->AuthenticatedPostBack()) {
 			$this->Form->Save($Section);
 			if ($this->Form->ErrorCount() == 0) {
@@ -59,20 +64,24 @@ class SectionController extends CandyController {
 	}
 	
 	public function Delete($SectionID) {
+		$this->Permission('Candy.Sections.Delete');
 		$Row = $this->SectionModel->GetID($SectionID);
 		$this->SectionModel->Delete($Row->SectionID);
 		if ($this->_DeliveryType == DELIVERY_TYPE_ALL) {
 			Redirect('candy/section/tree');
 		}
+		// TODO: HANDLE AJAX DELETE NODE
 	}
 
 	public function Check() {
+		$this->Permission('Candy.Sections.View');
 		$this->CorruptedData = $this->SectionModel->GetCorruptedRows();
 		$this->Title(T('Corrupted nodes'));
 		$this->Render();
 	}
 	
 	public function Move($SectionID) {
+		$this->Permission('Candy.Sections.Move');
 		$ContentModel =& $this->SectionModel;
 		$this->Content = $ContentModel->GetID($SectionID);
 		$EditingID = $this->Content->SectionID;
@@ -93,6 +102,7 @@ class SectionController extends CandyController {
 	protected $Branch;
 	
 	public function Swap($SectionID) {
+		$this->Permission('Candy.Sections.Swap');
 		$ContentModel =& $this->SectionModel;
 		$this->Content = $ContentModel->GetID($SectionID);
 		$EditingID = $this->Content->SectionID;

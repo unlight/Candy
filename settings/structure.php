@@ -72,6 +72,43 @@ if ($Version === False) {
 	Gdn::Router()->SetRoute('map', 'candy/content/map', 'Internal');
 }
 
+$PermissionModel = Gdn::PermissionModel();
+
+$PermissionModel->Define(array(
+	'Candy.Settings.Manage',
+	'Candy.Sections.View',
+	'Candy.Sections.Edit',
+	'Candy.Sections.Add',
+	'Candy.Sections.Delete',
+	'Candy.Sections.Move',
+	'Candy.Sections.Swap',
+));
+
+
+
+
+/*$PermissionModel->Define(array(
+),
+	'tinyint',
+	'Section',
+	'SectionID'
+);*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

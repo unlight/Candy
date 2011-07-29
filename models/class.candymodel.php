@@ -8,9 +8,12 @@ class CandyModel {
 		return $Result;
 	}
 	
-	public static function IsOwner($Object) {
+	public static function IsOwner($Object, $HasAccessPermission = False) {
 		$Session = Gdn::Session();
-		return ($Session->UserID > 0 && GetValue('InsertUserID', $Object) == $Session->UserID);
+		if (is_string($HasAccessPermission)) {
+			$HasAccessPermission = $Session->CheckPermission($HasAccessPermission);
+		}
+		return $HasAccessPermission || ($Session->UserID > 0 && GetValue('InsertUserID', $Object) == $Session->UserID);
 	}
 	
 	public static function AvailableApplications() {

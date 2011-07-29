@@ -4,9 +4,8 @@ class CandyHooks implements Gdn_IPlugin {
 	
 	public function Base_GetAppSettingsMenuItems_Handler($Sender) {
 		$Menu =& $Sender->EventArguments['SideMenu'];
-		//$Menu->AddLink('Add-ons', 'Candy CMS', 'candy/section/tree', 'Garden.AdminUser.Only');
 		$Menu->AddLink('Add-ons', 'Pages', 'candy/page/browse', 'Garden.AdminUser.Only');
-		$Menu->AddLink('Add-ons', 'Sections', 'candy/section/tree', 'Garden.AdminUser.Only');
+		$Menu->AddLink('Add-ons', 'Sections', 'candy/section/tree', 'Candy.Sections.View');
 		$Menu->AddLink('Add-ons', 'Chunks', 'candy/chunk/browse', 'Garden.AdminUser.Only');
 	}
 	
