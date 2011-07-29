@@ -32,10 +32,17 @@ if (!function_exists('SectionAnchor')) {
 
 
 if (!function_exists('Chunk')) {
-	function Chunk($Identify, $Default = '') {
+	function Chunk($Identify, $Type = 'Textarea') {
 		static $ChunkModel;
 		if (is_null($ChunkModel)) $ChunkModel = new ChunkModel();
 		$Data = $ChunkModel->GetID($Identify);
+		if ($Data) {
+			$String = Gdn_Format::To($Data->Body, $Data->Format);
+			if ($Type) {
+				$String = Wrap($String, 'div', array('class' => 'Editable Editable'.$Type, 'id' => 'Chunk'.$Identify));
+			}
+			return $String;
+		}
 	}
 }
 

@@ -19,12 +19,18 @@ echo Wrap(
 	$this->Form->TextBox('Name'), 
 	'li'
 );
+echo Wrap(
+	$this->Form->Label('@URL', 'Url').
+	$this->Form->TextBox('Url'), 
+	'li'
+);
 $FormatOptions = LocalizedOptions(array('Text', 'xHtml', 'Html', 'Markdown', 'Raw'));
 echo Wrap(
 	$this->Form->Label('Format', 'Format').
 	$this->Form->DropDown('Format', $FormatOptions),
 	'li'
 );
+
 echo Wrap(
 	$this->Form->TextBox('Body', array('Multiline' => True, 'placeholder' => T('Body'))),
 	'li'
