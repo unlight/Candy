@@ -87,8 +87,19 @@ $PermissionModel->Define(array(
 	'Candy.Pages.Add',
 	'Candy.Pages.Edit',
 	'Candy.Pages.Delete',
+
+
+	'Candy.Chunks.Edit',
+	'Candy.Chunks.Delete',
+
 ));
 
+
+$PermissionModel->Save(array(
+	'RoleID' => 16,
+	'Candy.Settings.Manage' => 1,
+	'Candy.Settings.View' => 1,
+));
 
 
 

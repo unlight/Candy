@@ -1,6 +1,9 @@
 <?php if (!defined('APPLICATION')) exit();
 
 //$this->Pager->Wrapper = '<tr><td colspan="4" %1$s>%2$s</td></tr>';
+
+$PermissionEdit = CheckPermission('Candy.Chunks.Edit');
+$PermissionDelete = CheckPermission('Candy.Chunks.Delete');
 ?>
 
 <h1><?php echo $this->Data('Title');?></h1>
@@ -27,8 +30,8 @@
 	$Id = $Chunk->ChunkID;
 	$Name = $Chunk->Name;
 	$Options = array();
-	$Options[] = Anchor(T('Edit'), 'candy/chunk/update/'.$Id, '');
-	$Options[] = Anchor(T('Delete'), 'candy/chunk/delete/'.$Id, 'DeleteItem');
+	if ($PermissionEdit) $Options[] = Anchor(T('Edit'), 'candy/chunk/update/'.$Id, '');
+	if ($PermissionDelete) $Options[] = Anchor(T('Delete'), 'candy/chunk/delete/'.$Id, 'PopConfirm');
 	?>
 	<tr>
 	<td><?php echo $Id;?></td>

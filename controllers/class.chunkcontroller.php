@@ -8,7 +8,6 @@ class ChunkController extends CandyController {
 	
 	public function Initialize() {
 		parent::Initialize();
-		$this->Permission('Garden.Admin.Only'); // TODO: SET REAL PERMISSIONS
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 			$this->AddSideMenu();
 			//$this->AddCssFile('candy.css');
@@ -16,6 +15,7 @@ class ChunkController extends CandyController {
 	}
 	
 	public function Browse($Page = '') {
+		$this->Permission('Candy.Settings.View');
 		list($Offset, $Limit) = OffsetLimit($Page, 30);
 		$this->Chunks = $this->ChunkModel->Get('', $Offset, $Limit, 'DateUpdated');
 		$this->RecordCount = $this->ChunkModel->GetCount();
@@ -27,6 +27,8 @@ class ChunkController extends CandyController {
 	}
 	
 	public function Update($Reference = '', $PostBackKey = '') {
+		$this->Permission('Candy.Chunks.Edit');
+		
 		$Content = False;		
 		$Session = Gdn::Session();
 		
@@ -36,30 +38,21 @@ class ChunkController extends CandyController {
 		
 		if ($Reference != '') {
 			$Content = $this->ChunkModel->GetID($Reference);
-			if (!CandyModel::IsOwner($Content)) $this->Permission('Candy.Chunk.Edit');
 			if ($Content) {
 				$this->Form->AddHidden('ChunkID', $Content->ChunkID);
 				$this->Editing = True;
 				$this->Form->SetData($Content);
 			}
 		}
-		$this->Permission('Candy.Chunk.Add');
 		
 		$IsFormPostBack = $this->Form->AuthenticatedPostBack();
-		$AuthenticatedPostByKey = ($Session->ValidateTransientKey($PostBackKey) && $this->Form->IsPostBack());
+		$PostAuthenticatedByKey = ($Session->ValidateTransientKey($PostBackKey) && $this->Form->IsPostBack());
 		
-		
-		//echo VarDump ($IsFormPostBack || $AuthenticatedPostByKey );
-		//die;
-		
-		if ($IsFormPostBack || $AuthenticatedPostByKey) {
-			if ($AuthenticatedPostByKey) {
-				// Ajax, fill form values.
+		if ($IsFormPostBack || $PostAuthenticatedByKey) {
+			if ($PostAuthenticatedByKey) {
+				// AJAX, set form values.
 				$this->Form->SetFormValue('ChunkID', $Content->ChunkID);
 				$this->Form->SetFormValue('Body', GetPostValue('Body'));
-				//echo VarDump( $this->Form->FormValues() );
-				//echo VarDump( $this->Form->FormValues() );
-				//die;
 			}
 			$SavedID = $this->Form->Save($Content);
 			if ($SavedID) {
@@ -81,6 +74,7 @@ class ChunkController extends CandyController {
 	}
 	
 	public function Delete($Reference) {
+		$this->Permission('Candy.Chunks.Delete');
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 			Redirect('/candy/page/browse');
 		}
