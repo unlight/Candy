@@ -31,7 +31,7 @@ class CandyHooks implements Gdn_IPlugin {
 		$Request = Gdn::Request();
 		$Route = Gdn::Router()->GetRoute($Request->RequestUri());
 		if ($Route === False) {
-			$RequestArgs = array_map('strtolower', SplitString($Request->RequestUri(), '\/'));
+			$RequestArgs = SplitUpString($Request->RequestUri(), '/', 'strtolower');
 			if (array_key_exists(0, $RequestArgs)) {
 				$ApplicationFolders = $Sender->EnabledApplicationFolders();
 				$bFoundApplication = in_array($RequestArgs[0], $ApplicationFolders);

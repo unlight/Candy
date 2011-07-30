@@ -67,15 +67,13 @@ Gdn::Structure()
 	->Set($Explicit, $Drop);
 	
 // Set route
-
-if ($Version === False) {
-	Gdn::Router()->SetRoute('map', 'candy/content/map', 'Internal');
-}
+$Route = Gdn::Router()->GetRoute('map');
+if ($Route == False) Gdn::Router()->SetRoute('map', 'candy/content/map', 'Internal');
 
 $PermissionModel = Gdn::PermissionModel();
 
 $PermissionModel->Define(array(
-	'Candy.Settings.Manage',
+	//'Candy.Settings.Manage',
 	'Candy.Settings.View',
 
 	'Candy.Sections.Edit',
@@ -97,7 +95,7 @@ $PermissionModel->Define(array(
 
 $PermissionModel->Save(array(
 	'RoleID' => 16,
-	'Candy.Settings.Manage' => 1,
+	//'Candy.Settings.Manage' => 1,
 	'Candy.Settings.View' => 1,
 ));
 
