@@ -20,6 +20,8 @@ $PermissionEdit = CandyModel::IsOwner($Page, 'Candy.Pages.Edit');
 	<?php endif; ?>
 	
 	<?php if (CheckPermission('Candy.Pages.Delete')) : ?>
-		<li><?php echo Anchor(T('Delete'), 'candy/page/delete/'.$Page->PageID, 'PopConfirm'); ?></li>
+		<li><strong><?php 
+			echo Anchor(T('Delete'), 'candy/page/delete/'.$Page->PageID, 'PopConfirm'); 
+		?></strong>&#160;</li>
 	<?php endif; ?>
 </ul>
