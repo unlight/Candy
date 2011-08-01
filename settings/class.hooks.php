@@ -42,7 +42,10 @@ class CandyHooks implements Gdn_IPlugin {
 					$ControllerPath = Gdn_FileSystem::FindByMapping('controller', PATH_APPLICATIONS, $ApplicationFolders, $ControllerFileName);
 					if (!$ControllerPath || !file_exists($ControllerPath)) {
 						$SectionModel = Gdn::Factory('SectionModel');
-						$Data = $SectionModel->GetByURI($Request->RequestUri());
+						$RequestUri = $Request->RequestUri();
+						$Sender->EventArguments['RequestUri'] =& $RequestUri;
+						$Sender->FireEvent('BeforeGetSection');
+						$Data = $SectionModel->GetByURI($RequestUri);
 						if ($Data && $Data->RequestUri) $Request->WithURI($Data->RequestUri);
 					}
 				}
