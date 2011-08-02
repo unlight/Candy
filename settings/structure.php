@@ -34,6 +34,7 @@ Gdn::Structure()
 	->Column('ParentID', 'usmallint', 0)
 	->Column('Name', 'varchar(120)')
 	->Column('URI', 'varchar(50)', True, 'unique')
+	->Column('Url', 'varchar(50)', True) // backup for URI (for subdomains, etc.)
 	->Column('RequestUri', 'varchar(120)', True)
 	->Engine('InnoDB')
 	->Set($Explicit, $Drop);
@@ -67,8 +68,7 @@ Gdn::Structure()
 	->Set($Explicit, $Drop);
 	
 // Set route
-$Route = Gdn::Router()->GetRoute('map');
-if ($Route == False) Gdn::Router()->SetRoute('map', 'candy/content/map', 'Internal');
+if (!Gdn::Router()->GetRoute('map')) Gdn::Router()->SetRoute('map', 'candy/content/map', 'Internal');
 
 $PermissionModel = Gdn::PermissionModel();
 
