@@ -27,7 +27,7 @@ if (!function_exists('BuildNode')) {
 	*/
 	function BuildNode($Object, $Prefix) {
 		$Node = new StdClass();
-		$Node->TreeLeft = $Object->{$Prefix.'TreeRight'};
+		$Node->TreeLeft = $Object->{$Prefix.'TreeLeft'};
 		$Node->TreeRight = $Object->{$Prefix.'TreeRight'};
 		$Node->Depth = $Object->{$Prefix.'Depth'};
 		$Node->{$Prefix.'ID'} = $Object->{$Prefix.'ID'};
@@ -39,7 +39,10 @@ if (!function_exists('BuildNode')) {
 if (!function_exists('SectionAnchor')) {
 	function SectionAnchor($Node) {
 		$Href = GetValue('URI', $Node);
-		if (!$Href) $Href = GetValue('RequestUri', $Node);
+		if (!$Href) {
+			$Href = GetValue('RequestUri', $Node);
+			if (!$Href) GetValue('Url', $Node);
+		}
 		$Name = ($Href) ? Anchor($Node->Name, $Href) : $Node->Name;
 		return $Name;
 	}
