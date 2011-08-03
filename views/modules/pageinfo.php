@@ -4,7 +4,7 @@ $Page = GetValue('Content', $Data);
 $Title = GetValue('Title', $Data, $Page->Title);
 $TargetUrl = $this->_Sender->SelfUrl;
 // Wrapper box <div class="Box"> in Module::String()
-$PermissionEdit = CandyModel::IsOwner($Page, 'Candy.Pages.Edit');
+$PermissionEdit = IsContentOwner($Page, 'Candy.Pages.Edit');
 ?>
 
 <h4><?php echo Anchor($Title, 'content/page/'.$Page->PageID.'/'.CleanupString($Page->Title));?></h4>

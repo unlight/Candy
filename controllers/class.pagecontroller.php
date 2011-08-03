@@ -8,7 +8,6 @@ class PageController extends CandyController {
 	
 	public function Initialize() {
 		parent::Initialize();
-		$this->Permission('Garden.Admin.Only'); // TODO: SET REAL PERMISSIONS
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 			$this->AddSideMenu();
 			//$this->AddCssFile('candy.css');
@@ -64,7 +63,7 @@ class PageController extends CandyController {
 		$Content = False;
 		if ($Reference != '') {
 			$Content = $this->PageModel->GetID($Reference);
-			if (!CandyModel::IsOwner($Content, 'Candy.Pages.Edit')) $Content = False;
+			if (!IsContentOwner($Content, 'Candy.Pages.Edit')) $Content = False;
 			if ($Content) {
 				$this->Form->AddHidden('PageID', $Content->PageID);
 				$this->Form->SetData($Content);

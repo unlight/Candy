@@ -2,6 +2,22 @@
 
 Gdn::FactoryInstall('SectionModel', 'SectionModel', 
 	PATH_APPLICATIONS.'/candy/models/class.sectionmodel.php', Gdn::FactorySingleton);
+	
+if (!function_exists('ValidateUrlPath')) {
+	function ValidateUrlPath($Value, $Field = '') {
+		return ValidateRegex($Value, '/^([\/\d\w\-]+)?$/');
+	}
+}
+
+if (!function_exists('IsContentOwner')) {
+	function IsContentOwner($Object, $HasAccessPermission = False) {
+		$Session = Gdn::Session();
+		if (is_string($HasAccessPermission)) {
+			$HasAccessPermission = $Session->CheckPermission($HasAccessPermission);
+		}
+		return $HasAccessPermission || ($Session->UserID > 0 && GetValue('InsertUserID', $Object) == $Session->UserID);
+	}
+}
 
 
 if (!function_exists('BuildNode')) {

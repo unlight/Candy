@@ -6,14 +6,14 @@ class PageModel extends Gdn_Model {
 	
 	public function __construct() {
 		parent::__construct('Page');
-		//$this->AddRule('UrlString', 'function:ValidateUrlString');
+		$this->AddRule('UrlPath', 'function:ValidateUrlPath');
 	}
 	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
 		$bCreateSection = GetValue('CreateSection', $PostValues);
 		if ($bCreateSection) {
-			$this->Validation->ApplyRule('SectionURI', 'UrlString');
+			$this->Validation->ApplyRule('SectionURI', 'UrlPath');
 			$this->Validation->ApplyRule('SectionID', 'Required');
 		}
 		
@@ -47,7 +47,6 @@ class PageModel extends Gdn_Model {
 	
 	public function SetProperty($RowID, $Field, $Value) {
 		parent::SetProperty($RowID, $Field, $Value);
-		// TODO: After save.
 	}
 	
 	public function GetCount($Where = False) {

@@ -18,7 +18,7 @@ $PermissionDelete = CheckPermission('Candy.Pages.Delete');
 <tbody>
 <?php foreach ($this->Pages as $Page) {
 	$Options = array();
-	if (CandyModel::IsOwner($Page, 'Candy.Pages.Edit')) $Options[] = Anchor(T('Edit'), 'candy/page/edit/'.$Page->PageID, '');
+	if (IsContentOwner($Page, 'Candy.Pages.Edit')) $Options[] = Anchor(T('Edit'), 'candy/page/edit/'.$Page->PageID, '');
 	if ($PermissionDelete) $Options[] = Anchor(T('Delete'), 'candy/page/delete/'.$Page->PageID, '');
 	?>
 	<tr>

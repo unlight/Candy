@@ -7,6 +7,7 @@ class SectionModel extends TreeModel {
 	
 	public function __construct() {
 		parent::__construct('Section');
+		$this->AddRule('UrlPath', 'function:ValidateUrlPath');
 	}
 	
 	public function GetByReference($RowID, $Field = False) {
@@ -55,10 +56,7 @@ class SectionModel extends TreeModel {
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
 		$URI = GetValue('URI', $PostValues, Null);
-		if ($URI !== Null) $this->Validation->ApplyRule('URI', array('Required', 'UrlString'));
-		
-		// TEST
-		//if ($URI === Null) $PostValues['URI'] = CandyModel::Slug($PostValues['Name']);
+		if ($URI !== Null) $this->Validation->ApplyRule('URI', array('Required', 'UrlPath'));
 		
 		$RowID = GetValue($this->PrimaryKey, $PostValues);
 		$Insert = ($RowID === False);

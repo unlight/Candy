@@ -37,7 +37,7 @@ foreach ($this->Tree as $Node) {
     
     $Options = array();
     if ($PermissionAdd) $Options[] = Anchor(T('Add'), 'candy/section/add/'.$Node->SectionID, '');
-    if (CandyModel::IsOwner($Node, 'Candy.Sections.Edit')) $Options[] = Anchor(T('Edit'), 'candy/section/edit/'.$Node->SectionID, '');
+    if (IsContentOwner($Node, 'Candy.Sections.Edit')) $Options[] = Anchor(T('Edit'), 'candy/section/edit/'.$Node->SectionID, '');
     
     if ($Node->Depth == 0) {
         // This is root

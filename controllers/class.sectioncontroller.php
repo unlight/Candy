@@ -42,7 +42,7 @@ class SectionController extends CandyController {
 		$Section = False;
 		if ($Reference) {
 			$Section = $Model->GetID($Reference);
-			if (!CandyModel::IsOwner($Section, 'Candy.Sections.Edit')) $Section = False;
+			if (!IsContentOwner($Section, 'Candy.Sections.Edit')) $Section = False;
 			if ($Section) {
 				$this->Form->AddHidden('SectionID', $Section->SectionID);
 				$this->Form->SetData($Section);
@@ -69,7 +69,6 @@ class SectionController extends CandyController {
 		if ($this->_DeliveryType == DELIVERY_TYPE_ALL) {
 			Redirect('candy/section/tree');
 		}
-		// TODO: HANDLE AJAX DELETE NODE
 	}
 
 	public function Check() {

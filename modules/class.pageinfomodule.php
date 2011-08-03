@@ -13,7 +13,7 @@ class PageInfoModule extends Gdn_Module {
 	
 	public function CheckPermission() {
 		$Content = $this->_Sender->Data('Content');
-		if (CheckPermission('Candy.Page.Edit') || (CandyModel::IsOwner($Content) && CheckPermission('Candy.Page.Add'))) {
+		if (CheckPermission('Candy.Page.Edit') || (IsContentOwner($Content) && CheckPermission('Candy.Page.Add'))) {
 			return True;
 		}
 	}
