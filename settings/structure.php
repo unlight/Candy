@@ -3,6 +3,8 @@
 if (!isset($Drop)) $Drop = False;
 if (!isset($Explicit)) $Explicit = True;
 
+$Version = C('Candy.Version');
+
 $Database = Gdn::Database();
 $Px = $Database->DatabasePrefix;
 $SQL = $Database->SQL(); // To run queries.
@@ -11,16 +13,22 @@ $Validation = new Gdn_Validation(); // To validate permissions (if necessary).
 
 Gdn::Structure()
 	->Table('Chunk')
-	->PrimaryKey('ChunkID', 'smallint')
-	->Column('Name', 'varchar(80)', True, 'unique')
-	->Column('Title', 'varchar(250)', True)
-	->Column('Body', 'text')
+	->PrimaryKey('ChunkID', 'usmallint')
+	->Column('Name', 'varchar(80)')
+	->Column('Body', 'text', True)
 	->Column('Format', 'varchar(20)', True)
+	->Column('Url', 'varchar(100)', True)
 	->Column('InsertUserID', 'int', False)
 	->Column('DateInserted', 'datetime')
 	->Column('UpdateUserID', 'int', True)
 	->Column('DateUpdated', 'datetime', True)
-	->Column('OwnerUserID', 'int', True)
+	->Engine('MyISAM')
+	->Set($Explicit, $Drop);
+	
+Gdn::Structure()
+	->Table('Route')
+	->Column('URI', 'char(30)', False, 'primary')
+	->Column('RequestUri', 'char(120)')
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	
@@ -32,8 +40,8 @@ Gdn::Structure()
 	->Column('Depth', 'utinyint', 0)
 	->Column('ParentID', 'usmallint', 0)
 	->Column('Name', 'varchar(120)')
-	->Column('URI', 'varchar(50)', True, 'unique')
-	->Column('RequestUri', 'varchar(120)', True)
+	->Column('Url', 'varchar(50)', True) // backup for URI (for subdomains, etc.)
+	->Column('RequestUri', 'char(120)', True)
 	->Engine('InnoDB')
 	->Set($Explicit, $Drop);
 
@@ -42,7 +50,7 @@ try {
 	$HasRoot = ($SQL->GetCount('Section', array('SectionID' => 1)) > 0);
 } catch (Exception $Ex) {
 }
-if (!$HasRoot) $SQL->Insert('Section', array('SectionID' => 1, 'TreeLeft' => 1, 'TreeRight' => 2, 'Depth' => 0, 'Name' => '/'));
+if (!$HasRoot) $SQL->Insert('Section', array('SectionID' => 1, 'TreeLeft' => 1, 'TreeRight' => 2, 'Depth' => 0, 'Name' => T('Home')));
 
 Gdn::Structure()
 	->Table('Page')
@@ -52,6 +60,7 @@ Gdn::Structure()
 	->Column('Body', 'text', True)
 	->Column('Format', 'varchar(20)', True)
 	->Column('Visible', 'tinyint(1)', 0)
+	->Column('URI', 'varchar(120)', True) // copy of Route.URI
 	->Column('Tags', 'varchar(250)', True)
 	->Column('MasterView', 'varchar(30)', True)
 	->Column('View', 'varchar(30)', True)
@@ -65,3 +74,62 @@ Gdn::Structure()
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	
+// Set route
+if (!Gdn::Router()->GetRoute('map')) Gdn::Router()->SetRoute('map', 'candy/content/map', 'Internal');
+
+$PermissionModel = Gdn::PermissionModel();
+
+$PermissionModel->Define(array(
+	//'Candy.Settings.Manage',
+	'Candy.Settings.View',
+
+	'Candy.Sections.Edit',
+	'Candy.Sections.Add',
+	'Candy.Sections.Delete',
+	'Candy.Sections.Move',
+	'Candy.Sections.Swap',
+
+	'Candy.Pages.Add',
+	'Candy.Pages.Edit',
+	'Candy.Pages.Delete',
+
+
+	'Candy.Chunks.Edit',
+	'Candy.Chunks.Delete',
+
+));
+
+
+$PermissionModel->Save(array(
+	'RoleID' => 16,
+	//'Candy.Settings.Manage' => 1,
+	'Candy.Settings.View' => 1,
+));
+
+
+
+/*$PermissionModel->Define(array(
+),
+	'tinyint',
+	'Section',
+	'SectionID'
+);*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

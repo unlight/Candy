@@ -10,6 +10,6 @@ $BodyFormat = Gdn_Format::To($Content->Body, $Content->Format);
 $TextHeader = PqDocument($BodyFormat)->Find('h1')->Text();
 ?>
 
-<?php if (!$TextHeader) echo '<h1>', $Content->Title, '</h1>'; ?></h1>
+<?php if (!$TextHeader) echo '<h1>', $Content->Title, '</h1>'; ?>
 
 <div class="Body"><?php	echo $BodyFormat;?></div>

@@ -8,17 +8,45 @@ class CandyModel {
 		return $Result;
 	}
 	
-	public static function IsOwner($Object) {
-		$Session = Gdn::Session();
-		return ($Session->UserID > 0 && GetValue('InsertUserID', $Object) == $Session->UserID);
+	public static function GetRouteRequestUri($URI) {
+		$Route = self::GetRoute($URI);
+		return GetValue('RequestUri', $Route);
 	}
 	
-	public static function AvailableApplications() {
+	public static function GetRoute($URI) {
+		$Result = Gdn::SQL()
+			->Select('*')
+			->From('Route')
+			->Where('URI', $URI)
+			->Get()
+			->FirstRow();
+		return $Result;
+	}
+	
+	public static function SaveRoute($URI, $RequestUri) {
+		if (is_array($URI) || is_object($URI)) {
+			$RequestUri = GetValue('RequestUri', $URI);
+			$URI = GetValue('RequestUri', $URI);
+		}
+		$SQL = Gdn::SQL();
+		$SQL->Replace('Route', array('RequestUri' => $RequestUri), array('URI' => $URI));
+	}
+	
+/*	public static function IsOwner($Object, $HasAccessPermission = False) {
+		//if C('Debug') Deprecated(__METHOD__, 'IsContentOwner');
+		$Session = Gdn::Session();
+		if (is_string($HasAccessPermission)) {
+			$HasAccessPermission = $Session->CheckPermission($HasAccessPermission);
+		}
+		return $HasAccessPermission || ($Session->UserID > 0 && GetValue('InsertUserID', $Object) == $Session->UserID);
+	}*/
+	
+/*	public static function AvailableApplications() {
 		$Result = array();
 		$Result = Gdn::Config('EnabledApplications', array());
 		$Result = array_flip($Result);
 		return $Result;
-	}
+	}*/
 	
 	
 }

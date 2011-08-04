@@ -7,6 +7,7 @@ class SectionModel extends TreeModel {
 	
 	public function __construct() {
 		parent::__construct('Section');
+		$this->Validation->AddRule('UrlPath', 'function:ValidateUrlPath');
 	}
 	
 	public function GetByReference($RowID, $Field = False) {
@@ -15,9 +16,10 @@ class SectionModel extends TreeModel {
 		return $Result;
 	}
 	
-	public function GetByURI($Code) {
-		$Result = $this->GetWhere(array('URI' => $Code))->FirstRow();
-		return $Result;
+	public static function GetRequestUri($Code) {
+		$Result = CandyModel::GetRoute($Code);
+		if (!$Result) return False;
+		return $Result->RequestUri;
 	}
 	
 	public function GetByName($Name) {
@@ -30,13 +32,49 @@ class SectionModel extends TreeModel {
 		return $Result;
 	}
 	
+	public function Ajar($ID, $Where = False, $IncludeRoot = True) {
+		$RootNode = C('Candy.RootSectionID');
+		if (is_numeric($RootNode) && $RootNode != 1) {
+			list($LeftID, $RightID) = $this->_NodeValues($RootNode);
+			$Op = ($IncludeRoot) ? '=' : '';
+			$Where['a.TreeLeft >'.$Op] = $LeftID;
+			$Where['a.TreeRight <'.$Op] = $RightID;
+		}
+		return parent::Ajar($ID, $Where);
+	}
+	
+	public function Full($Fields = '', $Where = False, $RootID = False, $IncludeRoot = False) {
+		if (is_numeric($RootID)) {
+			list($LeftID, $RightID, $Depth, $NodeID) = $this->_NodeValues($RootID);
+			$Op = ($IncludeRoot) ? '=' : '';
+			$Where['TreeLeft >'.$Op] = $LeftID;
+			$Where['TreeRight <'.$Op] = $RightID;
+		}
+		$Result = parent::Full($Fields, $Where);
+		return $Result;
+	}
+	
+	public function CheckUniqueURI($Value = Null) {
+		if (is_null($Value)) return True;
+		if (is_array($Value)) $Value = ArrayValue('URI', $Value);
+		$Data = $this->GetRequestUri($Value);
+		if ($Data == False) return True;
+		return False;
+	}
+	
+/*	public function Validate($FormPostValues, $Insert = False) {
+		$Valid = parent::Validate($FormPostValues, $Insert);
+		if ($Valid) {
+		}
+		return False;
+	}*/
+	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
+
 		$URI = GetValue('URI', $PostValues, Null);
-		if ($URI !== Null) $this->Validation->ApplyRule('URI', array('Required', 'UrlString'));
-		
-		// TEST
-		//if ($URI === Null) $PostValues['URI'] = CandyModel::Slug($PostValues['Name']);
+		if ($URI !== Null) $this->Validation->ApplyRule('URI', 'UrlPath');
+		if (!$this->CheckUniqueURI($URI)) $this->Validation->AddValidationResult('URI', '%s: Already exists.');
 		
 		$RowID = GetValue($this->PrimaryKey, $PostValues);
 		$Insert = ($RowID === False);
@@ -47,7 +85,7 @@ class SectionModel extends TreeModel {
 		if ($Insert) $this->AddInsertFields($PostValues);
 		
 		if ($this->Validate($PostValues, $Insert) === True) {
-			$Fields = $this->Validation->ValidationFields();
+			$Fields = $this->Validation->SchemaValidationFields();
 			if ($Insert) {
 				$ParentID = GetValue('ParentID', $PostValues);
 				$RowID = parent::InsertNode($ParentID, $Fields);
@@ -55,11 +93,11 @@ class SectionModel extends TreeModel {
 			} else {
 				$this->Update($Fields, array('SectionID' => $RowID));
 			}
+			if ($this->Validation->Results() == 0) CandyModel::SaveRoute($PostValues);
 		} else {
-			return False;
+			$RowID = False;
 		}
-		
-		$RowID = (count($this->ValidationResults()) == 0) ? $RowID : False;
+
 		return $RowID;
 	}
 		

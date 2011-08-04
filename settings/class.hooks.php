@@ -3,10 +3,33 @@
 class CandyHooks implements Gdn_IPlugin {
 	
 	public function Base_GetAppSettingsMenuItems_Handler($Sender) {
-		// TEST, TEMP
 		$Menu =& $Sender->EventArguments['SideMenu'];
-		$Menu->AddLink('Add-ons', 'Pages', 'candy/page/browse', 'Garden.AdminUser.Only');
-		$Menu->AddLink('Add-ons', 'Sections', 'candy/section/tree', 'Garden.AdminUser.Only');
+		$Menu->AddLink('Add-ons', T('Pages'), 'candy/page/browse', 'Candy.Settings.View');
+		$Menu->AddLink('Add-ons', T('Sections'), 'candy/section/tree', 'Candy.Settings.View');
+		$Menu->AddLink('Add-ons', T('Chunks'), 'candy/chunk/browse', 'Candy.Settings.View');
+	}
+	
+	public function Base_Render_Before($Sender) {
+		if ($Sender->Application == 'Candy' && $Sender->DeliveryType() == DELIVERY_TYPE_ALL) {
+			$this->BreadCrumbsAssetRender($Sender);
+		}
+		$Default404 = GetValueR('Routes.Default404', $Sender);
+		if (is_array($Default404)) {
+			if (in_array($Sender->SelfUrl, $Default404) && CheckPermission('Candy.Pages.Add')) {
+				$Sender->AddModule(new CreatePageModule($Sender, 'candy'));
+			}
+		}
+	}
+
+	protected function BreadCrumbsAssetRender($Sender) {
+		$BreadCrumbsModule =& $Sender->Assets['BreadCrumbs']['BreadCrumbsModule'];
+		if ($BreadCrumbsModule) {
+			$AssetTarget = C('Candy.Modules.BreadCrumbsAssetTarget');
+			if ($AssetTarget) {
+				$Sender->AddModule($BreadCrumbsModule, $AssetTarget);
+				unset($Sender->Assets['BreadCrumbs']);
+			}
+		}
 	}
 	
 	public function Gdn_Dispatcher_BeforeDispatch_Handler($Sender) {
@@ -14,7 +37,7 @@ class CandyHooks implements Gdn_IPlugin {
 		$Request = Gdn::Request();
 		$Route = Gdn::Router()->GetRoute($Request->RequestUri());
 		if ($Route === False) {
-			$RequestArgs = array_map('strtolower', SplitString($Request->RequestUri(), '\/'));
+			$RequestArgs = SplitUpString($Request->RequestUri(), '/', 'strtolower');
 			if (array_key_exists(0, $RequestArgs)) {
 				$ApplicationFolders = $Sender->EnabledApplicationFolders();
 				$bFoundApplication = in_array($RequestArgs[0], $ApplicationFolders);
@@ -24,57 +47,49 @@ class CandyHooks implements Gdn_IPlugin {
 					$ControllerFileName = CombinePaths($PathParts);
 					$ControllerPath = Gdn_FileSystem::FindByMapping('controller', PATH_APPLICATIONS, $ApplicationFolders, $ControllerFileName);
 					if (!$ControllerPath || !file_exists($ControllerPath)) {
-						$SectionModel = Gdn::Factory('SectionModel');
-						$Data = $SectionModel->GetByURI($Request->RequestUri());
-						if ($Data && $Data->RequestUri) $Request->WithURI($Data->RequestUri);
+						$RequestUri = trim($Request->RequestUri(), '/');
+						$Sender->EventArguments['RequestUri'] =& $RequestUri;
+						$Sender->FireEvent('BeforeGetRoute');
+						$NewRequest = CandyModel::GetRouteRequestUri($RequestUri);
+						if ($NewRequest) $Request->WithURI($NewRequest);
 					}
 				}
 			}
 		}
 	}
 	
-	public function OnDisable() {
-		RemoveFromConfig('Candy.Version');
-	}
+/*	public function ContentController_ContentPage_Handler($Sender) {
+		if (!($Sender->DeliveryType() == DELIVERY_TYPE_ALL && $Sender->SyndicationMethod == SYNDICATION_NONE)) return;
+		$Head =& $Sender->Head;
+		$Content =& $Sender->EventArguments[''];
+		if ($Head) {
+			$Head->AddTag('meta', array('name' => 'robots', 'content' => 'noindex', '_sort' => 0));
+		}
+	}*/
 	
 	public function Setup() {
 		include(PATH_APPLICATIONS . '/candy/settings/structure.php');
 		$ApplicationInfo = array();
 		include(CombinePaths(array(PATH_APPLICATIONS . '/candy/settings/about.php')));
-		$Version = GetValue('Version', GetValue('Candy', $ApplicationInfo, array()), 'Undefined');
+		$Version = GetValue('Version', GetValue('Candy', $ApplicationInfo));
 		SaveToConfig('Candy.Version', $Version);
 	}
 	
-	
-	// TEST
-	
-	// TEST, TODO: REMOVE ME
-	public function PluginController_CandyChunkTest_Create($Sender) {
-		$Sender->View = $Sender->FetchViewLocation('chunk', 'test', 'candy');
-		$Sender->Render();
+	public function OnDisable() {
+		RemoveFromConfig('Candy.Version');
 	}
 	
-	
-/*    public function Base_GetAppSettingsMenuItems_Handler($Sender) {
-		$Menu =& $Sender->EventArguments['SideMenu'];
-		//$Menu->AutoLinkGroups = False;
-		$Menu->AddItem('WebCms', T('WebCms'), False, array('class' => 'Addons'));
-		$Menu->AddLink('WebCms', T('Static pages'), 'webcms/staticpage/browse', 'WebCms.Content.Edit');
-		//$Menu->AddLink('WebCms', T('News'), 'webcms/news', 'WebCms.Content.Edit');
+	// TEST
+/*	public function PluginController_CandyChunkTest_Create($Sender) {
+		$Sender->AddJsFile('applications/candy/js/jquery.inline-edit.js');
+		$Sender->AddJsFile('applications/candy/js/candy.js');
+		$Sender->AddCssFile('applications/candy/design/candy.css');
+		$Sender->View = $Sender->FetchViewLocation('chunk', 'test', 'candy');
+		$Sender->Render();
 	}*/
 	
-	
-/*	public function Base_Render_Before($Sender) {
-		$Arguments =& $Sender->EventArguments;
-		$View = GetValue(0, $Arguments, $Sender->View);
-		$ControllerName = GetValue(1, $Arguments, $Sender->ControllerName);
-		$ApplicationFolder = GetValue(2, $Arguments, $Sender->ApplicationFolder);
-		$ViewPath = $Sender->FetchViewLocation($View, $ControllerName, $ApplicationFolder, False);
-		if ($ViewPath != False) {
-			//$What = ChunkModel::SearchPhpChunksInFile($ViewPath);
-			//d($What, 307, token_name(307));
-		}
-		//d($Sender, $Arguments, $ViewPath);
-	}*/
+
 	
 }
+
+

@@ -4,17 +4,18 @@ class PageController extends CandyController {
 	
 	public $Uses = array('Form', 'PageModel');
 	public $Editing;
+	protected $AdminView = True;
 	
 	public function Initialize() {
 		parent::Initialize();
-		$this->Permission('Garden.Admin.Only'); // TODO: SET REAL PERMISSIONS
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 			$this->AddSideMenu();
-			$this->AddCssFile('candy.css');
+			//$this->AddCssFile('candy.css');
 		}
 	}
 	
 	public function Browse($Page = '') {
+		$this->Permission('Candy.Settings.View');
 		list($Offset, $Limit) = OffsetLimit($Page, 30);
 		$this->Pages = $this->PageModel->Get('', $Offset, $Limit);
 		$this->RecordCount = $this->PageModel->GetCount();
@@ -23,11 +24,6 @@ class PageController extends CandyController {
 		$this->Pager->Configure($Offset, $Limit, $this->RecordCount, $this->Url);
 		$this->Title(T('Pages'));
 		$this->Render();
-	}
-	
-	public function AddNew() {
-		$this->View = 'Edit';
-		$this->Edit();
 	}
 	
 	public function Visible($PageID) {
@@ -49,6 +45,11 @@ class PageController extends CandyController {
 		$this->Render();
 	}
 	
+	public function AddNew() {
+		$this->View = 'Edit';
+		$this->Edit();
+	}
+	
 	public function Edit($Reference = '') {
 		
 		//$this->AddJsFile('jquery.autocomplete.pack.js');
@@ -62,29 +63,37 @@ class PageController extends CandyController {
 		$Content = False;
 		if ($Reference != '') {
 			$Content = $this->PageModel->GetID($Reference);
-			if (!CandyModel::IsOwner($Content)) $this->Permission('Candy.Content.Edit');
-			$this->Form->AddHidden('PageID', $Content->PageID);
+			if (!IsContentOwner($Content, 'Candy.Pages.Edit')) $Content = False;
 			if ($Content) {
+				$this->Form->AddHidden('PageID', $Content->PageID);
 				$this->Form->SetData($Content);
 				$this->Editing = True;
 			}
 		}
-		$this->Permission('Candy.Content.Add');
+		if (!$Content) $this->Permission('Candy.Pages.Add');
 		
 		if ($this->Form->AuthenticatedPostBack()) {
 			if ($this->Form->ButtonExists('Delete')) {
 				$this->PageModel->Delete($Content->PageID);
 				$this->InformMessage(T('Page deleted'), array('Sprite' => 'SkullBones', 'CssClass' => 'Dismissable AutoDismiss'));
-			} elseif ($this->Form->Save($Content) != False) {
-				$this->InformMessage(T('Saved'), array('Sprite' => 'Check', 'CssClass' => 'Dismissable AutoDismiss'));
+			} else {
+				$SavedID = $this->Form->Save($Content);
+				if ($SavedID) {
+					$Message = LocalizedMessage('Saved. You can check it here: %s', Anchor($this->Form->GetFormValue('Title'), 'content/page/'.$SavedID));
+					$this->InformMessage($Message, array('Sprite' => 'Check', 'CssClass' => 'Dismissable'));
+				}
 			}
+		} else {
+			$URI = trim(GetIncomingValue('URI'), '/');
+			$this->Form->SetValue('URI', $URI);
 		}
-		
+		$this->SetData('Content', $Content, True);
 		$this->Title(ConcatSep(' - ', T('Page'), GetValue('Title', $Content)));
 		$this->Render();
 	}
 	
 	public function Delete($Reference) {
+		$this->Permission('Candy.Pages.Delete');
 		$this->PageModel->Delete($Reference);
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
 			Redirect('/candy/page/browse');

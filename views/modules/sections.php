@@ -13,14 +13,16 @@ $ViewingSectionID = isset($this->_Sender->SectionID) ? $this->_Sender->SectionID
 
 <?php
 $MaxDepth = -1; // TODO: MaxDepth SET TO CONFIG
-foreach ($this->Data() as $Section) {
-	if ($MaxDepth > 0 && $Section->Depth > $MaxDepth) continue;
+foreach ($this->Data('Sections') as $Section) {
+	$ViewDepth = $Section->Depth - $this->RootNodeDepth;
 
-	$CssClass = 'Depth'.$Section->Depth.($ViewingSectionID == $Section->SectionID ? ' Active' : '');
+	if ($MaxDepth > 0 && $ViewDepth > $MaxDepth) continue;
+
+	$CssClass = 'Depth'.$ViewDepth.($ViewingSectionID == $Section->SectionID ? ' Active' : '');
 	
 	echo '<li class="'.$CssClass.'">';
-	//echo Wrap(Anchor(($Section->Depth > 1 ? '↳ ' : '').Gdn_Format::Text($Section->Name), '/categories/'.rawurlencode($Category->UrlCode)), 'strong');
-    echo ($Section->Depth > 1 ? '↳ ' : '');
+	//echo Wrap(Anchor(($ViewDepth > 1 ? '↳ ' : '').Gdn_Format::Text($Section->Name), '/categories/'.rawurlencode($Category->UrlCode)), 'strong');
+    //echo ($ViewDepth > 1 ? '↳ ' : '');
     echo SectionAnchor($Section);
     //echo '<span class="Count">?</span>';
 	//echo "&#160;</li>\n";
