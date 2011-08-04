@@ -5,7 +5,7 @@ $ApplicationInfo['Candy'] = array(
 	'Version' => '0.12',
 	'Date' => 'Summer 2011',
 	'AllowEnable' => True,
-	'RequiredPlugins' => array('UsefulFunctions' => '>=3.5.112'),
+	'RequiredPlugins' => array('UsefulFunctions' => '>=3.5.113'),
 	'RequiredApplications' => array('Dashboard' => '>=2.0.18'),
 	'Author' => 'Frostbite',
 	'AuthorUrl' => 'http://www.liandri-mining.com/',

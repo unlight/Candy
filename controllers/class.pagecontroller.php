@@ -84,7 +84,7 @@ class PageController extends CandyController {
 				}
 			}
 		}
-		
+		$this->SetData('Content', $Content, True);
 		$this->Title(ConcatSep(' - ', T('Page'), GetValue('Title', $Content)));
 		$this->Render();
 	}

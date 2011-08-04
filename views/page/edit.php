@@ -1,6 +1,11 @@
-<?php if (!defined('APPLICATION')) die(); ?>
+<?php if (!defined('APPLICATION')) die(); 
 
-<h1><?php echo $this->Data('Title'); ?></h1>
+$Content = $this->Data('Content');
+?>
+
+<h1><?php echo $this->Data('Title'); 
+if ($this->Editing) echo ', Request URI: ' . 'candy/content/page/'.$Content->PageID;
+?></h1>
 
 <?php include $this->FetchViewLocation('menu', 'candy'); ?>
 
@@ -8,6 +13,7 @@
 echo $this->Form->Open(array('enctype' => 'multipart/form-data'));
 echo $this->Form->Errors(); 
 ?>
+
 
 <ul class="EditForm">
 <?php 
@@ -44,9 +50,25 @@ if (!$this->Editing) {
 }
 
 echo Wrap(
+	$this->Form->Label('Meta tag (description)', 'MetaDescription') .
+	$this->Form->TextBox('MetaDescription', array('Multiline' => True))
+, 'li', array('class' => 'MetaFields Hidden'));
+echo Wrap(
+	$this->Form->Label('Meta tag (keywords)', 'MetaKeywords') .
+	$this->Form->TextBox('MetaKeywords', array('Multiline' => False))
+, 'li', array('class' => 'MetaFields Hidden'));
+
+?>
+
+<?php
+echo Wrap(
+	Wrap(T('Meta tags?'), 'a', array('href' => '#', 'class' => 'ToggleButton MetaFields RemoveSelf')) . 
 	$this->Form->TextBox('Body', array('Multiline' => True, 'placeholder' => T('Body'))),
 	'li'
 );
+?>
+
+<?php
 $this->FireEvent('AfterInputFieldsRender'); 
 ?>
 

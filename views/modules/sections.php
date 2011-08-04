@@ -12,9 +12,8 @@ $ViewingSectionID = isset($this->_Sender->SectionID) ? $this->_Sender->SectionID
 	<ul class="PanelInfo">
 
 <?php
-
 $MaxDepth = -1; // TODO: MaxDepth SET TO CONFIG
-foreach ($this->Data() as $Section) {
+foreach ($this->Data('Sections') as $Section) {
 	$ViewDepth = $Section->Depth - $this->RootNodeDepth;
 
 	if ($MaxDepth > 0 && $ViewDepth > $MaxDepth) continue;

@@ -41,21 +41,33 @@ class ContentController extends Gdn_Controller {
 		$Page = $PageModel->GetFullID($Reference);
 		if (!$Page) throw NotFoundException();
 		$this->Page = $Page;
+
+		if ($this->Head) {
+			if ($Page->MetaDescription) $this->Head->AddTag('meta', array('name' => 'description', 'content' => $Page->MetaDescription, '_sort' => 0));
+			if ($Page->MetaKeywords) $this->Head->AddTag('meta', array('name' => 'keywords', 'content' => $Page->MetaKeywords, '_sort' => 0));
+		}		
 		
 		if ($Page->SectionID) {
 			$this->Section = BuildNode($Page, 'Section');
 			$this->SectionID = $Page->SectionID;
-			$this->SectionPath = $this->SectionModel->GetPath($Page->SectionID, C('Candy.RootSectionID'), True);
-			$SectionsModule = new SectionsModule($this);
-			$SectionsModule->SetAjarData($this->SectionPath);
-			$this->AddModule($SectionsModule);
+		
+			$this->SectionPath = $this->SectionModel->GetPath($this->Section, C('Candy.RootSectionID'), True);
+			
+			$this->SectionsModule = new SectionsModule($this);
+			// Side menu.
+			$SideMenuType = C('Candy.Pages.SideMenuType');
+			$this->EventArguments['SideMenuType'] = $SideMenuType;
+			if ($SideMenuType == 'Ajar') 
+				$this->SectionsModule->SetAjarData($this->SectionPath);
+			$this->AddModule($this->SectionsModule);
 
+			// Breadcrumbs.
 			$BreadCrumbsModule = new BreadCrumbsModule($this);
 			$BreadCrumbsModule->SetLinks($this->SectionPath);
 			$this->AddModule($BreadCrumbsModule);
 		}
 		
-		$this->AddModule('PageInfoModule');
+		$this->FireEvent('ContentPage');
 		
 		if ($Page->View) $this->View = $this->FetchViewLocation($this->View, False, False, False);
 		if (!$this->View) {
@@ -66,8 +78,7 @@ class ContentController extends Gdn_Controller {
 		$this->Title($Page->Title);
 		$this->SetData('Content', $Page, True);
 		
-		$this->FireEvent('BeforePageRender');
-		
+		$this->AddModule('PageInfoModule');
 		$this->Render();
 	}
 	

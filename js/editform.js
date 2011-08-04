@@ -1,18 +1,5 @@
 jQuery(function() {
-	//var WebRoot = gdn.definition('WebRoot');
-	//var Url = gdn.combinePaths(WebRoot, 'candy/contenttreenodename');
-	
-/*	$('#Form_ContentID').autocomplete(Url, {
-		multiple: false,
-		delay: 400
-	});*/
-/*		.result(function(dummy, data){
-			$(this).val(data[1]);
-			$("#Form_Address").val(data[2]);
-			$("#Form_Code").val(data[3]);
-			$("#Form_UserID").val(data[4]);
-		});*/
-	
+
 	if ($.fn.textpandable) {
 		$("#Form_Body").textpandable({speed:0, maxRows:35});
 	}
@@ -39,7 +26,16 @@ jQuery(function() {
 		});		
 	}
 	
-
+	$('.ToggleButton').click(function(){
+		var bRemoveSelf = $(this).hasClass('RemoveSelf');
+		var classname = $.trim($(this).attr('class').replace('ToggleButton', '')).split(' ')[0];
+		var items = $(this).parents('ul').find('.'+classname).not(this);
+		var func = (items.is(':visible')) ? 'fadeOut' : 'fadeIn';
+		if (bRemoveSelf) $(this).fadeOut('fast');
+		//console.log(bRemoveSelf, items, '"'+classname+'"', items.is(':visible'));
+		items[func]('fast');
+		return false;
+	});
 
 	
 });

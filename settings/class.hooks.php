@@ -53,6 +53,15 @@ class CandyHooks implements Gdn_IPlugin {
 		}
 	}
 	
+/*	public function ContentController_ContentPage_Handler($Sender) {
+		if (!($Sender->DeliveryType() == DELIVERY_TYPE_ALL && $Sender->SyndicationMethod == SYNDICATION_NONE)) return;
+		$Head =& $Sender->Head;
+		$Content =& $Sender->EventArguments[''];
+		if ($Head) {
+			$Head->AddTag('meta', array('name' => 'robots', 'content' => 'noindex', '_sort' => 0));
+		}
+	}*/
+	
 	public function Setup() {
 		include(PATH_APPLICATIONS . '/candy/settings/structure.php');
 		$ApplicationInfo = array();

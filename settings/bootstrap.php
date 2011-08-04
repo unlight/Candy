@@ -38,12 +38,12 @@ if (!function_exists('BuildNode')) {
 
 if (!function_exists('SectionAnchor')) {
 	function SectionAnchor($Node) {
-		$Href = GetValue('URI', $Node);
-		if (!$Href) {
-			$Href = GetValue('RequestUri', $Node);
-			if (!$Href) GetValue('Url', $Node);
+		$Url = GetValue('Url', $Node);
+		if (!$Url) {
+			$Url = GetValue('URI', $Node);
+			if (!$Url) GetValue('RequestUri', $Node);
 		}
-		$Name = ($Href) ? Anchor($Node->Name, $Href) : $Node->Name;
+		$Name = ($Url) ? Anchor($Node->Name, $Url) : $Node->Name;
 		return $Name;
 	}
 }
@@ -64,31 +64,6 @@ if (!function_exists('Chunk')) {
 		}
 	}
 }
-
-/*
-
-if (!function_exists('GetUrlCode')) {
-	function GetUrlCode($UrlCode, $Text) {
-		$Result = Null;
-		if (!$UrlCode) $UrlCode = GoogleTranslate($Text, array('To' => 'en'));
-		$UrlCode = SplitString($UrlCode, '\/', array('CleanupString'));
-		if (count($UrlCode) > 0) $Result = implode('/', array_filter($UrlCode));
-		return $Result;
-	}
-}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

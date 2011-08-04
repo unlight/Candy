@@ -5,6 +5,7 @@
 <?php 
 echo $this->Form->Open();
 echo $this->Form->Errors(); 
+
 ?>
 
 <ul>
@@ -22,7 +23,11 @@ echo Wrap(
 echo Wrap(
 	$this->Form->Label('Request URI', 'RequestUri').
 	$this->Form->TextBox('RequestUri'), 'li');
-	
+
+echo Wrap(
+	$this->Form->Label('Url', 'Url').
+	$this->Form->TextBox('Url'), 'li');
+
 ?>
 
 	

@@ -53,19 +53,23 @@ body.Candy div.Box ul.PanelInfo li > a {
 
 /* ======================================================================================= Misc */
 
-
-.TableRows > div {
+/*.Cell {
 	display:table-cell;
+	vertical-align: top;	
 }
-.TableRows > div + div {
+.Cell.Hidden {
+	display: none;
+}
+
+div.Cell + div.Cell {
 	padding-left: 6px;
 }
-.Popup .TableRows div {
+.Popup div.Cell {
 	display:block;
 }
-.Popup .TableRows > div + div {
+.Popup div.Cell + div.Cell {
 	padding-left: 0px;
-}
+}*/
 
 td.Options a {
 	text-transform:lowercase;
