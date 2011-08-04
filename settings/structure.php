@@ -27,8 +27,8 @@ Gdn::Structure()
 	
 Gdn::Structure()
 	->Table('Route')
-	->Column('URI', 'char(30)', True, 'primary')
-	->Column('RequestUri', 'char(120)', True)
+	->Column('URI', 'char(30)', False, 'primary')
+	->Column('RequestUri', 'char(120)')
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	
