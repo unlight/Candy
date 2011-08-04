@@ -16,9 +16,10 @@ class SectionModel extends TreeModel {
 		return $Result;
 	}
 	
-	public function GetByURI($Code) {
-		$Result = $this->GetWhere(array('URI' => $Code))->FirstRow();
-		return $Result;
+	public static function GetRequestUri($Code) {
+		$Result = CandyModel::GetRoute($Code);
+		if (!$Result) return False;
+		return $Result->RequestUri;
 	}
 	
 	public function GetByName($Name) {
@@ -56,7 +57,7 @@ class SectionModel extends TreeModel {
 	public function CheckUniqueURI($Value = Null) {
 		if (is_null($Value)) return True;
 		if (is_array($Value)) $Value = ArrayValue('URI', $Value);
-		$Data = $this->GetByURI($Value);
+		$Data = $this->GetRequestUri($Value);
 		if ($Data == False) return True;
 		return False;
 	}
@@ -70,8 +71,9 @@ class SectionModel extends TreeModel {
 	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
+
 		$URI = GetValue('URI', $PostValues, Null);
-		if ($URI !== Null) $this->Validation->ApplyRule('URI', array('Required', 'UrlPath'));
+		if ($URI !== Null) $this->Validation->ApplyRule('URI', 'UrlPath');
 		if (!$this->CheckUniqueURI($URI)) $this->Validation->AddValidationResult('URI', '%s: Already exists.');
 		
 		$RowID = GetValue($this->PrimaryKey, $PostValues);
@@ -83,7 +85,7 @@ class SectionModel extends TreeModel {
 		if ($Insert) $this->AddInsertFields($PostValues);
 		
 		if ($this->Validate($PostValues, $Insert) === True) {
-			$Fields = $this->Validation->ValidationFields();
+			$Fields = $this->Validation->SchemaValidationFields();
 			if ($Insert) {
 				$ParentID = GetValue('ParentID', $PostValues);
 				$RowID = parent::InsertNode($ParentID, $Fields);
@@ -91,11 +93,11 @@ class SectionModel extends TreeModel {
 			} else {
 				$this->Update($Fields, array('SectionID' => $RowID));
 			}
+			if ($this->Validation->Results() == 0) CandyModel::SaveRoute($PostValues);
 		} else {
-			return False;
+			$RowID = False;
 		}
-		
-		$RowID = (count($this->ValidationResults()) == 0) ? $RowID : False;
+
 		return $RowID;
 	}
 		

@@ -5,28 +5,20 @@ jQuery(function() {
 	}
 	var LastTimeStamp = 0;	
 	var SlugHandler = function() {
-		var Enabled = $('#Form_CreateSection')[0].checked;
+		var Enabled = true;
+		//var Enabled = $('#Form_CreateSection')[0].checked;
 		if (Enabled) {
 			var Text = $('#Form_Title').val();
 			$.post(gdn.url('candy/slug'), {Text:Text}, function(text){
-				$("#Form_SectionURI").val(text);
+				$("#Form_URI").val(text);
 			});
 		}
+		return false;
 	}
+
+	$("#GetSlugButton").live('click', SlugHandler);
 	
-	if ($('#Form_Title').val() == '') {
-		$("#Form_Title").blur(SlugHandler);
-		$("#Form_Title").bind('keypress', function(e){
-			
-			var ElapsedTime = e.timeStamp - LastTimeStamp; // in miliseconds
-			if (ElapsedTime > 1000) {
-				LastTimeStamp = e.timeStamp;
-				SlugHandler();
-			}
-		});		
-	}
-	
-	$('.ToggleButton').click(function(){
+	$('.ToggleButton').live('click', function(){
 		var bRemoveSelf = $(this).hasClass('RemoveSelf');
 		var classname = $.trim($(this).attr('class').replace('ToggleButton', '')).split(' ')[0];
 		var items = $(this).parents('ul').find('.'+classname).not(this);

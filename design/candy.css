@@ -155,6 +155,10 @@ ul.EditForm li label {
 	overflow: hidden;
 }
 
+ul.EditForm li > a + a {
+	margin-left: 10px;
+}
+
 
 /* =========================================================== Inline Edit - Plugin for jQuery */
 .editable-wrap input[type=text],

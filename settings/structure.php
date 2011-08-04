@@ -26,6 +26,13 @@ Gdn::Structure()
 	->Set($Explicit, $Drop);
 	
 Gdn::Structure()
+	->Table('Route')
+	->Column('URI', 'char(30)', True, 'primary')
+	->Column('RequestUri', 'char(120)', True)
+	->Engine('MyISAM')
+	->Set($Explicit, $Drop);
+	
+Gdn::Structure()
 	->Table('Section')
 	->PrimaryKey('SectionID', 'usmallint')
 	->Column('TreeLeft', 'usmallint', 0)
@@ -33,9 +40,8 @@ Gdn::Structure()
 	->Column('Depth', 'utinyint', 0)
 	->Column('ParentID', 'usmallint', 0)
 	->Column('Name', 'varchar(120)')
-	->Column('URI', 'varchar(50)', True, 'unique')
 	->Column('Url', 'varchar(50)', True) // backup for URI (for subdomains, etc.)
-	->Column('RequestUri', 'varchar(120)', True)
+	->Column('RequestUri', 'char(120)', True)
 	->Engine('InnoDB')
 	->Set($Explicit, $Drop);
 
@@ -44,7 +50,7 @@ try {
 	$HasRoot = ($SQL->GetCount('Section', array('SectionID' => 1)) > 0);
 } catch (Exception $Ex) {
 }
-if (!$HasRoot) $SQL->Insert('Section', array('SectionID' => 1, 'TreeLeft' => 1, 'TreeRight' => 2, 'Depth' => 0, 'Name' => '/'));
+if (!$HasRoot) $SQL->Insert('Section', array('SectionID' => 1, 'TreeLeft' => 1, 'TreeRight' => 2, 'Depth' => 0, 'Name' => T('Home')));
 
 Gdn::Structure()
 	->Table('Page')
@@ -54,6 +60,7 @@ Gdn::Structure()
 	->Column('Body', 'text', True)
 	->Column('Format', 'varchar(20)', True)
 	->Column('Visible', 'tinyint(1)', 0)
+	->Column('URI', 'varchar(120)', True) // copy of Route.URI
 	->Column('Tags', 'varchar(250)', True)
 	->Column('MasterView', 'varchar(30)', True)
 	->Column('View', 'varchar(30)', True)

@@ -25,3 +25,6 @@ $Definition['Meta tags?'] = 'Мета тэги?';
 $Definition['Meta tag (description)'] = 'Мета (description)';
 $Definition['Meta tag (keywords)'] = 'Мета (keywords)';
 $Definition['ValidateUrlPath'] = '%s: Недопустимый формат, значение должно содержать только символы [a-z0-9].';
+$Definition["The page you're looking for doesn't exist (yet), do you want to <a href=\"%s\">create one</a>?"] 
+= 'Страница не существует (пока), хотите <a href="%s">создать</a>?';
+$Definition['Slug from title?'] = 'Четкий УРЛ?';

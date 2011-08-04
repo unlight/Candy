@@ -42,12 +42,13 @@ if (!$this->Editing) {
 		$this->Form->CheckBox('CreateSection'), 
 		'li'
 	);
-	echo Wrap(
-		$this->Form->Label('Section URI', 'SectionURI').
-		$this->Form->TextBox('SectionURI'), 
-		'li'
-	);
 }
+
+echo Wrap(
+	$this->Form->Label('URI', 'URI').
+	$this->Form->TextBox('URI'), 
+	'li'
+);
 
 echo Wrap(
 	$this->Form->Label('Meta tag (description)', 'MetaDescription') .
@@ -62,7 +63,8 @@ echo Wrap(
 
 <?php
 echo Wrap(
-	Wrap(T('Meta tags?'), 'a', array('href' => '#', 'class' => 'ToggleButton MetaFields RemoveSelf')) . 
+	Wrap(T('Meta tags?'), 'a', array('href' => '#', 'class' => 'ToggleButton MetaFields')) . 
+	Wrap(T('Slug from title?'), 'a', array('href' => '#', 'class' => '', 'id' => 'GetSlugButton')) . 
 	$this->Form->TextBox('Body', array('Multiline' => True, 'placeholder' => T('Body'))),
 	'li'
 );

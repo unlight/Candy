@@ -13,6 +13,12 @@ class CandyHooks implements Gdn_IPlugin {
 		if ($Sender->Application == 'Candy' && $Sender->DeliveryType() == DELIVERY_TYPE_ALL) {
 			$this->BreadCrumbsAssetRender($Sender);
 		}
+		$Default404 = GetValueR('Routes.Default404', $Sender);
+		if (is_array($Default404)) {
+			if (in_array($Sender->SelfUrl, $Default404) && CheckPermission('Candy.Pages.Add')) {
+				$Sender->AddModule(new CreatePageModule($Sender, 'candy'));
+			}
+		}
 	}
 
 	protected function BreadCrumbsAssetRender($Sender) {
@@ -41,12 +47,11 @@ class CandyHooks implements Gdn_IPlugin {
 					$ControllerFileName = CombinePaths($PathParts);
 					$ControllerPath = Gdn_FileSystem::FindByMapping('controller', PATH_APPLICATIONS, $ApplicationFolders, $ControllerFileName);
 					if (!$ControllerPath || !file_exists($ControllerPath)) {
-						$SectionModel = Gdn::Factory('SectionModel');
-						$RequestUri = $Request->RequestUri();
+						$RequestUri = trim($Request->RequestUri(), '/');
 						$Sender->EventArguments['RequestUri'] =& $RequestUri;
-						$Sender->FireEvent('BeforeGetSection');
-						$Data = $SectionModel->GetByURI($RequestUri);
-						if ($Data && $Data->RequestUri) $Request->WithURI($Data->RequestUri);
+						$Sender->FireEvent('BeforeGetRoute');
+						$NewRequest = CandyModel::GetRouteRequestUri($RequestUri);
+						if ($NewRequest) $Request->WithURI($NewRequest);
 					}
 				}
 			}

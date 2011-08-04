@@ -83,6 +83,9 @@ class PageController extends CandyController {
 					$this->InformMessage($Message, array('Sprite' => 'Check', 'CssClass' => 'Dismissable'));
 				}
 			}
+		} else {
+			$URI = trim(GetIncomingValue('URI'), '/');
+			$this->Form->SetValue('URI', $URI);
 		}
 		$this->SetData('Content', $Content, True);
 		$this->Title(ConcatSep(' - ', T('Page'), GetValue('Title', $Content)));

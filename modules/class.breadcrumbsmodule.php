@@ -24,7 +24,9 @@ class BreadCrumbsModule extends MenuModule {
 			$Node = (object)$Node;
 			$Attributes = '';
 			if ($RootNodeID == $Node->SectionID) $Attributes['_HomeLink'] = True;
-			$this->AddLink($Node->Name, $Node->Name, $Node->URI, False, $Attributes);
+			$Url = $Node->Url;
+			if (!$Url) $Url = $Node->RequestUri;
+			$this->AddLink($Node->Name, $Node->Name, $Url, False, $Attributes);
 		}
 	}
 

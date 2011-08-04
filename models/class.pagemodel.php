@@ -11,23 +11,24 @@ class PageModel extends Gdn_Model {
 	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
+		$URI = GetValue('URI', $PostValues, Null);
 		$bCreateSection = GetValue('CreateSection', $PostValues);
+		$RowID = GetValue('PageID', $PostValues);
+		$Insert = ($RowID === False);
 		if ($bCreateSection) {
 			$SectionModel = Gdn::Factory('SectionModel');
-			$SectionURI = GetValue('SectionURI', $PostValues, Null);
-			$this->Validation->ApplyRule('SectionURI', 'UrlPath');
+			$this->Validation->ApplyRule('URI', 'UrlPath');
 			$this->Validation->ApplyRule('SectionID', 'Required');
-			if (!$SectionModel->CheckUniqueURI($SectionURI)) {
-				$this->Validation->AddValidationResult('Section URI', '%s: Already exists.');
+			if ($Insert && $URI && CandyModel::GetRoute($URI)) {
+				$this->Validation->AddValidationResult('URI', '%s: Already exists.');
 			}
 		}
 		
-		$RowID = GetValue('PageID', $PostValues);
-		$Insert = ($RowID === False);
 		$this->EventArguments['PostValues'] =& $PostValues;
 		$this->FireEvent('BeforeSave');
 		$RowID = parent::Save($PostValues);
 		if ($RowID) {
+			if ($URI) CandyModel::SaveRoute($URI, 'content/page/'.$RowID);
 			if ($bCreateSection) $this->CreateSection($RowID, $PostValues);
 		}
 
@@ -38,7 +39,7 @@ class PageModel extends Gdn_Model {
 		$SectionModel = Gdn::Factory('SectionModel');
 		$NodeFields = array(
 			'Name' => $PostValues['Title'],
-			'URI' => GetValue('SectionURI', $PostValues, Null),
+			'Url' => GetValue('URI', $PostValues, Null),
 			'RequestUri' => 'content/page/'.$RowID
 		);
 		$ParentSectionID = GetValue('SectionID', $PostValues);
@@ -83,7 +84,6 @@ class PageModel extends Gdn_Model {
 					->Select('s.Depth as SectionDepth')
 					->Select('s.ParentID as SectionParentID')
 					->Select('s.Name as SectionName')
-					->Select('s.URI as SectionURI')
 					->Select('s.RequestUri as SectionRequestUri');
 			}
 		}
