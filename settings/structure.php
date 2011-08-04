@@ -41,6 +41,7 @@ Gdn::Structure()
 	->Column('ParentID', 'usmallint', 0)
 	->Column('Name', 'varchar(120)')
 	->Column('Url', 'varchar(50)', True) // backup for URI (for subdomains, etc.)
+	->Column('URI', 'varchar(30)')
 	->Column('RequestUri', 'char(120)', True)
 	->Engine('InnoDB')
 	->Set($Explicit, $Drop);
@@ -60,7 +61,7 @@ Gdn::Structure()
 	->Column('Body', 'text', True)
 	->Column('Format', 'varchar(20)', True)
 	->Column('Visible', 'tinyint(1)', 0)
-	->Column('URI', 'varchar(120)', True) // copy of Route.URI
+	->Column('URI', 'varchar(30)', True) // copy of Route.URI
 	->Column('Tags', 'varchar(250)', True)
 	->Column('MasterView', 'varchar(30)', True)
 	->Column('View', 'varchar(30)', True)
