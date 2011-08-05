@@ -41,7 +41,7 @@ Gdn::Structure()
 	->Column('ParentID', 'usmallint', 0)
 	->Column('Name', 'varchar(120)')
 	->Column('Url', 'varchar(50)', True) // backup for URI (for subdomains, etc.)
-	->Column('URI', 'varchar(30)')
+	->Column('URI', 'varchar(30)', True)
 	->Column('RequestUri', 'char(120)', True)
 	->Engine('InnoDB')
 	->Set($Explicit, $Drop);
