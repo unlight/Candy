@@ -72,6 +72,7 @@ Gdn::Structure()
 	->Column('DateUpdated', 'datetime', True)
 	->Column('MetaDescription', 'varchar(500)', True)
 	->Column('MetaKeywords', 'varchar(250)', True)
+	->Column('MetaRobots', 'varchar(150)', True)
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	
