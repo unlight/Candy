@@ -1,6 +1,7 @@
 jQuery(function() {
 	
 	var LibraryRoot = gdn.combinePaths(gdn.definition('WebRoot'), 'js/library');
+	var None = 'undefined';
 	
 	if (typeof($.fn.livequery) != 'function') $.getScript(gdn.combinePaths(LibraryRoot, 'jquery.livequery.js'));
 	if (typeof($.fn.popup) != 'function') {
@@ -64,7 +65,7 @@ jQuery(function() {
 					type: "GET",
 					url: Url,
 					beforeSend: function(jqxhr, settings) {
-						gdn.informMessage('Loading...', {Sprite: 'Download'});
+						if (typeof(gdn.informMessage) != None) gdn.informMessage('Loading...', {Sprite: 'Download'});
 						$('div.InformWrapper.Dismissable a.Close').click();
 					},
 					dataType: 'json',
