@@ -45,7 +45,11 @@ class ContentController extends Gdn_Controller {
 		if ($this->Head) {
 			if ($Page->MetaDescription) $this->Head->AddTag('meta', array('name' => 'description', 'content' => $Page->MetaDescription, '_sort' => 0));
 			if ($Page->MetaKeywords) $this->Head->AddTag('meta', array('name' => 'keywords', 'content' => $Page->MetaKeywords, '_sort' => 0));
-		}		
+			
+			// TODO: CONFIG
+			//$this->Head->AddTag('meta', array('http-equiv' => 'content-language', 'content' => Gdn::Locale()->Current()));
+			$this->Head->AddTag('meta', array('http-equiv' => 'content-type', 'content' => 'text/html; charset=utf-8'));
+		}
 		
 		if ($Page->SectionID) {
 			$this->Section = BuildNode($Page, 'Section');
