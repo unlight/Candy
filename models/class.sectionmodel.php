@@ -71,13 +71,13 @@ class SectionModel extends TreeModel {
 	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
-
-		$URI = GetValue('URI', $PostValues, Null);
-		if ($URI !== Null) $this->Validation->ApplyRule('URI', 'UrlPath');
-		if (!$this->CheckUniqueURI($URI)) $this->Validation->AddValidationResult('URI', '%s: Already exists.');
 		
 		$RowID = GetValue($this->PrimaryKey, $PostValues);
 		$Insert = ($RowID === False);
+		$URI = GetValue('URI', $PostValues, Null);
+		if ($URI !== Null) $this->Validation->ApplyRule('URI', 'UrlPath');
+		if ($Insert && !$this->CheckUniqueURI($URI)) $this->Validation->AddValidationResult('URI', '%s: Already exists.');
+		
 		if (GetValue('ParentID', $PostValues, Null) === Null) SetValue('ParentID', $PostValues, 1);
 		
 		$this->DefineSchema();
