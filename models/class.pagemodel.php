@@ -69,7 +69,8 @@ class PageModel extends Gdn_Model {
 		}
 		if (GetValue('Browse', $Where, True, True) && !$bCountQuery) {
 			$this->SQL
-				->Select('p.PageID, p.Title, p.Visible, p.SectionID')
+				//->Select('p.Title as Name') // Hmmm... Not sure
+				->Select('p.PageID, p.Title, p.Visible, p.SectionID, p.URI')
 				->Select('p.DateInserted, p.DateInserted, p.UpdateUserID, p.DateUpdated');
 		}
 		if ($Join = GetValue('WithSection', $Where, False, True)) {
