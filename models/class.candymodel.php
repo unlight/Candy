@@ -32,6 +32,11 @@ class CandyModel {
 		$SQL->Replace('Route', array('RequestUri' => $RequestUri), array('URI' => $URI));
 	}
 	
+	public static function DeleteRoute($URI) {
+		$SQL = Gdn::SQL();
+		$SQL->Delete('Route', array('URI' => $URI));
+	}
+	
 /*	public static function IsOwner($Object, $HasAccessPermission = False) {
 		//if C('Debug') Deprecated(__METHOD__, 'IsContentOwner');
 		$Session = Gdn::Session();
