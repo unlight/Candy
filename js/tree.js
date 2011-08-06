@@ -5,11 +5,11 @@ $(function(){
         }
     });
 	
-	var $divs = $('.Tree ul li > div');
-	$divs.mouseenter(function(e){
+	var divs = '.Tree ul li > div';
+	$(divs).live('mouseenter', function(e){
 		var $row = $(e.target);
 		if (!$row.is('div')) $row = $row.parents('div').first();
-		$divs.removeClass('Hovered');
+		$(divs).removeClass('Hovered');
 		$row.addClass('Hovered');
 	});
 
