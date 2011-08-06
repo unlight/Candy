@@ -28,7 +28,7 @@ class PageModel extends Gdn_Model {
 		$this->FireEvent('BeforeSave');
 		$RowID = parent::Save($PostValues);
 		if ($RowID) {
-			if ($URI) CandyModel::SaveRoute($URI, 'content/page/'.$RowID);
+			if ($URI) CandyModel::SaveRoute($URI, 'candy/content/page/'.$RowID);
 			if ($bCreateSection) $this->CreateSection($RowID, $PostValues);
 		}
 
@@ -40,7 +40,7 @@ class PageModel extends Gdn_Model {
 		$NodeFields = array(
 			'Name' => $PostValues['Title'],
 			'Url' => GetValue('URI', $PostValues, Null),
-			'RequestUri' => 'content/page/'.$RowID
+			'RequestUri' => 'candy/content/page/'.$RowID
 		);
 		$ParentSectionID = GetValue('SectionID', $PostValues);
 		$PageSectionID = $SectionModel->InsertNode($ParentSectionID, $NodeFields);
