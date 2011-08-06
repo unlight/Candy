@@ -8,6 +8,13 @@ class CandyModel {
 		return $Result;
 	}
 	
+	public static function GetRoutes() {
+		$Result = Gdn::SQL()
+			->From('Route')
+			->Get();
+		return $Result;
+	}
+	
 	public static function GetRouteRequestUri($URI) {
 		$Route = self::GetRoute($URI);
 		return GetValue('RequestUri', $Route);

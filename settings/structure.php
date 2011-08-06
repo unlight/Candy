@@ -97,6 +97,8 @@ $PermissionModel->Define(array(
 
 	'Candy.Chunks.Edit',
 	'Candy.Chunks.Delete',
+	
+	'Candy.Routes.Manage',
 
 ));
 
