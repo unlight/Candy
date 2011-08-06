@@ -10,13 +10,18 @@ class CandyHooks implements Gdn_IPlugin {
 	}
 	
 	public function Base_Render_Before($Sender) {
-		if ($Sender->Application == 'Candy' && $Sender->DeliveryType() == DELIVERY_TYPE_ALL) {
-			$this->BreadCrumbsAssetRender($Sender);
-		}
-		$Default404 = GetValueR('Routes.Default404', $Sender);
-		if (is_array($Default404)) {
-			if (in_array($Sender->SelfUrl, $Default404) && CheckPermission('Candy.Pages.Add')) {
-				$Sender->AddModule(new CreatePageModule($Sender, 'candy'));
+		$DeliveryTypeAll = ($Sender->DeliveryType() == DELIVERY_TYPE_ALL);
+		if ($Sender->Application == 'Candy' && $DeliveryTypeAll) $this->BreadCrumbsAssetRender($Sender);
+		if ($DeliveryTypeAll) {
+			$Default404 = GetValueR('Routes.Default404', $Sender);
+			if (is_array($Default404)) {
+				if (in_array($Sender->SelfUrl, $Default404) && CheckPermission('Candy.Pages.Add')) {
+					$Sender->AddModule(new CreatePageModule($Sender, 'candy'));
+				}
+			}
+			if ($DeliveryTypeAll && Gdn::Session()->CheckPermission('Candy.Chunks.Edit')) {
+				$Sender->AddJsFile('jquery.inline-edit.js', 'candy');
+				$Sender->AddJsFile('candy.js', 'candy');
 			}
 		}
 	}
