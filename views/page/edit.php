@@ -58,6 +58,10 @@ echo Wrap(
 	$this->Form->Label('Meta tag (keywords)', 'MetaKeywords') .
 	$this->Form->TextBox('MetaKeywords', array('Multiline' => False))
 , 'li', array('class' => 'MetaFields Hidden'));
+echo Wrap(
+	$this->Form->Label('Meta tag (robots)', 'MetaRobots') .
+	$this->Form->TextBox('MetaRobots', array('Multiline' => False))
+, 'li', array('class' => 'MetaFields Hidden'));
 
 ?>
 

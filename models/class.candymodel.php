@@ -8,6 +8,13 @@ class CandyModel {
 		return $Result;
 	}
 	
+	public static function GetRoutes() {
+		$Result = Gdn::SQL()
+			->From('Route')
+			->Get();
+		return $Result;
+	}
+	
 	public static function GetRouteRequestUri($URI) {
 		$Route = self::GetRoute($URI);
 		return GetValue('RequestUri', $Route);
@@ -30,6 +37,14 @@ class CandyModel {
 		}
 		$SQL = Gdn::SQL();
 		$SQL->Replace('Route', array('RequestUri' => $RequestUri), array('URI' => $URI));
+	}
+	
+	public static function DeleteRoute($URI, $RequestUri = Null) {
+		$SQL = Gdn::SQL();
+		$Where = array();
+		if ($RequestUri !== Null) $Where['RequestUri'] = $RequestUri;
+		else $Where = array('URI' => $URI);
+		$SQL->Delete('Route', $Where);
 	}
 	
 /*	public static function IsOwner($Object, $HasAccessPermission = False) {

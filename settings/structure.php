@@ -27,7 +27,7 @@ Gdn::Structure()
 	
 Gdn::Structure()
 	->Table('Route')
-	->Column('URI', 'char(30)', False, 'primary')
+	->Column('URI', 'char(80)', False, 'primary')
 	->Column('RequestUri', 'char(120)')
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
@@ -41,6 +41,7 @@ Gdn::Structure()
 	->Column('ParentID', 'usmallint', 0)
 	->Column('Name', 'varchar(120)')
 	->Column('Url', 'varchar(50)', True) // backup for URI (for subdomains, etc.)
+	->Column('URI', 'varchar(80)', True)
 	->Column('RequestUri', 'char(120)', True)
 	->Engine('InnoDB')
 	->Set($Explicit, $Drop);
@@ -58,9 +59,9 @@ Gdn::Structure()
 	->Column('SectionID', 'usmallint', True, 'index')
 	->Column('Title', 'varchar(200)')
 	->Column('Body', 'text', True)
-	->Column('Format', 'varchar(20)', True)
+	->Column('Format', 'varchar(20)', 'xHtml')
 	->Column('Visible', 'tinyint(1)', 0)
-	->Column('URI', 'varchar(120)', True) // copy of Route.URI
+	->Column('URI', 'varchar(80)', True) // copy of Route.URI
 	->Column('Tags', 'varchar(250)', True)
 	->Column('MasterView', 'varchar(30)', True)
 	->Column('View', 'varchar(30)', True)
@@ -71,6 +72,7 @@ Gdn::Structure()
 	->Column('DateUpdated', 'datetime', True)
 	->Column('MetaDescription', 'varchar(500)', True)
 	->Column('MetaKeywords', 'varchar(250)', True)
+	->Column('MetaRobots', 'varchar(150)', True)
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	
@@ -96,6 +98,8 @@ $PermissionModel->Define(array(
 
 	'Candy.Chunks.Edit',
 	'Candy.Chunks.Delete',
+	
+	'Candy.Routes.Manage',
 
 ));
 
