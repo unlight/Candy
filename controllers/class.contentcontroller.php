@@ -71,9 +71,9 @@ class ContentController extends Gdn_Controller {
 			$this->AddModule($this->SectionsModule);
 
 			// Breadcrumbs.
-			$BreadCrumbsModule = new BreadCrumbsModule($this);
-			$BreadCrumbsModule->SetLinks($this->SectionPath);
-			$this->AddModule($BreadCrumbsModule);
+			$this->BreadCrumbsModule = new BreadCrumbsModule($this);
+			$this->BreadCrumbsModule->SetLinks($this->SectionPath);
+			$this->AddModule($this->BreadCrumbsModule);
 		}
 
 		$this->FireEvent('ContentPage');
