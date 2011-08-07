@@ -29,7 +29,7 @@ class SectionsModule extends Gdn_Module {
 	
 	public function SetAjarData($SectionPath = False) {
 		$SectionModel = Gdn::Factory('SectionModel');
-		if ($SectionPath === False) $SectionPath = GetValueR($this->_Sender, 'SectionID');
+		if ($SectionPath === False) $SectionPath = GetValueR('SectionID', $this->_Sender);
 		elseif (is_object($SectionPath) && $SectionPath instanceof StdClass) {
 			$SectionPath = $SectionPath->SectionID;
 		}
