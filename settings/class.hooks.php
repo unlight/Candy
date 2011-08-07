@@ -22,6 +22,7 @@ class CandyHooks implements Gdn_IPlugin {
 			if ($DeliveryTypeAll && Gdn::Session()->CheckPermission('Candy.Chunks.Edit')) {
 				$Sender->AddJsFile('jquery.inline-edit.js', 'candy');
 				$Sender->AddJsFile('candy.js', 'candy');
+				//$Sender->AddCssFile('candy.css', 'candy');
 			}
 		}
 	}
