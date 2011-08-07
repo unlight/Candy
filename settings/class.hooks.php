@@ -41,19 +41,19 @@ class CandyHooks implements Gdn_IPlugin {
 	public function Gdn_Dispatcher_BeforeDispatch_Handler($Sender) {
 		if (!C('Candy.Version')) return;
 		$Request = Gdn::Request();
-		$Route = Gdn::Router()->GetRoute($Request->RequestUri());
+		$RequestUri = $Request->RequestUri();
+		$Route = Gdn::Router()->GetRoute($RequestUri);
 		if ($Route === False) {
-			$RequestArgs = SplitUpString($Request->RequestUri(), '/', 'strtolower');
+			$RequestArgs = SplitUpString($RequestUri, '/', 'strtolower');
 			if (array_key_exists(0, $RequestArgs)) {
 				$ApplicationFolders = $Sender->EnabledApplicationFolders();
 				$bFoundApplication = in_array($RequestArgs[0], $ApplicationFolders);
 				if ($bFoundApplication === False) {
-					$PathParts = array('controllers');
-					$PathParts[] = 'class.'.$RequestArgs[0].'controller.php';
+					$PathParts = array('controllers', 'class.'.$RequestArgs[0].'controller.php');
 					$ControllerFileName = CombinePaths($PathParts);
 					$ControllerPath = Gdn_FileSystem::FindByMapping('controller', PATH_APPLICATIONS, $ApplicationFolders, $ControllerFileName);
 					if (!$ControllerPath || !file_exists($ControllerPath)) {
-						$RequestUri = trim($Request->RequestUri(), '/');
+						//$RequestUri = trim($Request->RequestUri(), '/');
 						$Sender->EventArguments['RequestUri'] =& $RequestUri;
 						$Sender->FireEvent('BeforeGetRoute');
 						$NewRequest = CandyModel::GetRouteRequestUri($RequestUri);
