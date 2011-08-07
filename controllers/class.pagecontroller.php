@@ -17,7 +17,7 @@ class PageController extends CandyController {
 	public function Browse($Page = '') {
 		$this->Permission('Candy.Settings.View');
 		list($Offset, $Limit) = OffsetLimit($Page, 30);
-		$this->Pages = $this->PageModel->Get('', $Offset, $Limit);
+		$this->Pages = $this->PageModel->Get(array('WithSection' => False), $Offset, $Limit, 'p.DateUpdated');
 		$this->RecordCount = $this->PageModel->GetCount();
 		$this->Url = '/candy/page/browse/%s';
 		$this->Pager = new PagerModule($this);
@@ -85,7 +85,7 @@ class PageController extends CandyController {
 			}
 		} else {
 			$URI = trim(GetIncomingValue('URI'), '/');
-			$this->Form->SetValue('URI', $URI);
+			if ($URI) $this->Form->SetValue('URI', $URI);
 		}
 		$this->SetData('Content', $Content, True);
 		$this->Title(ConcatSep(' - ', T('Page'), GetValue('Title', $Content)));

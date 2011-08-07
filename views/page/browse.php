@@ -8,6 +8,7 @@ $PermissionDelete = CheckPermission('Candy.Pages.Delete');
 
 <?php include $this->FetchViewLocation('menu', 'candy'); ?>
 
+<?php echo $this->Pager->ToString('less'); ?>
 <table class="AltRows" style="width:100%">
 <!--<tr>
 <thead>
@@ -23,9 +24,12 @@ $PermissionDelete = CheckPermission('Candy.Pages.Delete');
 	?>
 	<tr>
 	<td><?php echo Anchor($Page->Title, 'content/page/'.$Page->PageID);?></td>
+	<td><?php echo Gdn_Format::Date($Page->DateUpdated); ?></td>
 	<td><?php echo $Page->Visible ? 'o' : 'x';?></td>
 	<td class="Options"><?php echo implode('', $Options);?></td>
 	</tr>
 	<?php } ?>
 </tbody>
 </table>
+	
+<?php echo $this->Pager->ToString('more'); ?>
