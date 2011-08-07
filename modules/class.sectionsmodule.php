@@ -3,6 +3,12 @@
 class SectionsModule extends Gdn_Module {
 	
 	public $RootNodeDepth = 0;
+	public $View = '';
+	
+	public function FetchViewLocation($View = '', $ApplicationFolder = '') {
+		if ($this->View != '') $View = $this->View;
+		return parent::FetchViewLocation($View, $ApplicationFolder);
+	}
 	
 	public function __construct($Sender = '') {
 		parent::__construct($Sender);
@@ -17,17 +23,17 @@ class SectionsModule extends Gdn_Module {
 	public function GetDirectChildsData($Section) {
 		$SectionModel = Gdn::Factory('SectionModel');
 		$Childs = $SectionModel->GetChildrens('*', $Section, array('DirectDescendants' => True));
-		$this->SetData('Sections', $Childs);
+		$this->SetData('Items', $Childs);
 		//$this->RootNodeDepth = GetValue('Depth', $Childs->FirstRow());
 	}
 	
 	public function SetAjarData($SectionPath = False) {
 		$SectionModel = Gdn::Factory('SectionModel');
-		if ($SectionPath === False) $SectionPath = GetValueR($this->_Sender, 'SectionID');
+		if ($SectionPath === False) $SectionPath = GetValueR('SectionID', $this->_Sender);
 		elseif (is_object($SectionPath) && $SectionPath instanceof StdClass) {
 			$SectionPath = $SectionPath->SectionID;
 		}
-		if ($SectionPath) $this->SetData('Sections', $SectionModel->Ajar($SectionPath, '', False));
+		if ($SectionPath) $this->SetData('Items', $SectionModel->Ajar($SectionPath, '', False));
 	}
 
 
@@ -37,7 +43,7 @@ class SectionsModule extends Gdn_Module {
 
 	public function ToString() {
 		$String = '';
-		$Sections = $this->Data('Sections');
+		$Sections = $this->Data('Items');
 		if ($Sections) $String = parent::ToString();
 		return $String;
 	}

@@ -28,7 +28,7 @@ class PageModel extends Gdn_Model {
 		$this->FireEvent('BeforeSave');
 		$RowID = parent::Save($PostValues);
 		if ($RowID) {
-			if ($URI) CandyModel::SaveRoute($URI, 'content/page/'.$RowID);
+			if ($URI) CandyModel::SaveRoute($URI, 'candy/content/page/'.$RowID);
 			if ($bCreateSection) $this->CreateSection($RowID, $PostValues);
 		}
 
@@ -40,7 +40,7 @@ class PageModel extends Gdn_Model {
 		$NodeFields = array(
 			'Name' => $PostValues['Title'],
 			'Url' => GetValue('URI', $PostValues, Null),
-			'RequestUri' => 'content/page/'.$RowID
+			'RequestUri' => 'candy/content/page/'.$RowID
 		);
 		$ParentSectionID = GetValue('SectionID', $PostValues);
 		$PageSectionID = $SectionModel->InsertNode($ParentSectionID, $NodeFields);
@@ -69,7 +69,8 @@ class PageModel extends Gdn_Model {
 		}
 		if (GetValue('Browse', $Where, True, True) && !$bCountQuery) {
 			$this->SQL
-				->Select('p.PageID, p.Title, p.Visible, p.SectionID')
+				//->Select('p.Title as Name') // Hmmm... Not sure
+				->Select('p.PageID, p.Title, p.Visible, p.SectionID, p.URI')
 				->Select('p.DateInserted, p.DateInserted, p.UpdateUserID, p.DateUpdated');
 		}
 		if ($Join = GetValue('WithSection', $Where, False, True)) {

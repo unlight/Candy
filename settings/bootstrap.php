@@ -52,13 +52,14 @@ if (!function_exists('SectionAnchor')) {
 
 if (!function_exists('Chunk')) {
 	function Chunk($Identify, $Type = 'Textarea') {
-		static $ChunkModel;
-		if (is_null($ChunkModel)) $ChunkModel = new ChunkModel();
+		static $ChunkModel; if (is_null($ChunkModel)) $ChunkModel = new ChunkModel();
+		static $PermissionChunksEdit; if (is_null($PermissionChunksEdit)) $PermissionChunksEdit = CheckPermission('Candy.Chunks.Edit');
 		$Data = $ChunkModel->GetID($Identify);
-		if ($Data) {
+		if ($Data != False) {
 			$String = Gdn_Format::To($Data->Body, $Data->Format);
 			if ($Type) {
-				$String = Wrap($String, 'div', array('class' => 'Editable Editable'.$Type, 'id' => 'Chunk'.$Identify));
+				$Class = ($PermissionChunksEdit) ? ('Editable Editable'.$Type) : '';
+				$String = Wrap($String, 'div', array('class' => $Class, 'id' => 'Chunk'.$Data->ChunkID));
 			}
 			return $String;
 		}
