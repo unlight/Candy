@@ -65,7 +65,7 @@ jQuery(function() {
 					type: "GET",
 					url: Url,
 					beforeSend: function(jqxhr, settings) {
-						if (typeof(gdn.informMessage) != None) gdn.informMessage('Loading...', {Sprite: 'Download'});
+						if (typeof(gdn.informMessage) != None) gdn.informMessage('Loading...');
 						$('div.InformWrapper.Dismissable a.Close').click();
 					},
 					dataType: 'json',
