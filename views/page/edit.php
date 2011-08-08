@@ -51,6 +51,10 @@ echo Wrap(
 );
 
 echo Wrap(
+	$this->Form->Label('MetaTitle', 'MetaTitle') .
+	$this->Form->TextBox('MetaTitle')
+, 'li', array('class' => 'MetaFields Hidden'));
+echo Wrap(
 	$this->Form->Label('Meta tag (description)', 'MetaDescription') .
 	$this->Form->TextBox('MetaDescription', array('Multiline' => True))
 , 'li', array('class' => 'MetaFields Hidden'));
