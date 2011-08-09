@@ -1,6 +1,5 @@
 <?php if (!defined('APPLICATION')) exit(); 
 
-
 $Options = array();
 if (CheckPermission('Candy.Settings.View')) {
 	$Options[] = Anchor(T('Sections'), 'candy/section/tree', 'Button SmallButton');
@@ -9,8 +8,8 @@ if (CheckPermission('Candy.Settings.View')) {
 	$Options[] = Anchor(T('Routes'), 'candy/routes', 'Button SmallButton');
 }
 if (CheckPermission('Candy.Pages.Add')) $Options[] = Anchor(T('Add page'), 'candy/page/addnew', 'Button SmallButton');
-$Options[] = Anchor(T('Chunks'), 'candy/chunk/browse', 'Button SmallButton');
-$Options[] = Anchor(T('Add chunk'), 'candy/chunk/update', 'Button SmallButton');
+if (CheckPermission('Candy.Settings.View')) $Options[] = Anchor(T('Chunks'), 'candy/chunk/browse', 'Button SmallButton');
+if (CheckPermission('Candy.Chunks.Edit')) $Options[] = Anchor(T('Add chunk'), 'candy/chunk/update', 'Button SmallButton');
 
 ?>
 
