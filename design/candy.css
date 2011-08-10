@@ -143,17 +143,24 @@ body.Candy input#Form_Title {
 	width:100%;
 }
 
-/*ul.EditForm li label + input.InputBox {
-	font-size: 95%;
-}*/
-
 ul.EditForm li label {
 	display: block;
 	float: left;
-	width: 150px;
+	/*width: 150px;*/
+	width: 15%;
+	min-width: 150px;
 	white-space: nowrap;
 	overflow: hidden;
 }
+
+ul.EditForm li label + input.InputBox {
+	min-width: 250px;
+	width: 82%;
+}
+
+/*ul.EditForm #Form_MetaDescription {
+	width: 82%;
+}*/
 
 ul.EditForm li > a + a {
 	margin-left: 10px;
