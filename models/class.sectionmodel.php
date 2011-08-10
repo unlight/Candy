@@ -78,7 +78,7 @@ class SectionModel extends TreeModel {
 		if ($URI !== Null) $this->Validation->ApplyRule('URI', 'UrlPath');
 		if ($Insert && !$this->CheckUniqueURI($URI)) $this->Validation->AddValidationResult('URI', '%s: Already exists.');
 		
-		if (GetValue('ParentID', $PostValues, Null) === Null) SetValue('ParentID', $PostValues, 1);
+		if (GetValue('ParentID', $PostValues) === Null) SetValue('ParentID', $PostValues, 1);
 		
 		$this->DefineSchema();
 		$this->AddUpdateFields($PostValues);
