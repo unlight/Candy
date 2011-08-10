@@ -71,15 +71,15 @@ div.Cell + div.Cell {
 	padding-left: 0px;
 }*/
 
-td.Options a {
+body.Candy td.Options a {
 	text-transform:lowercase;
 }
 
-td.Options a:not(:last-child):after {
+body.Candy td.Options a:not(:last-child):after {
 	content: ",";
 }
 
-td.Options a + a {
+body.Candy td.Options a + a {
 	margin-left: 4px;
 }
 
@@ -123,7 +123,7 @@ ol.Tree ul ul ul ul ul ul { list-style-type: circle; }
 
 /* ====================================================================== Static page */
 
-form ul li label + input[type="checkbox"] {
+form ul.EditForm li label + input[type="checkbox"] {
     vertical-align: middle;
 	min-height: 19px;
 }
