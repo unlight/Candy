@@ -46,6 +46,7 @@ class ContentController extends Gdn_Controller {
 			if ($Page->MetaDescription) $this->Head->AddTag('meta', array('name' => 'description', 'content' => $Page->MetaDescription, '_sort' => 0));
 			if ($Page->MetaKeywords) $this->Head->AddTag('meta', array('name' => 'keywords', 'content' => $Page->MetaKeywords, '_sort' => 0));
 			if ($Page->MetaRobots) $this->Head->AddTag('meta', array('name' => 'robots', 'content' => $Page->MetaKeywords, '_sort' => 0));
+			if ($Page->MetaTitle) $this->Head->Title($Page->MetaTitle);
 			
 			// TODO: $this->FireEvent('ContentRender'); $this->FireEvent('ContentPage');		
 			// All 

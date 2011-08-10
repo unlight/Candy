@@ -34,11 +34,11 @@ class SectionController extends CandyController {
 		$this->Edit(0, $ParentID);
 	}
 	
-	public function Edit($Reference = 0, $ParentID = 1) {
+	public function Edit($Reference = 0, $ParentID = '') {
 		$Session = Gdn::Session();
 		$Model = new SectionModel();
 		$this->Form->SetModel($Model);
-		$this->Form->AddHidden('ParentID', $ParentID);
+		if ($ParentID) $this->Form->AddHidden('ParentID', $ParentID);
 		$Section = False;
 		if ($Reference) {
 			$Section = $Model->GetID($Reference);

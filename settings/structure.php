@@ -74,6 +74,7 @@ Gdn::Structure()
 	->Column('MetaDescription', 'varchar(500)', True)
 	->Column('MetaKeywords', 'varchar(250)', True)
 	->Column('MetaRobots', 'varchar(150)', True)
+	->Column('MetaTitle', 'varchar(255)', True)
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	
