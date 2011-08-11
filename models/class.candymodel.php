@@ -30,10 +30,10 @@ class CandyModel {
 		return $Result;
 	}
 	
-	public static function SaveRoute($URI, $RequestUri) {
+	public static function SaveRoute($URI, $RequestUri = Null) {
 		if (is_array($URI) || is_object($URI)) {
 			$RequestUri = GetValue('RequestUri', $URI);
-			$URI = GetValue('RequestUri', $URI);
+			$URI = GetValue('URI', $URI);
 		}
 		$SQL = Gdn::SQL();
 		$SQL->Replace('Route', array('RequestUri' => $RequestUri), array('URI' => $URI));

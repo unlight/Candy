@@ -93,7 +93,7 @@ class SectionModel extends TreeModel {
 			} else {
 				$this->Update($Fields, array('SectionID' => $RowID));
 			}
-			if ($this->Validation->Results() == 0) CandyModel::SaveRoute($PostValues);
+			if (count($this->Validation->Results()) == 0) CandyModel::SaveRoute($PostValues);
 		} else {
 			$RowID = False;
 		}
