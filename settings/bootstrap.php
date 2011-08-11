@@ -57,8 +57,8 @@ if (!function_exists('Chunk')) {
 		$Data = $ChunkModel->GetID($Identify);
 		if ($Data != False) {
 			$String = Gdn_Format::To($Data->Body, $Data->Format);
-			$Type = ArrayValue('type', $Options, 'Textarea');
-			$Class = ArrayValue('class', $Options, '');
+			$Type = ArrayValueI('type', $Options, 'Textarea');
+			$Class = ArrayValueI('class', $Options, '');
 			if ($Type) {
 				if ($PermissionChunksEdit) $Class .= ' Editable Editable'.$Type;
 				$String = Wrap($String, 'div', array('class' => trim($Class), 'id' => 'Chunk'.$Data->ChunkID));

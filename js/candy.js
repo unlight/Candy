@@ -59,7 +59,7 @@ jQuery(function() {
 				var element = eventarguments.element;
 				var id = element[0].id.substr(5);
 				var Url = gdn.url("/candy/chunk/update/"+ id + "/" + gdn.definition('TransientKey') + '?DeliveryType=DATA');
-				//var val = $(element).text();
+
 				$.ajax({
 					async: false,
 					type: "GET",
@@ -70,8 +70,7 @@ jQuery(function() {
 					},
 					dataType: 'json',
 					success: function(data) {
-						var content = data.Content;
-						eventarguments.val = content.Body;
+						eventarguments.val = data.Content.Body;
 						return false;
 					}
 				});
@@ -82,7 +81,8 @@ jQuery(function() {
 			},
 			error: function() {
 				var arguments = arguments[0];
-				var XMLHttpRequest = arguments[0], textStatus = arguments[1];
+				var XMLHttpRequest = arguments[0];
+				var textStatus = arguments[1];
 				$('.Popup, .Overlay').remove(); // Remove any old popups
 				var Message = $.PopupErrorMessage(XMLHttpRequest, textStatus);
 				$.popup({}, Message);
@@ -94,6 +94,7 @@ jQuery(function() {
 			var id = Element.id.substr(5);
 			var o = $.extend({ }, Settings);
 			if ($(Element).is('.EditableTextarea')) $.extend(o, {type: 'textarea', classname: 'TextBox'});
+			else if ($(Element).is('.EditableText')) $.extend(o, {type: 'text', classname: 'InputBox'});
 			o.url = gdn.url('/candy/chunk/update/' + id + '/' + gdn.definition('TransientKey') + '?DeliveryType=BOOL&DeliveryMethod=JSON');
 			$(Element).inlineEdit(o);
 			//console.log(o, id, Element);
