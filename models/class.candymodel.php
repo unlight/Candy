@@ -35,8 +35,10 @@ class CandyModel {
 			$RequestUri = GetValue('RequestUri', $URI);
 			$URI = GetValue('URI', $URI);
 		}
-		$SQL = Gdn::SQL();
-		$SQL->Replace('Route', array('RequestUri' => $RequestUri), array('URI' => $URI));
+		if ($URI !== Null) {
+			$SQL = Gdn::SQL();
+			$SQL->Replace('Route', array('RequestUri' => $RequestUri), array('URI' => $URI));
+		}
 	}
 	
 	public static function DeleteRoute($URI, $RequestUri = Null) {
