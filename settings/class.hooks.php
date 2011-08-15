@@ -2,6 +2,15 @@
 
 class CandyHooks implements Gdn_IPlugin {
 	
+/*	public function ContentController_ContentPage_Handler($Sender) {
+		if (!($Sender->DeliveryType() == DELIVERY_TYPE_ALL && $Sender->SyndicationMethod == SYNDICATION_NONE)) return;
+		$Head =& $Sender->Head;
+		$Content =& $Sender->EventArguments[''];
+		if ($Head) {
+			$Head->AddTag('meta', array('name' => 'robots', 'content' => 'noindex', '_sort' => 0));
+		}
+	}*/
+	
 	public function Base_GetAppSettingsMenuItems_Handler($Sender) {
 		$Menu =& $Sender->EventArguments['SideMenu'];
 		$Menu->AddLink('Add-ons', T('Pages'), 'candy/page/browse', 'Candy.Settings.View');
@@ -19,7 +28,7 @@ class CandyHooks implements Gdn_IPlugin {
 					$Sender->AddModule(new CreatePageModule($Sender, 'candy'));
 				}
 			}
-			if ($DeliveryTypeAll && Gdn::Session()->CheckPermission('Candy.Chunks.Edit')) {
+			if (Gdn::Session()->CheckPermission('Candy.Chunks.Edit')) {
 				$Sender->AddJsFile('jquery.inline-edit.js', 'candy');
 				$Sender->AddJsFile('candy.js', 'candy');
 				$Sender->AddCssFile('candy.css', 'candy');
@@ -64,15 +73,6 @@ class CandyHooks implements Gdn_IPlugin {
 		}
 	}
 	
-/*	public function ContentController_ContentPage_Handler($Sender) {
-		if (!($Sender->DeliveryType() == DELIVERY_TYPE_ALL && $Sender->SyndicationMethod == SYNDICATION_NONE)) return;
-		$Head =& $Sender->Head;
-		$Content =& $Sender->EventArguments[''];
-		if ($Head) {
-			$Head->AddTag('meta', array('name' => 'robots', 'content' => 'noindex', '_sort' => 0));
-		}
-	}*/
-	
 	public function Setup() {
 		include(PATH_APPLICATIONS . '/candy/settings/structure.php');
 		$ApplicationInfo = array();
@@ -84,16 +84,6 @@ class CandyHooks implements Gdn_IPlugin {
 	public function OnDisable() {
 		RemoveFromConfig('Candy.Version');
 	}
-	
-	// TEST
-/*	public function PluginController_CandyChunkTest_Create($Sender) {
-		$Sender->AddJsFile('applications/candy/js/jquery.inline-edit.js');
-		$Sender->AddJsFile('applications/candy/js/candy.js');
-		$Sender->AddCssFile('applications/candy/design/candy.css');
-		$Sender->View = $Sender->FetchViewLocation('chunk', 'test', 'candy');
-		$Sender->Render();
-	}*/
-	
 
 	
 }
