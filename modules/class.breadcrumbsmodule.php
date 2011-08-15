@@ -5,8 +5,8 @@ class BreadCrumbsModule extends MenuModule {
 	protected $bCrumbsWrapped;
 	protected $bAutoWrapCrumbs;
 	
-	public function __construct($Sender = '') {
-		parent::__construct($Sender);
+	public function __construct($Sender = '', $ApplicationFolder = False) {
+		parent::__construct($Sender, $ApplicationFolder);
 		$this->HtmlId = 'BreadCrumbs';
 	}
 	

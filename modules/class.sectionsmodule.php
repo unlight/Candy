@@ -10,8 +10,8 @@ class SectionsModule extends Gdn_Module {
 		return parent::FetchViewLocation($View, $ApplicationFolder);
 	}
 	
-	public function __construct($Sender = '') {
-		parent::__construct($Sender);
+	public function __construct($Sender = '', $ApplicationFolder = False) {
+		parent::__construct($Sender, $ApplicationFolder);
 		$RootNodeID = C('Candy.RootSectionID');
 		if ($RootNodeID) {
 			$SectionModel = Gdn::Factory('SectionModel');
