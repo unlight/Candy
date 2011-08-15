@@ -61,6 +61,7 @@ class ContentController extends Gdn_Controller {
 			$this->Section = BuildNode($Page, 'Section');
 			$this->SectionID = $Page->SectionID;
 		
+			// TODO: MERGE WITH CANDYHOOKS::ADDMODULES
 			$this->SectionPath = $this->SectionModel->GetPath($this->Section, C('Candy.RootSectionID'), True);
 			
 			$this->SectionsModule = new SectionsModule($this);

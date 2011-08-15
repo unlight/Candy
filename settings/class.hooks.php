@@ -11,6 +11,28 @@ class CandyHooks implements Gdn_IPlugin {
 		}
 	}*/
 	
+	
+	public static function AddModules($Controller, $Section) {
+		$SectionModel = Gdn::Factory('SectionModel');
+		$Controller->SectionPath = $SectionModel->GetPath($Section, C('Candy.RootSectionID'), True);
+		$Controller->SectionsModule = new SectionsModule($Controller, 'candy');
+		// Side menu.
+		$SideMenuType = C('Candy.Pages.SideMenuType');
+		$Controller->EventArguments['SideMenuType'] = $SideMenuType;
+		if ($SideMenuType == 'Ajar') $Controller->SectionsModule->SetAjarData($Controller->SectionPath);
+		$Controller->AddModule($Controller->SectionsModule);
+		// Breadcrumbs.
+		$Controller->BreadCrumbsModule = new BreadCrumbsModule($Controller, 'candy');
+		$Controller->BreadCrumbsModule->SetLinks($Controller->SectionPath);
+		$Controller->AddModule($Controller->BreadCrumbsModule);
+		
+		$Controller->SectionID = GetValue('SectionID', $Section, $Section);
+		
+		$Controller->EventArguments['Section'] = $Section;
+		$Controller->FireEvent('CandyModules');
+
+	}
+		
 	public function Base_GetAppSettingsMenuItems_Handler($Sender) {
 		$Menu =& $Sender->EventArguments['SideMenu'];
 		$Menu->AddLink('Add-ons', T('Pages'), 'candy/page/browse', 'Candy.Settings.View');
