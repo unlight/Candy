@@ -8,11 +8,13 @@ $this->FireEvent('BeforeBodyFormat');
 $BodyFormat = Gdn_Format::To($Content->Body, $Content->Format);
 
 $TextHeader = '';
-$Header = PqDocument($BodyFormat)->Find('h1');
+$Doc = PqDocument($BodyFormat);
+$Header = $Doc->Find('h1');
 if (count($Header) == 0) $TextHeader = Gdn_Format::Text($Content->Title);
 elseif (count($Header) == 1) {
 	$TextHeader = $Header->Text();
 	$Header->Remove();
+	$BodyFormat = $Doc->Html();
 }
 
 ?>
