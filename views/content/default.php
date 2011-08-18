@@ -7,9 +7,21 @@ $this->EventArguments['Body'] =& $Content->Body;
 $this->FireEvent('BeforeBodyFormat');
 $BodyFormat = Gdn_Format::To($Content->Body, $Content->Format);
 
-$TextHeader = PqDocument($BodyFormat)->Find('h1')->Text();
+$TextHeader = '';
+$Header = PqDocument($BodyFormat)->Find('h1');
+if (count($Header) == 0) $TextHeader = Gdn_Format::Text($Content->Title);
+elseif (count($Header) == 1) {
+	$TextHeader = $Header->Text();
+	$Header->Remove();
+}
+
 ?>
 
-<?php if (!$TextHeader) echo '<h1>', $Content->Title, '</h1>'; ?>
+<?php 
+if ($TextHeader) {
+	echo '<h1>', $TextHeader, '</h1>';
+	$this->FireEvent('AfterRenderHeadline');
+}
+?>
 
 <div class="Body"><?php	echo $BodyFormat;?></div>
