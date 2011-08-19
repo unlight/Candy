@@ -89,6 +89,23 @@ class ContentController extends Gdn_Controller {
 		$this->Title($Page->Title);
 		$this->SetData('Content', $Page, True);
 		
+		// TODO: MERGE WITH ?
+		$this->EventArguments['Format'] =& $Page->Format;
+		$this->EventArguments['Body'] =& $Page->Body;
+		$this->FireEvent('BeforeBodyFormat');
+		$this->ContentBodyHtml = Gdn_Format::To($Page->Body, $Page->Format);
+		
+		$Doc = PqDocument($this->ContentBodyHtml);
+		$Header = $Doc->Find('h1');
+		$CountH1 = count($Header);
+		if ($CountH1 == 0) $this->SetData('Headline', Gdn_Format::Text($Page->Title));
+		elseif ($CountH1 == 1) {
+			$this->SetData('Headline', $Header->Text());
+			$Header->Remove();
+			$this->ContentBodyHtml = $Doc->Html();
+		}
+		// 
+		
 		$this->AddModule('PageInfoModule');
 		$this->Render();
 	}
