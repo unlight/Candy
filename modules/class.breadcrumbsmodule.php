@@ -4,10 +4,13 @@ class BreadCrumbsModule extends MenuModule {
 	
 	protected $bCrumbsWrapped;
 	protected $bAutoWrapCrumbs;
+	protected $Controller;
 	
 	public function __construct($Sender = '', $ApplicationFolder = False) {
 		parent::__construct($Sender, $ApplicationFolder);
 		$this->HtmlId = 'BreadCrumbs';
+		//if (is_object($Sender)) $this->Controller =& $Sender;
+		//else $this->Controller = GetValueR('EventArguments.Controller', Gdn::Dispatcher());
 	}
 	
 	public function AssetTarget() {
@@ -45,7 +48,9 @@ class BreadCrumbsModule extends MenuModule {
 			$GroupFirstItem = array($Home => $FirstItem);
 		}
 		if ($Last != False) {
-			$Text = $this->_Sender->Data('Title');
+			$Text = Gdn::Controller()->Data('Title');
+			//$this->Controller
+			//$Text = $this->_Sender->Data('Title');
 			$Item = array(0 => array('Text' => $Text, 'Url' => '/'));
 			$GroupLastItem = array($Text => $Item);
 		}
