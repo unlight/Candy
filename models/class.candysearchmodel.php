@@ -62,7 +62,7 @@ class CandySearchModel extends Gdn_Model {
 			->Select('0 as UserID')
 			//->Select('Null as Name')
 			//->Select('Null as Photo')
-			->Where('Visible', 1, False, False)
+			//->Where('Visible', 1, False, False)
 			->From('Page');
 		// Get and unset SQL
 		$Result = $this->SQL->GetSelect();

@@ -4,7 +4,6 @@ if (!isset($Drop)) $Drop = False;
 if (!isset($Explicit)) $Explicit = True;
 
 $Version = C('Candy.Version');
-
 $Database = Gdn::Database();
 $Px = $Database->DatabasePrefix;
 $SQL = $Database->SQL(); // To run queries.
@@ -46,10 +45,10 @@ Gdn::Structure()
 	->Engine('InnoDB')
 	->Set($Explicit, $Drop);
 
-$HasRoot = False;
 try {
 	$HasRoot = ($SQL->GetCount('Section', array('SectionID' => 1)) > 0);
 } catch (Exception $Ex) {
+	$HasRoot = False;
 }
 if (!$HasRoot) $SQL->Insert('Section', array('SectionID' => 1, 'TreeLeft' => 1, 'TreeRight' => 2, 'Depth' => 0, 'Name' => T('Home')));
 
