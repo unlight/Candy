@@ -11,6 +11,10 @@ class CandyHooks implements Gdn_IPlugin {
 		}
 	}*/
 	
+	public function SearchModel_Search_Handler($Sender) {
+		$SearchModel = new CandySearchModel();
+		$SearchModel->Search($Sender);
+	}
 	
 	public static function AddModules($Controller, $Section) {
 		$SectionModel = Gdn::Factory('SectionModel');
