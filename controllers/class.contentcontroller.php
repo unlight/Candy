@@ -66,6 +66,7 @@ class ContentController extends Gdn_Controller {
 			
 			$this->SectionsModule = new SectionsModule($this);
 			// Side menu.
+			// TODO: FIX CONFIG
 			$SideMenuType = C('Candy.Pages.SideMenuType');
 			$this->EventArguments['SideMenuType'] = $SideMenuType;
 			if ($SideMenuType == 'Ajar') 

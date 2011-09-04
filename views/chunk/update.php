@@ -25,6 +25,8 @@ echo Wrap(
 	'li'
 );
 $FormatOptions = LocalizedOptions(array('Text', 'xHtml', 'Html', 'Markdown', 'Raw'));
+$this->EventArguments['FormatOptions'] =& $FormatOptions;
+$this->FireEvent('FormatOptions');
 echo Wrap(
 	$this->Form->Label('Format', 'Format').
 	$this->Form->DropDown('Format', $FormatOptions),
