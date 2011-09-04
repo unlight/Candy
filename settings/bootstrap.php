@@ -37,13 +37,13 @@ if (!function_exists('BuildNode')) {
 }
 
 if (!function_exists('SectionAnchor')) {
-	function SectionAnchor($Node) {
+	function SectionAnchor($Node, $Attributes = Null) {
 		$Url = GetValue('Url', $Node);
 		if (!$Url) {
 			$Url = GetValue('URI', $Node);
 			if (!$Url) GetValue('RequestUri', $Node);
 		}
-		$Name = ($Url) ? Anchor($Node->Name, $Url) : $Node->Name;
+		$Name = ($Url) ? Anchor($Node->Name, $Url, '', $Attributes) : $Node->Name;
 		return $Name;
 	}
 }
