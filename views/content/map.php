@@ -29,7 +29,7 @@ foreach ($this->Tree as $Node) {
 	$ItemAttribute = array('id' => 'Tree_'.$Node->SectionID);
 	
 	echo "\n<li".Attribute($ItemAttribute).'>';
-	echo SectionAnchor($Node, array('WithDomain' => True));
+	echo SectionAnchor($Node, array('WithDomain' => True, 'NoFollowExternal' => True));
 }
 echo str_repeat("</li></ul>", $Node->Depth - $FirstDepth) . '</li>';	
 ?>
