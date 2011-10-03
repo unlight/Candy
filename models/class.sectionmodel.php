@@ -6,7 +6,8 @@ class SectionModel extends TreeModel {
 	public $PrimaryKey = 'SectionID';
 	
 	public function __construct() {
-		parent::__construct('Section');
+		$Name = C('Candy.Sections.Table', 'Section');
+		parent::__construct($Name);
 		$this->Validation->AddRule('UrlPath', 'function:ValidateUrlPath');
 	}
 	
