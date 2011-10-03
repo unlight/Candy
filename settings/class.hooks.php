@@ -10,7 +10,7 @@ class CandyHooks implements Gdn_IPlugin {
 			$Head->AddTag('meta', array('name' => 'robots', 'content' => 'noindex', '_sort' => 0));
 		}
 	}*/
-	
+
 	public function SearchModel_Search_Handler($Sender) {
 		$SearchModel = new CandySearchModel();
 		$SearchModel->Search($Sender);
@@ -63,12 +63,15 @@ class CandyHooks implements Gdn_IPlugin {
 	}
 
 	protected function BreadCrumbsAssetRender($Sender) {
-		$BreadCrumbsModule =& $Sender->Assets['BreadCrumbs']['BreadCrumbsModule'];
-		if ($BreadCrumbsModule) {
-			$AssetTarget = C('Candy.Modules.BreadCrumbsAssetTarget');
-			if ($AssetTarget) {
-				$Sender->AddModule($BreadCrumbsModule, $AssetTarget);
-				unset($Sender->Assets['BreadCrumbs']);
+		if (isset($Sender->Assets['BreadCrumbs']['BreadCrumbsModule'])) {
+			$BreadCrumbsModule =& $Sender->Assets['BreadCrumbs']['BreadCrumbsModule'];
+			if ($BreadCrumbsModule) {
+				$AssetTarget = C('Candy.Modules.BreadCrumbsAssetTarget');
+				if ($AssetTarget) {
+					//$BreadCrumbsModule->bCustomAssetTarget = True;
+					$Sender->AddModule($BreadCrumbsModule, $AssetTarget);
+					unset($Sender->Assets['BreadCrumbs']);
+				}
 			}
 		}
 	}

@@ -3,6 +3,18 @@
 Gdn::FactoryInstall('SectionModel', 'SectionModel', 
 	PATH_APPLICATIONS.'/candy/models/class.sectionmodel.php', Gdn::FactorySingleton);
 	
+if (!function_exists('SetMetaTags')) {
+	function SetMetaTags($Page, $Controller = Null) {
+		if (!$Controller) $Controller = Gdn::Controller();
+		if ($Page->MetaDescription) $Controller->Head->AddTag('meta', array('name' => 'description', 'content' => $Page->MetaDescription, '_sort' => 0));
+		if ($Page->MetaKeywords) $Controller->Head->AddTag('meta', array('name' => 'keywords', 'content' => $Page->MetaKeywords, '_sort' => 0));
+		if ($Page->MetaRobots) $Controller->Head->AddTag('meta', array('name' => 'robots', 'content' => $Page->MetaKeywords, '_sort' => 0));
+		if ($Page->MetaTitle) $Controller->Head->Title($Page->MetaTitle);
+		$Controller->Head->AddTag('meta', array('http-equiv' => 'content-language', 'content' => Gdn::Locale()->Current()));
+		$Controller->Head->AddTag('meta', array('http-equiv' => 'content-type', 'content' => 'text/html; charset=utf-8'));
+	}
+}
+	
 if (!function_exists('ValidateUrlPath')) {
 	function ValidateUrlPath($Value, $Field = '') {
 		return ValidateRegex($Value, '/^([\/\d\w\-]+)?$/');

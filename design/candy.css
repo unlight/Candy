@@ -8,14 +8,14 @@
 /* ======================================================================================= Modules */
 
 /* :only-child (CSS selector) FF3+ SA3.1+ OP9.5+ CH2+ */
-/*ul.PanelInfo li > a:only-child {
-	float: none;
-}*/
 body.Candy div.Box ul.PanelInfo li > a {
 	float: none;
 }
 .BoxSections ul.PanelInfo li {
 	text-align: left;
+}
+.BoxSections ul.PanelInfo li > a:only-child {
+	float: none;
 }
 
 /*.BoxSections li.Depth1 { padding-left: 0px; }*/
@@ -35,6 +35,7 @@ body.Candy div.Box ul.PanelInfo li > a {
 
 
 /* ======================================================================================= BreadCrumbs */
+#BreadCrumbs { text-align: left; }
 #BreadCrumbs ul { display: inline-block; }
 #BreadCrumbs li { display: inline-block; }
 /* IE<8 hacks */
@@ -45,7 +46,6 @@ body.Candy div.Box ul.PanelInfo li > a {
 
 #BreadCrumbs ul li.Crumb:before,
 #BreadCrumbs ul li.LastCrumb:before {
-/*	font-weight: bold;*/
 	content: "»";
 	margin-right: 5px;
 }
@@ -193,6 +193,8 @@ textarea { height: 150px; font-size: 1em; }
 .editable-wrap { margin: 10px 0; }
 .editable-cancel { margin-left: 10px; }
 */
+
+
 
 
 

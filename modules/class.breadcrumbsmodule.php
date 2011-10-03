@@ -5,6 +5,7 @@ class BreadCrumbsModule extends MenuModule {
 	protected $bCrumbsWrapped;
 	protected $bAutoWrapCrumbs;
 	protected $Controller;
+	//public $bCustomAssetTarget;
 	
 	public function __construct($Sender = '', $ApplicationFolder = False) {
 		parent::__construct($Sender, $ApplicationFolder);
@@ -68,8 +69,6 @@ class BreadCrumbsModule extends MenuModule {
 	
 	public function ToString() {
 		$String = '';
-		$AnchorAttributes = ''; // not used yet
-		$ListAttributes = ''; // not used yet
 		
 		if (!$this->bCrumbsWrapped && $this->bAutoWrapCrumbs) $this->WrapCrumbs();
 		
@@ -83,11 +82,16 @@ class BreadCrumbsModule extends MenuModule {
 		$Count = 0;
 		foreach ($this->Items as $GroupName => $Links) {
 			foreach ($Links as $Key => $Link) {
+				$AnchorAttributes = array(); // not used yet
+				$ListAttributes = array();
 				$Text = $GroupName;
 				//$Text = ArrayValue('Text', $Link);
 				$Count = $Count + 1;
 				$Attributes = ArrayValue('Attributes', $Link, array());
-				if ($Count == 1) $CssClassSuffix = 'First';
+				if ($Count == 1) {
+					$CssClassSuffix = 'First';
+					$ListAttributes['class'] = 'BreadCrumbs';
+				}
 				elseif ($Count == $CountItems) $CssClassSuffix = 'Last';
 				else $CssClassSuffix = '';
 				$Attributes['class'] = trim($CssClassSuffix . 'Crumb ' . ArrayValue('class', $Attributes, ''));
@@ -113,6 +117,7 @@ class BreadCrumbsModule extends MenuModule {
 			}
 		}
 		$String .= str_repeat("\n</ul></li>", $Count - 1) . '</ul>';
+		//if (!$this->bCustomAssetTarget) $String = Wrap($String, 'div', array('id' => $this->HtmlId));
 		$String = Wrap($String, 'div', array('id' => $this->HtmlId));
 		return $String;
 	}
