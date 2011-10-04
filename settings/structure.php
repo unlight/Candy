@@ -30,9 +30,12 @@ Gdn::Structure()
 	->Column('RequestUri', 'char(120)')
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
-	
+
+$SectionModel = Gdn::Factory('SectionModel');
+$HasRoot = False;
+
 Gdn::Structure()
-	->Table('Section')
+	->Table($SectionModel->Name)
 	->PrimaryKey('SectionID', 'usmallint')
 	->Column('TreeLeft', 'usmallint', 0)
 	->Column('TreeRight', 'usmallint', 0)
@@ -46,11 +49,11 @@ Gdn::Structure()
 	->Set($Explicit, $Drop);
 
 try {
-	$HasRoot = ($SQL->GetCount('Section', array('SectionID' => 1)) > 0);
+	$HasRoot = ($SQL->GetCount($SectionModel->Name, array('SectionID' => 1)) > 0);
 } catch (Exception $Ex) {
-	$HasRoot = False;
 }
-if (!$HasRoot) $SQL->Insert('Section', array('SectionID' => 1, 'TreeLeft' => 1, 'TreeRight' => 2, 'Depth' => 0, 'Name' => T('Home')));
+
+if (!$HasRoot) $SQL->Insert($SectionModel->Name, array('SectionID' => 1, 'TreeLeft' => 1, 'TreeRight' => 2, 'Depth' => 0, 'Name' => T('Home')));
 
 Gdn::Structure()
 	->Table('Page')

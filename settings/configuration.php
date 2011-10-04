@@ -7,4 +7,4 @@ $Configuration['Candy']['Modules']['BreadCrumbsAssetTarget'] = False;
 $Configuration['Candy']['Modules']['BreadCrumbsLastCrumbLinked'] = False;
 $Configuration['Candy']['RootSectionID'] = False;
 $Configuration['Candy']['Pages']['SideMenuType'] = 'Ajar';
-//$Configuration['Candy']['Sections']['Table'] = 'Section'; // replace for $Configuration['Candy']['RootSectionID'];
+//$Configuration['Candy']['Sections']['Table'] = 'Section';
