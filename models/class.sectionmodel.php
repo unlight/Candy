@@ -5,8 +5,8 @@ class SectionModel extends TreeModel {
 	public $ParentKey = 'ParentID';
 	public $PrimaryKey = 'SectionID';
 	
-	public function __construct() {
-		$Name = C('Candy.Sections.Table', 'Section');
+	public function __construct($Name = False) {
+		if (!$Name) $Name = C('Candy.Sections.Table', 'Section');
 		parent::__construct($Name);
 		$this->Validation->AddRule('UrlPath', 'function:ValidateUrlPath');
 	}
@@ -40,8 +40,28 @@ class SectionModel extends TreeModel {
 			$Op = ($IncludeRoot) ? '=' : '';
 			$Where['a.TreeLeft >'.$Op] = $LeftID;
 			$Where['a.TreeRight <'.$Op] = $RightID;
-		}
+		} 
 		return parent::Ajar($ID, $Where);
+	}
+	
+	/**
+	* The path from $NodeID the root node $RootNode.
+	* 
+	*/
+	
+	public function GetPath($Node, $RootNode = False, $IncludeRoot = True) {
+		$Where = False;
+		if (is_numeric($RootNode) && $RootNode != 1) {
+			list($LeftID, $RightID) = $this->_NodeValues($RootNode);
+			$Op = ($IncludeRoot) ? '=' : '';
+			$Where['TreeLeft >'.$Op] = $LeftID;
+			$Where['TreeRight <'.$Op] = $RightID;
+		}
+		list($LeftID, $RightID, $Depth, $NodeID) = $this->_NodeValues($Node);
+		$Where['TreeLeft <='] = $LeftID;
+		$Where['TreeRight >='] = $RightID;
+		$Result = $this->Full('*', $Where);
+		return $Result;
 	}
 	
 	public function Full($Fields = '', $Where = False, $RootID = False, $IncludeRoot = False) {
@@ -50,6 +70,8 @@ class SectionModel extends TreeModel {
 			$Op = ($IncludeRoot) ? '=' : '';
 			$Where['TreeLeft >'.$Op] = $LeftID;
 			$Where['TreeRight <'.$Op] = $RightID;
+		} else {
+			if (!$IncludeRoot) $Where['SectionID <>'] = 1;
 		}
 		$Result = parent::Full($Fields, $Where);
 		return $Result;
