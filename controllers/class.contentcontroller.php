@@ -62,16 +62,14 @@ class ContentController extends Gdn_Controller {
 			$this->SectionID = $Page->SectionID;
 		
 			// TODO: MERGE WITH CANDYHOOKS::ADDMODULES
-			$this->SectionPath = $this->SectionModel->GetPath($this->Section, C('Candy.RootSectionID'), True);
+			$this->SectionPath = $this->SectionModel->GetPath($this->Section);
 			
-			$this->SectionsModule = new SectionsModule($this);
 			// Side menu.
-			// TODO: FIX CONFIG
-			$SideMenuType = C('Candy.Pages.SideMenuType');
-			$this->EventArguments['SideMenuType'] = $SideMenuType;
-			if ($SideMenuType == 'Ajar') 
+			if (C('Candy.Modules.ShowAjarSideMenu')) {
+				$this->SectionsModule = new SectionsModule($this);
 				$this->SectionsModule->SetAjarData($this->SectionPath);
-			$this->AddModule($this->SectionsModule);
+				$this->AddModule($this->SectionsModule);
+			}
 
 			// Breadcrumbs.
 			$this->BreadCrumbsModule = new BreadCrumbsModule($this);
@@ -115,27 +113,13 @@ class ContentController extends Gdn_Controller {
 		$this->Title(T('Site map'));
 		$SectionModel = Gdn::Factory('SectionModel');
 		$IncludeRoot = False;
-		$this->Tree = $SectionModel->Full('*', '', C('Candy.RootSectionID'), $IncludeRoot);
-		
+		$this->Tree = $SectionModel->Full('*', array('IncludeRoot' => $IncludeRoot));
 		$this->AddHomeTreeNode = !$IncludeRoot;
-		
 		$BreadCrumbs = new BreadCrumbsModule($this);
 		$BreadCrumbs->AutoWrapCrumbs();
 		$this->AddModule($BreadCrumbs);
-		
 		$this->Render();
 	}
-	
-/*	public function xRender($View = '', $ControllerName = FALSE, $ApplicationFolder = FALSE, $AssetName = 'Content') {
-		$this->FireEvent('BeforeContentRender');
-		return parent::xRender($View, $ControllerName, $ApplicationFolder, $AssetName);
-	}*/
-	
 
-	
 }
-
-
-
-
 

@@ -23,7 +23,7 @@ class SectionController extends CandyController {
 		$this->Permission('Candy.Settings.View');
 		$TreeModel = new SectionModel();
 		$this->AddJsFile('tree.js');
-		$this->Tree = $TreeModel->Full('*')->Result(); // array('Depth <=' => 1)
+		$this->Tree = $TreeModel->Full('*', array('IncludeRoot' => True))->Result(); // array('Depth <=' => 1)
 		$this->View = 'Tree';
 		$this->Title(T('Sections'));
 		$this->Render();
@@ -90,7 +90,7 @@ class SectionController extends CandyController {
 			$this->Form->SetFormValue('SecondID', $this->Content->SectionID);
 		}
 		
-		$FullTree = $ContentModel->Full('', array('Depth >' => 0));
+		$FullTree = $ContentModel->Full('', array('IncludeRoot' => True));
 		$this->FullTreeOptions = $ContentModel->DropDownArray('Name', $FullTree);
 
 		$this->Title($this->Content->Name);

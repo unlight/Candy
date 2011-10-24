@@ -23,7 +23,7 @@ class BreadCrumbsModule extends MenuModule {
 	}
 	
 	public function SetLinks($DataSet) {
-		$RootNodeID = C('Candy.RootSectionID');
+		$RootNodeID = 1;
 		foreach ($DataSet as $Node) {
 			$Node = (object)$Node;
 			$Attributes = '';

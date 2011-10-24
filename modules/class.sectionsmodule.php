@@ -12,12 +12,6 @@ class SectionsModule extends Gdn_Module {
 	
 	public function __construct($Sender = '', $ApplicationFolder = False) {
 		parent::__construct($Sender, $ApplicationFolder);
-		$RootNodeID = C('Candy.RootSectionID');
-		if ($RootNodeID) {
-			$SectionModel = Gdn::Factory('SectionModel');
-			$RootNode = $SectionModel->GetNode($RootNodeID);
-			$this->RootNodeDepth = $RootNode->Depth;
-		}
 	}
 	
 	public function GetSiblingsData($Section) {

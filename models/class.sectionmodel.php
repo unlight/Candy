@@ -33,17 +33,6 @@ class SectionModel extends TreeModel {
 		return $Result;
 	}
 	
-	public function Ajar($ID, $Where = False, $IncludeRoot = True) {
-		$RootNode = C('Candy.RootSectionID');
-		if (is_numeric($RootNode) && $RootNode != 1) {
-			list($LeftID, $RightID) = $this->_NodeValues($RootNode);
-			$Op = ($IncludeRoot) ? '=' : '';
-			$Where['a.TreeLeft >'.$Op] = $LeftID;
-			$Where['a.TreeRight <'.$Op] = $RightID;
-		} 
-		return parent::Ajar($ID, $Where);
-	}
-	
 	/**
 	* The path from $NodeID the root node $RootNode.
 	* 
@@ -64,15 +53,12 @@ class SectionModel extends TreeModel {
 		return $Result;
 	}
 	
-	public function Full($Fields = '', $Where = False, $RootID = False, $IncludeRoot = False) {
-		if (is_numeric($RootID)) {
-			list($LeftID, $RightID, $Depth, $NodeID) = $this->_NodeValues($RootID);
-			$Op = ($IncludeRoot) ? '=' : '';
-			$Where['TreeLeft >'.$Op] = $LeftID;
-			$Where['TreeRight <'.$Op] = $RightID;
-		} else {
-			if (!$IncludeRoot) $Where['SectionID <>'] = 1;
+	public function Full($Fields = '', $Where = False) {
+		if (func_num_args() > 2) {
+			if (Debug()) trigger_error('Method expects 2 arguments.', E_USER_NOTICE);
 		}
+		$IncludeRoot = GetValue('IncludeRoot', $Where, True, True);
+		if (!$IncludeRoot) $Where['SectionID <>'] = 1;
 		$Result = parent::Full($Fields, $Where);
 		return $Result;
 	}
@@ -84,13 +70,6 @@ class SectionModel extends TreeModel {
 		if ($Data == False) return True;
 		return False;
 	}
-	
-/*	public function Validate($FormPostValues, $Insert = False) {
-		$Valid = parent::Validate($FormPostValues, $Insert);
-		if ($Valid) {
-		}
-		return False;
-	}*/
 	
 	public function Save($PostValues, $PreviousValues = False) {
 		ReplaceEmpty($PostValues, Null);
@@ -123,6 +102,24 @@ class SectionModel extends TreeModel {
 
 		return $RowID;
 	}
+	
+/*	public function Validate($FormPostValues, $Insert = False) {
+		$Valid = parent::Validate($FormPostValues, $Insert);
+		if ($Valid) {
+		}
+		return False;
+	}*/
+	
+/*	public function Ajar($ID, $Where = False, $IncludeRoot = True) {
+		$RootNode = C('Candy.RootSectionID');
+		if (is_numeric($RootNode) && $RootNode != 1) {
+			list($LeftID, $RightID) = $this->_NodeValues($RootNode);
+			$Op = ($IncludeRoot) ? '=' : '';
+			$Where['a.TreeLeft >'.$Op] = $LeftID;
+			$Where['a.TreeRight <'.$Op] = $RightID;
+		} 
+		return parent::Ajar($ID, $Where);
+	}*/
 		
 }
 

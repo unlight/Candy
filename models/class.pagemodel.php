@@ -75,8 +75,9 @@ class PageModel extends Gdn_Model {
 		}
 		if ($Join = GetValue('WithSection', $Where, False, True)) {
 			if (!in_array($Join, array('left', 'inner'), True)) $Join = 'left';
+			$SectionTable = C('Candy.Sections.Table', 'Section');
 			$this->SQL
-				->Join('Section s', 's.SectionID = p.SectionID', $Join);
+				->Join("$SectionTable s", 's.SectionID = p.SectionID', $Join);
 			if (!$bCountQuery) {
 				$this->SQL
 					->Select('s.SectionID as SectionID')

@@ -75,6 +75,13 @@ if (!function_exists('SectionAnchor')) {
 
 
 if (!function_exists('Chunk')) {
+	/**
+	* Renders a chunk of text
+	* 
+	* @param mixed $Identify ChunckID.
+	* @param mixed $Options type of chunk (Textarea [default], Text)
+	* @return mixed $Result.
+	*/
 	function Chunk($Identify, $Options = False) {
 		static $ChunkModel; if (is_null($ChunkModel)) $ChunkModel = new ChunkModel();
 		static $PermissionChunksEdit; if (is_null($PermissionChunksEdit)) $PermissionChunksEdit = CheckPermission('Candy.Chunks.Edit');

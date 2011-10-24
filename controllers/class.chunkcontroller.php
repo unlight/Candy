@@ -75,8 +75,9 @@ class ChunkController extends CandyController {
 	
 	public function Delete($Reference) {
 		$this->Permission('Candy.Chunks.Delete');
+		$this->ChunkModel->Delete($Reference);
 		if ($this->DeliveryType() == DELIVERY_TYPE_ALL) {
-			Redirect('/candy/page/browse');
+			Redirect('/candy/chunk/browse');
 		}
 	}
 	

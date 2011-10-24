@@ -18,13 +18,13 @@ class CandyHooks implements Gdn_IPlugin {
 	
 	public static function AddModules($Controller, $Section) {
 		$SectionModel = Gdn::Factory('SectionModel');
-		$Controller->SectionPath = $SectionModel->GetPath($Section, C('Candy.RootSectionID'), True);
-		$Controller->SectionsModule = new SectionsModule($Controller, 'candy');
+		$Controller->SectionPath = $SectionModel->GetPath($Section);
 		// Side menu.
-		$SideMenuType = C('Candy.Pages.SideMenuType');
-		$Controller->EventArguments['SideMenuType'] = $SideMenuType;
-		if ($SideMenuType == 'Ajar') $Controller->SectionsModule->SetAjarData($Controller->SectionPath);
-		$Controller->AddModule($Controller->SectionsModule);
+		if (C('Candy.Modules.ShowAjarSideMenu')) {
+			$Controller->SectionsModule = new SectionsModule($Controller, 'candy');
+			$Controller->SectionsModule->SetAjarData($Controller->SectionPath);
+			$Controller->AddModule($Controller->SectionsModule);
+		}
 		// Breadcrumbs.
 		$Controller->BreadCrumbsModule = new BreadCrumbsModule($Controller, 'candy');
 		$Controller->BreadCrumbsModule->SetLinks($Controller->SectionPath);

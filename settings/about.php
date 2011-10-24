@@ -2,10 +2,11 @@
 
 $ApplicationInfo['Candy'] = array(
 	'Description' => 'Candy is the simple web-application that allows you manage site content.',
-	'Version' => '0.24',
+	'Version' => '0.25',
 	'Date' => 'Summer 2011',
+	'Updated' => 'Autumn 2011',
 	'AllowEnable' => True,
-	'RequiredPlugins' => array('UsefulFunctions' => '>=3.5.120'),
+	'RequiredPlugins' => array('UsefulFunctions' => '>=3.5'),
 	'RequiredApplications' => array('Dashboard' => '>=2.0.18'),
 	'Author' => 'Frostbite',
 	'AuthorUrl' => 'http://www.liandri-mining.com/',
