@@ -127,7 +127,7 @@ $.fn.inlineEdit = function(op) {
 			.append($('<input>', {
 				type: 'button',
 				value: op.buttons.save,
-				class: $.trim(op.prefix + 'save ' + op.classbuttons)
+				'class': $.trim(op.prefix + 'save ' + op.classbuttons)
 			}).click(function() {
 				op.save.call($el);
 				// post data
@@ -161,7 +161,7 @@ $.fn.inlineEdit = function(op) {
 			.append($('<input>', {
 				type: 'button',
 				value: op.buttons.cancel,
-				class: $.trim(op.prefix + 'cancel ' + op.classbuttons)
+				'class': $.trim(op.prefix + 'cancel ' + op.classbuttons)
 			}).click(function() {
 				op.cancel.call($el);
 				$form.remove();
