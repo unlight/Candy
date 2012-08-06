@@ -34,7 +34,7 @@ echo Wrap(
 );
 
 echo Wrap(
-	$this->Form->TextBox('Body', array('Multiline' => True, 'placeholder' => T('Body'))),
+	$this->Form->TextBox('Body', array('Multiline' => True, 'class' => 'TextBox CodeBox', 'placeholder' => T('Body'))),
 	'li'
 );
 ?>

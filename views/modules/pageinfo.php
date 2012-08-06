@@ -11,17 +11,18 @@ $PermissionEdit = IsContentOwner($Page, 'Candy.Pages.Edit');
 
 <ul class="PanelInfo">
 	<?php if ($PermissionEdit): ?>
-	<li><strong><?php 
+	<li><?php 
 		echo Anchor(T('Published'), 'candy/page/visible/'.$Page->PageID.'?Target='.$TargetUrl, 'BoolButton'); ?>
-		<?php echo T($Page->Visible == 1 ? 'Yes' : 'No'); ?></strong></li>
-	<li><strong><?php 
+		<span class="Aside"><?php echo T($Page->Visible == 1 ? 'Yes' : 'No'); ?></span>
+	</li>
+	<li><?php 
 		echo Anchor(T('Edit'), 'candy/page/edit/'.$Page->PageID, ''); 
-		?></strong>&#160;</li>
+		?></li>
 	<?php endif; ?>
 	
 	<?php if (CheckPermission('Candy.Pages.Delete')) : ?>
-		<li><strong><?php 
+		<li><?php 
 			echo Anchor(T('Delete'), 'candy/page/delete/'.$Page->PageID, 'PopConfirm'); 
-		?></strong>&#160;</li>
+		?></li>
 	<?php endif; ?>
 </ul>

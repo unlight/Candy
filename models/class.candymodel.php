@@ -2,6 +2,31 @@
 
 class CandyModel {
 	
+	/**
+	* Save mask information.
+	* 
+	* @param array $PostValues 
+	* @param mixed $Validation.
+	*/
+	public static function SaveMaskInfo($PostValues, $Validation = False) {
+		$MaskValues = array();
+		foreach ($PostValues as $Key => $Value) {
+			if (StringBeginsWith($Key, 'Mask_')) {
+				$MaskValues[$Value] = GetValue('Description_'.$Value, $PostValues);
+			}
+		}
+		$NewMaskValues = array_combine($PostValues['Mask'], $PostValues['Description']);
+		$MaskValues = $MaskValues + $NewMaskValues;
+
+		$Data = array();
+		foreach ($MaskValues as $Int => $Description) {
+			$Int = sprintf('%u', $Int);
+			if ($Int > 0 && !($Int & ($Int-1))) $Data[$Int] = $Description;
+		}
+		K('Candy.Mask.Info', $Data);
+		return True;
+	}
+	
 	public static function Slug($Text) {
 		$Result = GoogleTranslate($Text, array('To' => 'en'));
 		$Result = CleanUpString($Result);
@@ -66,4 +91,6 @@ class CandyModel {
 	}*/
 	
 	
+	
 }
+

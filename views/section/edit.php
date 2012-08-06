@@ -27,6 +27,10 @@ echo Wrap(
 echo Wrap(
 	$this->Form->Label('Url', 'Url').
 	$this->Form->TextBox('Url'), 'li');
+	
+echo Wrap(
+	$this->Form->Label('Mask', 'Mask').
+	$this->Form->TextBox('Mask'), 'li');
 
 ?>
 

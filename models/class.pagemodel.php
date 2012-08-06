@@ -42,6 +42,7 @@ class PageModel extends Gdn_Model {
 			'Url' => GetValue('URI', $PostValues, Null),
 			'RequestUri' => 'candy/content/page/'.$RowID
 		);
+		$SectionModel->AutoIncrement($RowID);
 		$ParentSectionID = GetValue('SectionID', $PostValues);
 		$PageSectionID = $SectionModel->InsertNode($ParentSectionID, $NodeFields);
 		$this->SQL

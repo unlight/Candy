@@ -1,20 +1,33 @@
 jQuery(function() {
 	
+	var GetScript = function(Url, Callback, Cache) {
+		if (typeof(Cache) == 'undefined') Cache = true;
+		$.ajax({
+			type: "GET",
+			url: Url,
+			success: Callback,
+			dataType: "script",
+			cache: Cache
+		});
+	}
+	
+
+	
 	var LibraryRoot = gdn.combinePaths(gdn.definition('WebRoot'), 'js/library');
 	var None = 'undefined';
 	
-	if (typeof($.fn.livequery) != 'function') $.getScript(gdn.combinePaths(LibraryRoot, 'jquery.livequery.js'));
+	if (typeof($.fn.livequery) != 'function') GetScript(gdn.combinePaths(LibraryRoot, 'jquery.livequery.js'));
 	if (typeof($.fn.popup) != 'function') {
-		$.getScript(gdn.combinePaths(LibraryRoot, 'jquery.popup.js'), function(){
+		GetScript(gdn.combinePaths(LibraryRoot, 'jquery.popup.js'), function(){
 			$('a.Popup').popup();
 			$('a.PopConfirm').popup({'confirm': true, 'followConfirm': true});
 		});		
 	}
 	if (typeof($.fn.ajaxForm) != 'function') {
-		$.getScript(gdn.combinePaths(LibraryRoot, 'jquery.form.js'));
+		GetScript(gdn.combinePaths(LibraryRoot, 'jquery.form.js'));
 	}
 	if (typeof($.fn.handleAjaxForm) != 'function') {
-		$.getScript(gdn.combinePaths(LibraryRoot, 'jquery.gardenhandleajaxform.js'), function(){
+		GetScript(gdn.combinePaths(LibraryRoot, 'jquery.gardenhandleajaxform.js'), function(){
 			$('.AjaxForm').handleAjaxForm();
 		});
 	}

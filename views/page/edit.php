@@ -1,10 +1,11 @@
 <?php if (!defined('APPLICATION')) die(); 
 
 $Content = $this->Data('Content');
+$Session = Gdn::Session();
 ?>
 
 <h1><?php echo $this->Data('Title'); 
-if ($this->Editing) echo ', Request URI: ' . 'candy/content/page/'.$Content->PageID;
+if ($this->Editing) echo ', Request URI: ' . Anchor('candy/content/page/'.$Content->PageID, 'candy/content/page/'.$Content->PageID);
 ?></h1>
 
 <?php include $this->FetchViewLocation('menu', 'candy'); ?>
@@ -25,6 +26,7 @@ echo Wrap(
 	'li'
 );
 $FormatOptions = LocalizedOptions(array('Text', 'xHtml', 'Html', 'Markdown', 'Raw'));
+if (!CheckPermission('Candy.Pages.Raw')) unset($FormatOptions['Raw']);
 $this->EventArguments['FormatOptions'] =& $FormatOptions;
 $this->FireEvent('FormatOptions');
 echo Wrap(
@@ -52,35 +54,45 @@ echo Wrap(
 	'li'
 );
 
-echo Wrap(
-	$this->Form->Label('MetaTitle', 'MetaTitle') .
-	$this->Form->TextBox('MetaTitle')
-, 'li', array('class' => 'MetaFields Hidden'));
-echo Wrap(
-	$this->Form->Label('Meta tag (description)', 'MetaDescription') .
-	$this->Form->TextBox('MetaDescription', array('Multiline' => True))
-, 'li', array('class' => 'MetaFields Hidden'));
-echo Wrap(
-	$this->Form->Label('Meta tag (keywords)', 'MetaKeywords') .
-	$this->Form->TextBox('MetaKeywords', array('Multiline' => False))
-, 'li', array('class' => 'MetaFields Hidden'));
-echo Wrap(
-	$this->Form->Label('Meta tag (robots)', 'MetaRobots') .
-	$this->Form->TextBox('MetaRobots', array('Multiline' => False))
-, 'li', array('class' => 'MetaFields Hidden'));
+if ($Session->CheckPermission('Candy.Pages.Meta')) {
+	echo Wrap(
+		$this->Form->Label('MetaTitle', 'MetaTitle') .
+		$this->Form->TextBox('MetaTitle'), 
+		'li', array('class' => 'MetaFields Hidden'));
+	echo Wrap(
+		$this->Form->Label('Meta tag (description)', 'MetaDescription') .
+		$this->Form->TextBox('MetaDescription', array('Multiline' => True)),
+		'li', array('class' => 'MetaFields Hidden'));
+	echo Wrap(
+		$this->Form->Label('Meta tag (keywords)', 'MetaKeywords') .
+		$this->Form->TextBox('MetaKeywords', array('Multiline' => False)), 
+		'li', array('class' => 'MetaFields Hidden'));
+	echo Wrap(
+		$this->Form->Label('Meta tag (robots)', 'MetaRobots') .
+		$this->Form->TextBox('MetaRobots', array('Multiline' => False)), 
+		'li', array('class' => 'MetaFields Hidden'));
+}
 
-?>
+$Forms = $Buttons = array();
 
-<?php
+$Buttons[] = Wrap(T('Body text?'), 'a', array('href' => 'javascript:', 'class' => 'TabToggleButton BodyTextBox'));
+if ($Session->CheckPermission('Candy.Pages.Meta')) $Buttons[] = Wrap(T('Meta tags?'), 'a', array('href' => 'javascript:', 'class' => 'ToggleButton MetaFields'));
+$Buttons[] = Wrap(T('Slug from title?'), 'a', array('href' => 'javascript:', 'class' => '', 'id' => 'GetSlugButton'));
+
+$Forms[] = $this->Form->TextBox('Body', array('Multiline' => True, 'placeholder' => T('Body'), 'class' => 'TextBox BodyTextBox CodeBox'));
+if ($Session->CheckPermission('Candy.Pages.Raw')) {
+	$Forms[] = $this->Form->TextBox('CustomCss', array('Multiline' => True, 'placeholder' => T('Custom CSS rules'), 'class' => 'TextBox CustomCss CodeBox Hidden'));
+	$Forms[] = $this->Form->TextBox('CustomJs', array('Multiline' => True, 'placeholder' => T('Custom JavaScript'), 'class' => 'TextBox CustomJs CodeBox Hidden'));
+	$Buttons[] = Wrap(T('Custom css?'), 'a', array('href' => 'javascript:', 'class' => 'TabToggleButton CustomCss'));
+	$Buttons[] = Wrap(T('Custom js?'), 'a', array('href' => 'javascript:', 'class' => 'TabToggleButton CustomJs'));
+}
+
 echo Wrap(
-	Wrap(T('Meta tags?'), 'a', array('href' => '#', 'class' => 'ToggleButton MetaFields')) . 
-	Wrap(T('Slug from title?'), 'a', array('href' => '#', 'class' => '', 'id' => 'GetSlugButton')) . 
-	$this->Form->TextBox('Body', array('Multiline' => True, 'placeholder' => T('Body'))),
-	'li'
+	'<span class="Buttons">' . implode('', $Buttons) . '</span>' . 
+	implode("\n", $Forms),
+	'li', array('class' => '')
 );
-?>
 
-<?php
 $this->FireEvent('AfterInputFieldsRender'); 
 ?>
 

@@ -16,7 +16,7 @@ class PageController extends CandyController {
 	
 	public function Browse($Page = '') {
 		$this->Permission('Candy.Settings.View');
-		list($Offset, $Limit) = OffsetLimit($Page, 30);
+		list($Offset, $Limit) = OffsetLimit($Page, 100);
 		$this->Pages = $this->PageModel->Get(array('WithSection' => False), $Offset, $Limit, 'p.DateUpdated');
 		$this->RecordCount = $this->PageModel->GetCount();
 		$this->Url = '/candy/page/browse/%s';
@@ -56,9 +56,15 @@ class PageController extends CandyController {
 		$this->AddJsFile('jquery.textpandable.js');
 		$this->AddJsFile('editform.js');
 		$this->Form->SetModel($this->PageModel);
+		$Session = Gdn::Session();
 		
 		$SectionModel = new SectionModel();
-		$this->Tree = $SectionModel->DropDownArray('Name', $SectionModel->Full('', array('Depth >' => 0)));
+		$this->Tree = $SectionModel->DropDownArray('Name', $SectionModel->GetNodes(array('Depth >' => 0)));
+		
+		$this->FormatOptions = LocalizedOptions(array('Text', 'xHtml', 'Html', 'Markdown', 'Raw'));
+		if (!$Session->CheckPermission('Candy.Pages.Raw')) unset($this->FormatOptions['Raw']);
+		$this->EventArguments['FormatOptions'] =& $this->FormatOptions;
+		$this->FireEvent('FormatOptions');
 		
 		$Content = False;
 		if ($Reference != '') {

@@ -3,12 +3,14 @@
 if (!isset($Drop)) $Drop = False;
 if (!isset($Explicit)) $Explicit = True;
 
-$Version = C('Candy.Version');
 $Database = Gdn::Database();
 $Px = $Database->DatabasePrefix;
 $SQL = $Database->SQL(); // To run queries.
 $Construct = $Database->Structure(); // To modify and add database tables.
 $Validation = new Gdn_Validation(); // To validate permissions (if necessary).
+
+include_once PATH_APPLICATIONS . '/candy/models/class.sectionmodel.php';
+include_once PATH_APPLICATIONS . '/candy/settings/bootstrap.php';
 
 Gdn::Structure()
 	->Table('Chunk')
@@ -45,6 +47,7 @@ Gdn::Structure()
 	->Column('Url', 'varchar(80)', True) // backup for URI (for subdomains, etc.)
 	->Column('URI', 'varchar(80)', True)
 	->Column('RequestUri', 'char(120)', True)
+	->Column('Mask', 'uint', True)
 	->Engine('InnoDB')
 	->Set($Explicit, $Drop);
 
@@ -77,6 +80,8 @@ Gdn::Structure()
 	->Column('MetaKeywords', 'varchar(250)', True)
 	->Column('MetaRobots', 'varchar(150)', True)
 	->Column('MetaTitle', 'varchar(255)', True)
+	->Column('CustomCss', 'text', True)
+	->Column('CustomJs', 'text', True)
 	->Engine('MyISAM')
 	->Set($Explicit, $Drop);
 	
@@ -96,6 +101,8 @@ $PermissionModel->Define(array(
 	'Candy.Pages.Add',
 	'Candy.Pages.Edit',
 	'Candy.Pages.Delete',
+	'Candy.Pages.Raw',
+	'Candy.Pages.Meta',
 	'Candy.Chunks.Edit',
 	'Candy.Chunks.Delete',
 	'Candy.Routes.Manage',
@@ -107,31 +114,3 @@ $PermissionModel->Save(array(
 	//'Candy.Settings.Manage' => 1,
 	'Candy.Settings.View' => 1,
 ));
-
-
-
-/*$PermissionModel->Define(array(
-),
-	'tinyint',
-	'Section',
-	'SectionID'
-);*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

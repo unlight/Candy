@@ -43,38 +43,23 @@ class ContentController extends Gdn_Controller {
 		$this->Page = $Page;
 
 		if ($this->Head) {
-			if ($Page->MetaDescription) $this->Head->AddTag('meta', array('name' => 'description', 'content' => $Page->MetaDescription, '_sort' => 0));
-			if ($Page->MetaKeywords) $this->Head->AddTag('meta', array('name' => 'keywords', 'content' => $Page->MetaKeywords, '_sort' => 0));
-			if ($Page->MetaRobots) $this->Head->AddTag('meta', array('name' => 'robots', 'content' => $Page->MetaKeywords, '_sort' => 0));
-			if ($Page->MetaTitle) $this->Head->Title($Page->MetaTitle);
-			
-			// TODO: $this->FireEvent('ContentRender'); $this->FireEvent('ContentPage');		
-			// All 
-			
-			// TODO: ['Candy']['Pages'] => [Candy']['Content']
-			
-			$this->Head->AddTag('meta', array('http-equiv' => 'content-language', 'content' => Gdn::Locale()->Current()));
-			$this->Head->AddTag('meta', array('http-equiv' => 'content-type', 'content' => 'text/html; charset=utf-8'));
+			SetMetaTags($Page, $this);
+			if ($Page->CustomCss) {
+				$CustomCss = "\n" . $Page->CustomCss;
+				if (!StringBeginsWith(trim($CustomCss), '<style', True)) $CustomCss = Wrap($CustomCss, 'style', array('type' => 'text/css'));
+				$this->Head->AddString($CustomCss);
+			}
+			if ($Page->CustomJs) {
+				$CustomJs = $Page->CustomJs;
+				if (!StringBeginsWith(trim($CustomJs), '<script', True)) $CustomJs = Wrap($CustomJs, 'script', array('type' => 'text/javascript'));
+				$this->Head->AddString($CustomJs);
+			}
 		}
 		
 		if ($Page->SectionID) {
 			$this->Section = BuildNode($Page, 'Section');
 			$this->SectionID = $Page->SectionID;
-		
-			// TODO: MERGE WITH CANDYHOOKS::ADDMODULES
-			$this->SectionPath = $this->SectionModel->GetPath($this->Section);
-			
-			// Side menu.
-			if (C('Candy.Modules.ShowAjarSideMenu')) {
-				$this->SectionsModule = new SectionsModule($this);
-				$this->SectionsModule->SetAjarData($this->SectionPath);
-				$this->AddModule($this->SectionsModule);
-			}
-
-			// Breadcrumbs.
-			$this->BreadCrumbsModule = new BreadCrumbsModule($this);
-			$this->BreadCrumbsModule->SetLinks($this->SectionPath);
-			$this->AddModule($this->BreadCrumbsModule);
+			CandyHooks::AddModules($this, $this->Section);
 		}
 
 		$this->FireEvent('ContentPage');
@@ -88,7 +73,6 @@ class ContentController extends Gdn_Controller {
 		$this->Title($Page->Title);
 		$this->SetData('Content', $Page, True);
 		
-		// TODO: MERGE WITH ?
 		$this->EventArguments['Format'] =& $Page->Format;
 		$this->EventArguments['Body'] =& $Page->Body;
 		$this->FireEvent('BeforeBodyFormat');
@@ -113,7 +97,7 @@ class ContentController extends Gdn_Controller {
 		$this->Title(T('Site map'));
 		$SectionModel = Gdn::Factory('SectionModel');
 		$IncludeRoot = False;
-		$this->Tree = $SectionModel->Full('*', array('IncludeRoot' => $IncludeRoot));
+		$this->Tree = $SectionModel->GetNodes(array('IncludeRoot' => $IncludeRoot));
 		$this->AddHomeTreeNode = !$IncludeRoot;
 		$BreadCrumbs = new BreadCrumbsModule($this);
 		$BreadCrumbs->AutoWrapCrumbs();

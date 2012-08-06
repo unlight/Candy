@@ -2,15 +2,6 @@
 
 class CandyHooks implements Gdn_IPlugin {
 	
-/*	public function ContentController_ContentPage_Handler($Sender) {
-		if (!($Sender->DeliveryType() == DELIVERY_TYPE_ALL && $Sender->SyndicationMethod == SYNDICATION_NONE)) return;
-		$Head =& $Sender->Head;
-		$Content =& $Sender->EventArguments[''];
-		if ($Head) {
-			$Head->AddTag('meta', array('name' => 'robots', 'content' => 'noindex', '_sort' => 0));
-		}
-	}*/
-
 	public function SearchModel_Search_Handler($Sender) {
 		$SearchModel = new CandySearchModel();
 		$SearchModel->Search($Sender);
@@ -30,7 +21,7 @@ class CandyHooks implements Gdn_IPlugin {
 		$Controller->BreadCrumbsModule->SetLinks($Controller->SectionPath);
 		$Controller->AddModule($Controller->BreadCrumbsModule);
 		
-		$Controller->SectionID = GetValue('SectionID', $Section, $Section);
+		if (empty($Controller->SectionID)) $Controller->SectionID = GetValue('SectionID', $Section, $Section);
 		
 		$Controller->EventArguments['Section'] = $Section;
 		$Controller->FireEvent('CandyModules');
@@ -77,7 +68,6 @@ class CandyHooks implements Gdn_IPlugin {
 	}
 	
 	public function Gdn_Dispatcher_BeforeDispatch_Handler($Sender) {
-		if (!C('Candy.Version')) return;
 		$Request = Gdn::Request();
 		$RequestUri = $Request->RequestUri();
 		$Route = Gdn::Router()->GetRoute($RequestUri);
@@ -104,14 +94,9 @@ class CandyHooks implements Gdn_IPlugin {
 	
 	public function Setup() {
 		include(PATH_APPLICATIONS . '/candy/settings/structure.php');
-		$ApplicationInfo = array();
-		include(CombinePaths(array(PATH_APPLICATIONS . '/candy/settings/about.php')));
-		$Version = GetValue('Version', GetValue('Candy', $ApplicationInfo));
-		SaveToConfig('Candy.Version', $Version);
 	}
 	
 	public function OnDisable() {
-		RemoveFromConfig('Candy.Version');
 	}
 
 	

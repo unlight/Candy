@@ -16,14 +16,14 @@ class SectionsModule extends Gdn_Module {
 	
 	public function GetSiblingsData($Section) {
 		$SectionModel = Gdn::Factory('SectionModel');
-		$Items = $SectionModel->GetSiblings('*', $Section);
+		$Items = $SectionModel->GetSiblings($Section);
 		$this->SetData('Items', $Items);
 		return $Items;
 	}
 	
 	public function GetDirectChildsData($Section) {
 		$SectionModel = Gdn::Factory('SectionModel');
-		$Childs = $SectionModel->GetChildrens('*', $Section, array('DirectDescendants' => True));
+		$Childs = $SectionModel->GetChildrens($Section, array('DirectDescendants' => True));
 		$this->SetData('Items', $Childs);
 		//$this->RootNodeDepth = GetValue('Depth', $Childs->FirstRow());
 		return $Childs;

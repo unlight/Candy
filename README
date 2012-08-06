@@ -5,8 +5,14 @@ It is built upon Garden - pluggable application development framework.
 
 CHANGELOG
 =========
-0.20 (3 Sep 2011)
-- added search 
+0.31 (Unknown date)
+- added mask description
 
-0.12 (5 Aug 2011)
-- first release
+0.30 (27 Dec 2011)
+- changelog started
+- creating section from page is going with max (page.id, section.id)
+- added custom javascript/css
+- remembering last clicked tab/button
+
+0.14 (7 Aug 2011)
+- first public release

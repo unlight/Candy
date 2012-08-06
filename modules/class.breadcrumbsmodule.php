@@ -27,9 +27,13 @@ class BreadCrumbsModule extends MenuModule {
 		foreach ($DataSet as $Node) {
 			$Node = (object)$Node;
 			$Attributes = '';
-			if ($RootNodeID == $Node->SectionID) $Attributes['_HomeLink'] = True;
 			$Url = $Node->Url;
-			if (!$Url) $Url = $Node->RequestUri;
+			if ($RootNodeID == $Node->SectionID) {
+				$Url = NULL;
+				$Attributes['HomeLink'] = True;
+			} elseif (!$Url) {
+				continue;
+			}
 			$this->AddLink($Node->Name, $Node->Name, $Url, False, $Attributes);
 		}
 	}
@@ -97,11 +101,9 @@ class BreadCrumbsModule extends MenuModule {
 				$Attributes['class'] = trim($CssClassSuffix . 'Crumb ' . ArrayValue('class', $Attributes, ''));
 
 				$Url = ArrayValue('Url', $Link);
-				if ($Url === NULL) {
-					$IsHomeLink = GetValue('_HomeLink', $Attributes, False, True);
-					if ($IsHomeLink) $Url = '/';
-				}
-				if ($Url) $AnchorAttributes['href'] = Url($Url, True);
+				if ($Url === NULL && GetValue('HomeLink', $Attributes, False, True)) $Url = '/';
+				
+				$AnchorAttributes['href'] = Url($Url, True);
 				
 				$Anchor = '<a'.Attribute($AnchorAttributes).'>'.$Text.'</a>';
 				

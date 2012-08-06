@@ -37,29 +37,18 @@ class SectionModel extends TreeModel {
 	* The path from $NodeID the root node $RootNode.
 	* 
 	*/
-	
 	public function GetPath($Node, $RootNode = False, $IncludeRoot = True) {
 		$Where = False;
 		if (is_numeric($RootNode) && $RootNode != 1) {
-			list($LeftID, $RightID) = $this->_NodeValues($RootNode);
+			list($LeftID, $RightID) = $this->NodeValues($RootNode);
 			$Op = ($IncludeRoot) ? '=' : '';
 			$Where['TreeLeft >'.$Op] = $LeftID;
 			$Where['TreeRight <'.$Op] = $RightID;
 		}
-		list($LeftID, $RightID, $Depth, $NodeID) = $this->_NodeValues($Node);
+		list($LeftID, $RightID, $Depth, $NodeID) = $this->NodeValues($Node);
 		$Where['TreeLeft <='] = $LeftID;
 		$Where['TreeRight >='] = $RightID;
-		$Result = $this->Full('*', $Where);
-		return $Result;
-	}
-	
-	public function Full($Fields = '', $Where = False) {
-		if (func_num_args() > 2) {
-			if (Debug()) trigger_error('Method expects 2 arguments.', E_USER_NOTICE);
-		}
-		$IncludeRoot = GetValue('IncludeRoot', $Where, True, True);
-		if (!$IncludeRoot) $Where['SectionID <>'] = 1;
-		$Result = parent::Full($Fields, $Where);
+		$Result = $this->GetNodes($Where);
 		return $Result;
 	}
 	
@@ -82,6 +71,10 @@ class SectionModel extends TreeModel {
 		
 		if (GetValue('ParentID', $PostValues) === Null) SetValue('ParentID', $PostValues, 1);
 		
+		if (array_key_exists('Mask', $PostValues)) {
+			$PostValues['Mask'] = self::CalculateMask($PostValues['Mask']);
+		}
+		
 		$this->DefineSchema();
 		$this->AddUpdateFields($PostValues);
 		if ($Insert) $this->AddInsertFields($PostValues);
@@ -103,24 +96,14 @@ class SectionModel extends TreeModel {
 		return $RowID;
 	}
 	
-/*	public function Validate($FormPostValues, $Insert = False) {
-		$Valid = parent::Validate($FormPostValues, $Insert);
-		if ($Valid) {
-		}
-		return False;
-	}*/
-	
-/*	public function Ajar($ID, $Where = False, $IncludeRoot = True) {
-		$RootNode = C('Candy.RootSectionID');
-		if (is_numeric($RootNode) && $RootNode != 1) {
-			list($LeftID, $RightID) = $this->_NodeValues($RootNode);
-			$Op = ($IncludeRoot) ? '=' : '';
-			$Where['a.TreeLeft >'.$Op] = $LeftID;
-			$Where['a.TreeRight <'.$Op] = $RightID;
-		} 
-		return parent::Ajar($ID, $Where);
-	}*/
-		
+	protected static function CalculateMask($Mask) {
+		$Mask = preg_replace('/[^0-9\.\-+\^\/\*]/', ' ', $Mask);
+		$Mask = preg_replace('~([0-9]+)\^([0-9]+)~e', 'pow("\\1", "\\2")', $Mask);
+		@eval("\$NewMask = (int)($Mask);");
+		if (!isset($NewMask)) $NewMask = $Mask;
+		return $NewMask;
+	}
+
 }
 
 

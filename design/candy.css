@@ -1,16 +1,10 @@
-/* ==================================== TEST */
-/*body.Candy div#Frame div#Head div.Menu ul#Menu {
-	display: none;
-}*/
-/* ==================================== TEST */
-
-
 /* ======================================================================================= Modules */
 
 /* :only-child (CSS selector) FF3+ SA3.1+ OP9.5+ CH2+ */
 body.Candy div.Box ul.PanelInfo li > a {
 	float: none;
 }
+
 .BoxSections ul.PanelInfo li {
 	text-align: left;
 }
@@ -52,27 +46,8 @@ body.Candy div.Box ul.PanelInfo li > a {
 
 
 /* ======================================================================================= Misc */
-
-/*.Cell {
-	display:table-cell;
-	vertical-align: top;	
-}
-.Cell.Hidden {
-	display: none;
-}
-
-div.Cell + div.Cell {
-	padding-left: 6px;
-}
-.Popup div.Cell {
-	display:block;
-}
-.Popup div.Cell + div.Cell {
-	padding-left: 0px;
-}*/
-
 body.Candy td.Options a {
-	text-transform:lowercase;
+	text-transform: lowercase;
 }
 
 body.Candy td.Options a:not(:last-child):after {
@@ -128,10 +103,10 @@ form ul.EditForm li label + input[type="checkbox"] {
 	min-height: 19px;
 }
 
-body.Candy #Form_Body {
+body.Candy .CodeBox {
 	height: 300px;
 	width: 100%;
-	font-size: 95%;
+	font-size: 12px;
 	font-family: "Courier New";
 }
 
@@ -158,12 +133,36 @@ ul.EditForm li label + input.InputBox {
 	width: 82%;
 }
 
-/*ul.EditForm #Form_MetaDescription {
-	width: 82%;
-}*/
+ul.EditForm li span.Buttons {
+	display: block;
+	margin: 0 0 2px;
+}
 
-ul.EditForm li > a + a {
+ul.EditForm li span.Buttons a + a {
 	margin-left: 10px;
+}
+
+a.TabToggleButton.Active {
+	background: LightSeaGreen;
+	color: #fff;
+	margin: 0 0 0 5px;
+	padding: 0 5px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+a.TabToggleButton.Active:first-child {
+	margin: 0 0 0 0px;
+}
+
+#Mask_Form input.MaskValue {
+	width: 50px;
+	margin-right: 8px;
+}
+
+#Mask_Form a.AddDescription {
+	margin-left: 5px;
 }
 
 
@@ -183,29 +182,4 @@ ul.EditForm li > a + a {
 	text-transform: capitalize;
 	margin-left: 10px;
 }
-
-/* 
-input[type=button] { padding: .5em; }
-textarea { height: 150px; font-size: 1em; }
-
-.editable { padding: 10px; background: #eee; cursor: pointer; }
-.editable-hover { background: #ccc; }
-.editable-wrap { margin: 10px 0; }
-.editable-cancel { margin-left: 10px; }
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
