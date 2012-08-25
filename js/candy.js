@@ -166,13 +166,3 @@ jQuery.PopupErrorMessage = function(XMLHttpRequest, textStatus) {
 	else Message = ErrorText;
 	return Message;
 }
-
-
-/*
-* doWhen jQuery plugin
-* Copyright 2011, Emmett Pickerel
-* Released under the MIT Licence.
-*/
-//!function(a){var b,c,d;b={interval:100},c=function(a){a.test()&&(clearInterval(a.iid),a.cb.call(a.context||window,a.data))},d=function(a){a.iid=setInterval(function(){c(a)},a.interval)},a.doWhen=function(c,e,f){d(a.extend({test:c,cb:e},b,f))}}(window.jQuery);
-	
-	
