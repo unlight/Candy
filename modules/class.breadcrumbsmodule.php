@@ -8,6 +8,7 @@ class BreadCrumbsModule extends MenuModule {
 	//public $bCustomAssetTarget;
 	
 	public function __construct($Sender = '', $ApplicationFolder = False) {
+		//Deprecated('BreadCrumbsModule', 'Controller::SetData("Breadcrumbs")');
 		parent::__construct($Sender, $ApplicationFolder);
 		$this->HtmlId = 'BreadCrumbs';
 		//if (is_object($Sender)) $this->Controller =& $Sender;
@@ -20,6 +21,8 @@ class BreadCrumbsModule extends MenuModule {
 	
 	public function AddLink($Group, $Text, $Url, $Permission = False, $Attributes = '', $AnchorAttributes = '') {
 		parent::AddLink($Group, $Text, $Url, $Permission, $Attributes, $AnchorAttributes);
+		// Compability
+		$this->_Sender->Data['Breadcrumbs'][] = array('Name' => $Text, 'Url' => $Url);
 	}
 	
 	public function SetLinks($DataSet) {
@@ -72,6 +75,9 @@ class BreadCrumbsModule extends MenuModule {
 	}
 	
 	public function ToString() {
+
+		return ''; // Use native breadcrumbs render
+
 		$String = '';
 		
 		if (!$this->bCrumbsWrapped && $this->bAutoWrapCrumbs) $this->WrapCrumbs();
@@ -125,9 +131,3 @@ class BreadCrumbsModule extends MenuModule {
 	}
 	
 }
-
-
-
-
-
-
