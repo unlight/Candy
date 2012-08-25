@@ -36,9 +36,8 @@ class CandyHooks implements Gdn_IPlugin {
 	}
 	
 	public function Base_Render_Before($Sender) {
-		$this->_BreadCrumbsAssetRender($Sender);
-		$this->_AddCreatePageModule($Sender);
 		$this->_ChunksEdit($Sender);
+		$this->_AddCreatePageModule($Sender);
 	}
 
 	protected function _ChunksEdit($Sender) {
@@ -59,25 +58,10 @@ class CandyHooks implements Gdn_IPlugin {
 		}
 	}
 
-	protected function _BreadCrumbsAssetRender($Sender) {
-		if (isset($Sender->Assets['BreadCrumbs']['BreadCrumbsModule'])) {
-			$BreadCrumbsModule =& $Sender->Assets['BreadCrumbs']['BreadCrumbsModule'];
-			if ($BreadCrumbsModule) {
-				$AssetTarget = C('Candy.Modules.BreadCrumbsAssetTarget');
-				if ($AssetTarget) {
-					//$BreadCrumbsModule->bCustomAssetTarget = True;
-					$Sender->AddModule($BreadCrumbsModule, $AssetTarget);
-					unset($Sender->Assets['BreadCrumbs']);
-				}
-			}
-		}
-	}
-	
 	public function Gdn_Dispatcher_BeforeDispatch_Handler($Sender) {
 		$Request = Gdn::Request();
 		$RequestUri = $Request->RequestUri();
-		$Route = Gdn::Router()->GetRoute($RequestUri);
-		if ($Route === False) {
+		if (Gdn::Router()->GetRoute($RequestUri) === False) {
 			$RequestArgs = SplitUpString($RequestUri, '/', 'strtolower');
 			if (array_key_exists(0, $RequestArgs)) {
 				$ApplicationFolders = $Sender->EnabledApplicationFolders();
@@ -87,7 +71,6 @@ class CandyHooks implements Gdn_IPlugin {
 					$ControllerFileName = CombinePaths($PathParts);
 					$ControllerPath = Gdn_FileSystem::FindByMapping('controller', PATH_APPLICATIONS, $ApplicationFolders, $ControllerFileName);
 					if (!$ControllerPath || !file_exists($ControllerPath)) {
-						//$RequestUri = trim($Request->RequestUri(), '/');
 						$Sender->EventArguments['RequestUri'] =& $RequestUri;
 						$Sender->FireEvent('BeforeGetRoute');
 						$NewRequest = CandyModel::GetRouteRequestUri($RequestUri);
@@ -99,7 +82,7 @@ class CandyHooks implements Gdn_IPlugin {
 	}
 	
 	public function Setup() {
-		include(PATH_APPLICATIONS . '/candy/settings/structure.php');
+		include PATH_APPLICATIONS . '/candy/settings/structure.php';
 	}
 	
 	public function OnDisable() {

@@ -11,6 +11,7 @@ class SectionController extends CandyController {
 			$this->AddJsFile('jquery.menu.js');
 			$this->AddJsFile('jquery.popup.js');
 			$this->AddJsFile('jquery.form.js');
+			$this->AddJsFile('jquery.duplicate.js');
 			$this->AddJsFile('section.js');
 			$this->AddSideMenu();
 		}
@@ -150,6 +151,7 @@ class SectionController extends CandyController {
 			$this->Form->SetValidationResults($Validation->Results());
 			if ($this->Form->ErrorCount() == 0) {
 				$this->InformMessage(T('Saved'), array('Sprite' => 'Check', 'CssClass' => 'Dismissable AutoDismiss'));
+				$this->RedirectUrl = Url('candy/section/tree');
 			}
 		}
 		$this->MaskInfo = K('Candy.Mask.Info');
@@ -159,9 +161,3 @@ class SectionController extends CandyController {
 	}
 	
 }
-
-
-
-
-
-

@@ -1,5 +1,9 @@
 <?php if (!defined('APPLICATION')) exit();
 
+/**
+ * Deprecated.
+ * Use native: Controller::Data['Breadcrumbs'][] = array('Name' => '', 'Url' => '/')
+ */
 class BreadCrumbsModule extends MenuModule {
 	
 	protected $bCrumbsWrapped;
@@ -52,14 +56,14 @@ class BreadCrumbsModule extends MenuModule {
 		$GroupLastItem = array();
 		if ($First != False) {
 			$Home = T('Home');
-			$FirstItem = array(0 => array('Text' => $Home, 'Url' => '/'));
+			$FirstItem = array(0 => array('Name' => $Home, 'Url' => '/'));
 			$GroupFirstItem = array($Home => $FirstItem);
 		}
 		if ($Last != False) {
 			$Text = Gdn::Controller()->Data('Title');
 			//$this->Controller
 			//$Text = $this->_Sender->Data('Title');
-			$Item = array(0 => array('Text' => $Text, 'Url' => '/'));
+			$Item = array(0 => array('Name' => $Text, 'Url' => '/'));
 			$GroupLastItem = array($Text => $Item);
 		}
 		$this->Items = $GroupFirstItem + $this->Items + $GroupLastItem;
@@ -75,10 +79,8 @@ class BreadCrumbsModule extends MenuModule {
 	}
 	
 	public function ToString() {
-
-		return ''; // Use native breadcrumbs render
-
 		$String = '';
+		return $String; // Use native breadcrumbs render
 		
 		if (!$this->bCrumbsWrapped && $this->bAutoWrapCrumbs) $this->WrapCrumbs();
 		

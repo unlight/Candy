@@ -1,4 +1,4 @@
-/* ======================================================================================= Modules */
+/* ================================================= Modules */
 
 /*.BoxSections li.Depth1 { padding-left: 0px; }*/
 .BoxSections li.Depth2 { padding-left: 8px; }
@@ -16,7 +16,7 @@
 }
 
 
-/* ======================================================================================= Misc */
+/* ================================================= Misc */
 body.Candy td.Options a {
 	text-transform: lowercase;
 }
@@ -67,7 +67,7 @@ ol.Tree ul ul ul ul ul ul { list-style-type: circle; }
 }
 
 
-/* ====================================================================== Static page */
+/* ================================================= Static page */
 
 form ul.EditForm li label + input[type="checkbox"] {
     vertical-align: middle;
@@ -137,7 +137,7 @@ a.TabToggleButton.Active:first-child {
 }
 
 
-/* =========================================================== Inline Edit - Plugin for jQuery */
+/* ============================================ Inline Edit - Plugin for jQuery */
 .editable-wrap input[type=text],
 .editable-wrap textarea {
 	padding: 0.2em;
