@@ -36,24 +36,30 @@ class CandyHooks implements Gdn_IPlugin {
 	}
 	
 	public function Base_Render_Before($Sender) {
-		$DeliveryTypeAll = ($Sender->DeliveryType() == DELIVERY_TYPE_ALL);
-		if ($Sender->Application == 'Candy' && $DeliveryTypeAll) $this->BreadCrumbsAssetRender($Sender);
-		if ($DeliveryTypeAll) {
-			$Default404 = GetValueR('Routes.Default404', $Sender);
-			if (is_array($Default404)) {
-				if (in_array($Sender->SelfUrl, $Default404) && CheckPermission('Candy.Pages.Add')) {
-					$Sender->AddModule(new CreatePageModule($Sender, 'candy'));
-				}
-			}
-			if (Gdn::Session()->CheckPermission('Candy.Chunks.Edit')) {
-				$Sender->AddJsFile('jquery.inline-edit.js', 'candy');
-				$Sender->AddJsFile('candy.js', 'candy');
-				$Sender->AddCssFile('candy.css', 'candy');
+		$this->_BreadCrumbsAssetRender($Sender);
+		$this->_AddCreatePageModule($Sender);
+		$this->_ChunksEdit($Sender);
+	}
+
+	protected function _ChunksEdit($Sender) {
+		if (Gdn::Session()->CheckPermission('Candy.Chunks.Edit')) {
+			$Sender->AddJsFile('jquery.inline-edit.js', 'candy');
+			$Sender->AddJsFile('candy.js', 'candy');
+			$Sender->AddCssFile('candy.css', 'candy');
+		}
+	}
+
+	protected function _AddCreatePageModule($Sender) {
+		if (Gdn::Session()->CheckPermission('Candy.Pages.Add')) {
+			$Router = Gdn::Router();
+			$Default404 = GetValueR('Routes.Default404.Destination', $Router);
+			if ($Default404 == $Sender->SelfUrl) {
+				$Sender->AddModule(new CreatePageModule($Sender, 'candy'));
 			}
 		}
 	}
 
-	protected function BreadCrumbsAssetRender($Sender) {
+	protected function _BreadCrumbsAssetRender($Sender) {
 		if (isset($Sender->Assets['BreadCrumbs']['BreadCrumbsModule'])) {
 			$BreadCrumbsModule =& $Sender->Assets['BreadCrumbs']['BreadCrumbsModule'];
 			if ($BreadCrumbsModule) {
@@ -101,5 +107,3 @@ class CandyHooks implements Gdn_IPlugin {
 
 	
 }
-
-
