@@ -5,7 +5,7 @@
 <?php if (CheckPermission('Candy.Settings.View')): ?>
 	<div class="Help Aside" style="margin-left: 5px">
 		<?php
-		echo '<h2>', Anchor(T('What is «Mask»?'), 'candy/section/mask', 'Popup'), '</h2>';
+		echo '<h2>', Anchor(T('What is «Mask»?'), 'candy/section/mask'), '</h2>';
 		echo '<ul>';
 		foreach((array)K('Candy.Mask.Info') as $Mask => $Description) {
             if ($Description) 
@@ -76,4 +76,3 @@ if (count($this->Tree) > 0 ){
 }
 
 ?>
-

@@ -1,16 +1,4 @@
-/* ======================================================================================= Modules */
-
-/* :only-child (CSS selector) FF3+ SA3.1+ OP9.5+ CH2+ */
-body.Candy div.Box ul.PanelInfo li > a {
-	float: none;
-}
-
-.BoxSections ul.PanelInfo li {
-	text-align: left;
-}
-.BoxSections ul.PanelInfo li > a:only-child {
-	float: none;
-}
+/* ================================================= Modules */
 
 /*.BoxSections li.Depth1 { padding-left: 0px; }*/
 .BoxSections li.Depth2 { padding-left: 8px; }
@@ -28,24 +16,7 @@ body.Candy div.Box ul.PanelInfo li > a {
 }
 
 
-/* ======================================================================================= BreadCrumbs */
-#BreadCrumbs { text-align: left; }
-#BreadCrumbs ul { display: inline-block; }
-#BreadCrumbs li { display: inline-block; }
-/* IE<8 hacks */
-* html #BreadCrumbs ul { display: inline !important; }
-* html #BreadCrumbs li { display: inline !important; }
-*+html #BreadCrumbs ul { display: inline !important; }
-*+html #BreadCrumbs li { display: inline !important; }
-
-#BreadCrumbs ul li.Crumb:before,
-#BreadCrumbs ul li.LastCrumb:before {
-	content: "»";
-	margin-right: 5px;
-}
-
-
-/* ======================================================================================= Misc */
+/* ================================================= Misc */
 body.Candy td.Options a {
 	text-transform: lowercase;
 }
@@ -96,7 +67,7 @@ ol.Tree ul ul ul ul ul ul { list-style-type: circle; }
 }
 
 
-/* ====================================================================== Static page */
+/* ================================================= Static page */
 
 form ul.EditForm li label + input[type="checkbox"] {
     vertical-align: middle;
@@ -166,7 +137,7 @@ a.TabToggleButton.Active:first-child {
 }
 
 
-/* =========================================================== Inline Edit - Plugin for jQuery */
+/* ============================================ Inline Edit - Plugin for jQuery */
 .editable-wrap input[type=text],
 .editable-wrap textarea {
 	padding: 0.2em;

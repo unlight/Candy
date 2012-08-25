@@ -5,6 +5,7 @@
 <?php 
 if ($this->DeliveryType() == DELIVERY_TYPE_ALL) include $this->FetchViewLocation('menu', 'candy'); ?>
 
+<div id="Mask_Form">
 <?php echo $this->Form->Open(); ?>
 <?php echo $this->Form->Errors(); ?>
 
@@ -17,18 +18,18 @@ foreach ($this->MaskInfo as $Mask => $Info) {
 	echo '</li>';
 }
 
-echo '<li>';
+echo '<li class="MaskOption">';
 echo $this->Form->TextBox('Mask[]', array('class' => 'InputBox MaskValue', 'placeholder' => T('Value')));
 echo $this->Form->TextBox('Description[]', array('placeholder' => T('Description')));
-echo Wrap(T('Add description'), 'a', array('href' => 'javascript:;', 'class' => 'SmallButton AddDescription'));
 echo '</li>';
-
 
 
 ?>
 </ul>
+</div>
 
 <?php 
+echo $this->Form->Button('Add description', array('class' => 'Button AddDescription'));
 if (CheckPermission('Candy.Sections.Edit')) echo $this->Form->Button('Save');
 echo $this->Form->Close(); 
 ?>
