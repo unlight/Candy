@@ -5,7 +5,10 @@ It is built upon Garden - pluggable application development framework.
 
 CHANGELOG
 =========
-0.31 (Unknown date)
+0.33 (26 Aug 2012)
+- fixed meta robots bug
+
+0.31 (03 Feb 2011)
 - added mask description
 
 0.30 (27 Dec 2011)
