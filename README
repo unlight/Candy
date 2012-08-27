@@ -5,6 +5,9 @@ It is built upon Garden - pluggable application development framework.
 
 CHANGELOG
 =========
+0.34 (27 Aug 2012)
+- fixed bug (different number of columns) while search
+
 0.33 (26 Aug 2012)
 - fixed meta robots bug
 

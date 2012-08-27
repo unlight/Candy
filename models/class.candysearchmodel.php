@@ -15,6 +15,7 @@ class CandySearchModel extends Gdn_Model {
 			->Select('s.Url, s.URI, s.RequestUri', 'coalesce', 'Url')
 			->Select('Now() as DateInserted')
 			->Select('0 as UserID')
+			->Select("'Section'", '', 'RecordType')
 			//->Select('Null as Name')
 			//->Select('Null as Photo')
 			->From('Section s');
@@ -37,6 +38,7 @@ class CandySearchModel extends Gdn_Model {
 			->Select('Url')
 			->Select('DateInserted')
 			->Select('0 as UserID')
+			->Select("'Chunk'", '', 'RecordType')
 			//->Select('Null as Name')
 			//->Select('Null as Photo')
 			->From('Chunk');
@@ -60,6 +62,7 @@ class CandySearchModel extends Gdn_Model {
 			->Select('PageID', "concat('/content/page/', %s)", 'Url')
 			->Select('DateInserted')
 			->Select('0 as UserID')
+			->Select("'Page'", '', 'RecordType')
 			//->Select('Null as Name')
 			//->Select('Null as Photo')
 			//->Where('Visible', 1, False, False)
