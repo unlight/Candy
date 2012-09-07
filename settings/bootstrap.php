@@ -48,18 +48,24 @@ if (!function_exists('BuildNode')) {
 	}
 }
 
-if (!function_exists('SectionAnchor')) {
-	function SectionAnchor($Node, $Attributes = Null) {
+if (!function_exists('SectionUrl')) {
+	function SectionUrl($Node, $Options = False) {
 		$Url = GetValue('Url', $Node);
 		if (!$Url) {
 			$Url = GetValue('URI', $Node);
 			if (!$Url) GetValue('RequestUri', $Node);
 		}
-		
+		return $Url;
+	}
+}
+
+if (!function_exists('SectionAnchor')) {
+	function SectionAnchor($Node, $Attributes = Null) {
+		$Url = SectionUrl($Node);
 		$NoFollowExternal = GetValue('NoFollowExternal', $Attributes, False, True);
 		if ($NoFollowExternal) {
-			
-			static $OurHost; if (is_null($OurHost)) $OurHost = Gdn::Request()->Host();
+			static $OurHost; 
+			if (is_null($OurHost)) $OurHost = Gdn::Request()->Host();
 			$UrlHost = parse_url($Url, PHP_URL_HOST);
 			if ($UrlHost && $UrlHost != $OurHost) {
 				if (isset($Attributes['rel'])) $Attributes['rel'] .= ' nofollow';

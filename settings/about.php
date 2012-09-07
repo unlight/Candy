@@ -2,9 +2,9 @@
 
 $ApplicationInfo['Candy'] = array(
 	'Description' => 'Candy is the simple web-application that allows you manage site content.',
-	'Version' => '0.34',
+	'Version' => '0.35',
 	'Date' => 'Summer 2011',
-	'Updated' => 'Summer 2012',
+	'Updated' => '07.09.2012',
 	'AllowEnable' => True,
 	'RequiredPlugins' => array('UsefulFunctions' => '>=3.9'),
 	'RequiredApplications' => array('Dashboard' => '>=2.0.18'),
