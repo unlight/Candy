@@ -17,6 +17,10 @@ echo Wrap(
 	$this->Form->TextBox('Name'), 'li');
 
 echo Wrap(
+	$this->Form->Label('In Top Menu', 'InTopMenu').
+	$this->Form->CheckBox('InTopMenu'), 'li');
+
+echo Wrap(
 	$this->Form->Label('URI', 'URI').
 	$this->Form->TextBox('URI'), 'li');
 	

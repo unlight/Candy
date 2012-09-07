@@ -38,6 +38,7 @@ class CandyHooks implements Gdn_IPlugin {
 	public function Base_Render_Before($Sender) {
 		$this->_ChunksEdit($Sender);
 		$this->_AddCreatePageModule($Sender);
+		$this->_AddTopMenu($Sender);
 	}
 
 	protected function _ChunksEdit($Sender) {
@@ -54,6 +55,23 @@ class CandyHooks implements Gdn_IPlugin {
 			$Default404 = GetValueR('Routes.Default404.Destination', $Router);
 			if ($Default404 == $Sender->SelfUrl) {
 				$Sender->AddModule(new CreatePageModule($Sender, 'candy'));
+			}
+		}
+	}
+
+	protected function _AddTopMenu($Sender) {
+		$Menu = $Sender->Menu;
+		if ($Menu) {
+			$SectionModel = Gdn::Factory('SectionModel');
+			$Items = $SectionModel->GetNodes(array('InTopMenu' => 1, 'CacheNodes' => True));
+			foreach ($Items as $Item) {
+				$ParentItem = $SectionModel->GetNode($Item->ParentID, array('InTopMenu' => 1));
+				$Url = SectionUrl($Item);
+				if ($ParentItem == FALSE) {
+					$Menu->AddLink($Item->Name, $Item->Name, $Url, FALSE);
+				} else {
+					$Menu->AddLink($ParentItem->Name, $Item->Name, $Url, FALSE);
+				}
 			}
 		}
 	}
