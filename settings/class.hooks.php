@@ -61,7 +61,8 @@ class CandyHooks implements Gdn_IPlugin {
 
 	protected function _AddTopMenu($Sender) {
 		$Menu = $Sender->Menu;
-		if ($Menu) {
+		$Version = C('Candy.Version');
+		if ($Menu && $Version >= 0.36) {
 			$SectionModel = Gdn::Factory('SectionModel');
 			$Items = $SectionModel->GetNodes(array('InTopMenu' => 1, 'CacheNodes' => True));
 			foreach ($Items as $Item) {

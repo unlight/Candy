@@ -115,3 +115,9 @@ $PermissionModel->Save(array(
 	//'Candy.Settings.Manage' => 1,
 	'Candy.Settings.View' => 1,
 ));
+
+
+if (!isset($CaptureOnly) || $CaptureOnly == False) {
+	$Version = Gdn::ApplicationManager()->GetApplicationInfo('Candy', 'Version');
+	SaveToConfig('Candy.Version', $Version);
+}
