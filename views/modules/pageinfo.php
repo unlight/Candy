@@ -1,6 +1,6 @@
 <?php if (!defined('APPLICATION')) exit(); 
 
-$Page = GetValue('Content', $Data);
+$Page = (object) GetValue('Content', $Data);
 $Title = GetValue('Title', $Data, $Page->Title);
 $TargetUrl = $this->_Sender->SelfUrl;
 // Wrapper box <div class="Box"> in Module::String()
